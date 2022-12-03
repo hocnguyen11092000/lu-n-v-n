@@ -89,7 +89,7 @@ const ProductPage = () => {
               return (
                 <Grid item xs={4} key={htx.id_hoptacxa}>
                   <Card
-                    href={`/g/htx/${htx.id_hoptacxa}`}
+                    href={`/g/htx/${htx.id_hoptacxa}?htx=${htx.name_hoptacxa}`}
                     image={htx.thumbnail || "/images/bg-auth.webp"}
                   >
                     <Box component="div">

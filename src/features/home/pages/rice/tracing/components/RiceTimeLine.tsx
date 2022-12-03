@@ -77,7 +77,7 @@ const RiceTimeLine = ({ lohang }: Props) => {
             Số lượng:{" "}
           </Box>
           <Box component="span" fontSize="17px">
-            {soLuong}
+            {soLuong} kilogam
           </Box>
         </Box>
       </Box>
@@ -102,7 +102,7 @@ const RiceTimeLine = ({ lohang }: Props) => {
               2
             )}
           </CustomTimeLineItem>
-          <RiceDetail isShow={isShowRiceDetail}></RiceDetail>
+          <RiceDetail isShow={isShowRiceDetail} nhatkyhoatdong={lohang?.giaodichmubanlua?.hoatdongnhatky}></RiceDetail>
           <CustomTimeLineItem
             time={
               lohang?.giaodichmubanluagiong.updated_at &&
@@ -112,7 +112,7 @@ const RiceTimeLine = ({ lohang }: Props) => {
             }
           >
             {render(
-              lohang?.giaodichmubanluagiong.name_gionglua,
+              "Giao dịch lúa giống " + lohang?.giaodichmubanluagiong.name_gionglua,
               lohang?.giaodichmubanluagiong.name_xavien,
               lohang?.giaodichmubanluagiong.nhacungcapvattu_name,
               lohang?.giaodichmubanluagiong.soluong,

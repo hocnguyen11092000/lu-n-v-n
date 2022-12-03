@@ -8,7 +8,7 @@ import TimelineContent, {
 } from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
-import { Box, Typography } from "@mui/material";
+import { Box, SxProps, Typography } from "@mui/material";
 
 export interface ICustomTimeLine {
   children?: React.ReactNode;
@@ -19,11 +19,12 @@ export interface ICustomTimeLineItem {
   time?: string;
   dotColor?:string;
   connectorColor?: string;
+  sx?: SxProps
 }
 
-export const CustomTimeLineItem = ({ children, time, dotColor, connectorColor }: ICustomTimeLineItem) => {
+export const CustomTimeLineItem = ({ children, time, dotColor, connectorColor, sx }: ICustomTimeLineItem) => {
   return (
-    <TimelineItem>
+    <TimelineItem sx={sx}>
       <TimelineOppositeContent color="textSecondary">
         {time}
       </TimelineOppositeContent>
@@ -47,7 +48,7 @@ export const CustomLastTimeLineItem = ({
 }: ICustomTimeLineItem) => {
   return (
     <TimelineItem>
-      <TimelineOppositeContent color="textSecondary">
+      <TimelineOppositeContent color="textSecondary" sx={{width: ''}}>
         {time}
       </TimelineOppositeContent>
       <TimelineSeparator>

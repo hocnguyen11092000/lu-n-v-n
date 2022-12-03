@@ -25,7 +25,7 @@ const tracingApi = {
     });
   },
 
-  getChiTietLoHang(id: string, params?: any): Promise<AxiosResponse<ITruyXuatNguonGoc>> {
+  getChiTietLoHang(id: string, params?: any): any {
     const url = `/api/blockchain/tracing/${id}`;
     return axiosClient.get(url, {
       params

@@ -35,6 +35,7 @@ export interface ILoHang {
   img_lohang: string | null;
   soluong: number;
   price: number;
+  updated_at: string;
 }
 
 export interface ILichMuaVu {
