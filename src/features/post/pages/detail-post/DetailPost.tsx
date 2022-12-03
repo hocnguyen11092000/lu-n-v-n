@@ -1,6 +1,6 @@
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Button, Input, Modal, Spin } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import FormComponent from "../../../../components/form-component/FormComponent";
 import shopContractApi from "../../../../api/shopContract";
@@ -24,6 +24,10 @@ const DetailPost = ({ baseUrl }: Props) => {
   const [file, setFile] = useState(null);
 
   const { id } = useParams();
+
+  useEffect(() => {
+    setCkData(deatailPost.data?.data?.post?.content);
+  }, [id]);
 
   const fetchDetailPost = (id: any) => {
     return postApi.getDetail(id);
@@ -200,13 +204,13 @@ const DetailPost = ({ baseUrl }: Props) => {
     values.content = ckData || "";
 
     const formData: any = new FormData();
-    formData.append("image", file || null);
+    file && formData.append("image", file || null);
     formData.append("title_post", values.title_post);
     formData.append("short_description", values.short_description);
     formData.append("description", values.description);
     formData.append("content", values.content);
 
-    mutation_create_post.mutate(formData, {
+    mutation_update_post.mutate(formData, {
       onSuccess: (res) => {
         getResponseMessage(res);
       },
@@ -216,7 +220,9 @@ const DetailPost = ({ baseUrl }: Props) => {
     });
   };
 
-  const mutation_create_post = useMutation((data) => postApi.create(data));
+  const mutation_update_post = useMutation((data) =>
+    postApi.update(data, id || "")
+  );
 
   const headerBreadcrumb = [
     {
@@ -224,8 +230,8 @@ const DetailPost = ({ baseUrl }: Props) => {
       path: "/post",
     },
     {
-      name: "Tạo bài viết",
-      path: "/create",
+      name: `Chi tiết bài viết / ${id}`,
+      path: "/detail",
     },
   ];
 
@@ -237,18 +243,20 @@ const DetailPost = ({ baseUrl }: Props) => {
           edit={true}
           headerBreadcrumb={headerBreadcrumb}
           form="update-post"
-          loading={mutation_create_post.isLoading}
+          loading={mutation_update_post.isLoading}
         ></PageHeader>
-        {deatailPost.data?.data && (
-          <FormComponent
-            initialValues={deatailPost.data?.data?.post}
-            onSubmit={handleFormSubmit}
-            name="update-post"
-            buttonSubmit="Tạo bài viết"
-            hideBtnSubmit
-            data={DetailPostForm}
-          ></FormComponent>
-        )}
+        {deatailPost.data?.data &&
+          Object.keys(deatailPost.data?.data).length > 0 && (
+            <FormComponent
+              initialValues={deatailPost.data?.data?.post}
+              onSubmit={handleFormSubmit}
+              name="update-post"
+              buttonSubmit="Cập nhật"
+              hideBtnSubmit
+              data={DetailPostForm}
+              setData={false}
+            ></FormComponent>
+          )}
       </div>
       <br />
     </Spin>

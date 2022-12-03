@@ -46,7 +46,9 @@ const StoryOfSeason = (props: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [detailStory, setDetailStory] = useState<any>();
   const [type, setType] = useState<any>("create");
-  const [categoryOfActivity, setCategoryOfActivity] = useState<any>([]);
+  const [categoryOfActivity, setCategoryOfActivity] = useState<any>(
+    detailStory?.vattusudung || []
+  );
   const [detailStoryId, setDetailStoryId] = useState<
     number | string | undefined
   >();
@@ -57,6 +59,11 @@ const StoryOfSeason = (props: Props) => {
     limit: searchParams.get("limit") || 5,
     search: searchParams.get("search") || "",
   });
+
+  useEffect(() => {
+    setCategoryOfActivity(detailStory?.vattusudung || []);
+  }, [detailStoryId]);
+
   const fetchListLand = () => {
     return landApi.getAll({});
   };
@@ -395,6 +402,16 @@ const StoryOfSeason = (props: Props) => {
     values.id_lichmuavu = id || "";
     values.date_start = formatMoment(values.date_start);
     values.date_end = formatMoment(values.date_end);
+    values.vattusudung =
+      categoryOfActivity.map((item: any) => {
+        return {
+          ...item,
+          id_giaodichmuaban_vattu:
+            item?.id_vattusudung ||
+            JSON.parse(item?.id_giaodichmuaban_vattu)?.key ||
+            "",
+        };
+      }) || [];
 
     if (detailStoryId) {
       mutation_update_activity.mutate(values, {
@@ -406,15 +423,6 @@ const StoryOfSeason = (props: Props) => {
         onError: (err) => getErrorMessage(err),
       });
     } else {
-      values.vattusudung =
-        categoryOfActivity.map((item: any) => {
-          return {
-            ...item,
-            id_giaodichmuaban_vattu:
-              JSON.parse(item?.id_giaodichmuaban_vattu)?.key || "",
-          };
-        }) || [];
-
       mutation_add_activity.mutate(values, {
         onSuccess: (res) => {
           getResponseMessage(res);
@@ -468,6 +476,12 @@ const StoryOfSeason = (props: Props) => {
     });
 
     setIsModalOpenCategory(false);
+  };
+
+  const handleDeleteCategory = (data: any) => {
+    setCategoryOfActivity((pre: any) => {
+      return pre?.filter((c: any) => c?.id_giaodichmuaban_vattu !== data);
+    });
   };
 
   return (
@@ -540,7 +554,7 @@ const StoryOfSeason = (props: Props) => {
           position: "relative",
         }}
       >
-        <Spin spinning={loadingDetailStory && !isCreate}>
+        <Spin spinning={loadingDetailStory || (isLoading && !isCreate)}>
           <FormComponent
             type={type}
             isCreate={isCreate}
@@ -558,6 +572,7 @@ const StoryOfSeason = (props: Props) => {
             onAddField={handleAddField}
             data={actdivityForm}
             categoryOfActivity={categoryOfActivity}
+            onDeleteCategory={handleDeleteCategory}
           ></FormComponent>
         </Spin>
       </Modal>

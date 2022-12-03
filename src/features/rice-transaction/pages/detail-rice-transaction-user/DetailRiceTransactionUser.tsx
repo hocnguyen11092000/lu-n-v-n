@@ -344,7 +344,7 @@ const DetailRiceTransactionUser = ({ baseUrl }: Props) => {
           form="shop=detail-contract"
           loading={mutation_update_rice_contract.isLoading}
         ></PageHeader>
-        {result && (
+        {result && Object.keys(result).length > 0 && (
           <FormComponent
             initialValues={result}
             onSubmit={handleFormSubmit}
@@ -352,6 +352,7 @@ const DetailRiceTransactionUser = ({ baseUrl }: Props) => {
             buttonSubmit="Cập nhật"
             hideBtnSubmit
             data={contractDetailForm}
+            setData={false}
           ></FormComponent>
         )}
       </div>

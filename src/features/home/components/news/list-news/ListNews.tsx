@@ -1,26 +1,67 @@
-import React from "react";
-import { listNews } from "../../../../../mock/news-data";
+import { useEffect, useRef } from "react";
+import Highlighter from "react-highlight-words";
+import { useNavigate } from "react-router-dom";
 import "./list-news.scss";
 
 type Props = {
   post?: any;
+  header?: boolean;
+  headerText?: string;
+  searchWords?: string;
+  onLoadMore?: any;
+  page?: any;
+  search?: boolean;
 };
 
-const ListNews = ({ post }: Props) => {
+const ListNews = ({
+  post,
+  header,
+  headerText,
+  searchWords = "",
+  onLoadMore,
+  page,
+  search = false,
+}: Props) => {
+  const navigate = useNavigate();
+  const first = useRef(false);
+
+  useEffect(() => {
+    first.current = true;
+  }, []);
+
   return (
     <div className="list-news">
-      <h3 className="list-news-heading">Tất cả bài viết</h3>
+      {header && headerText && (
+        <h3
+          className="list-news-heading"
+          style={{ marginBottom: "16px", textAlign: "left" }}
+        >
+          {headerText ? headerText : " Tất cả bài viết"}
+        </h3>
+      )}
       {post &&
         post.length > 0 &&
-        post.map((news: any) => {
+        post.map((news: any, index: number) => {
           return (
-            <div className="news-item">
+            <div
+              className={`news-item cursor-poiner ${
+                search && index == post.length - 1 ? "m-b-0" : ""
+              }`}
+              onClick={() =>
+                navigate(`/g/post/${(news && news?.id_post) || ""}`)
+              }
+            >
               <div className="news-item-img">
                 <img src={news?.image || ""} alt="" />
               </div>
               <div className="news-item-content">
                 <p className="news-item-content-title">
-                  {news?.title_post || ""}
+                  <Highlighter
+                    highlightClassName="hight-light-text"
+                    searchWords={searchWords?.split(" ")}
+                    autoEscape={true}
+                    textToHighlight={news?.title_post || ""}
+                  />
                 </p>
                 <p className="news-item-content-time">
                   {news?.createdAt || ""}

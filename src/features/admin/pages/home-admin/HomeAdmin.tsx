@@ -69,6 +69,7 @@ import AddUserToHTX from "../add-user-htx/AddUserToHTX";
 import CreateHTX from "../create-htx/CreateHTX";
 import Dashboard from "../dashboard/Dashboard";
 import DetailHTX from "../detail-htx/DetailHTX";
+import HTXDetailStoryMangement from "../htx-detail-story-management/HTXDetailStoryMangement";
 import HTXManagement from "../htx-management/HTXManagement";
 import HTXStorymanagement from "../htx-story-management/HTXStorymanagement";
 import SeasonActivity from "../season-activity/SeasonActivity";
@@ -214,7 +215,7 @@ const HomeAdmin = () => {
       icon: <PayCircleOutlined />,
       label: (
         <Link to={`${PATH.HTX}${"/rice-transaction-management"}`}>
-          Giao dịch lúa giống
+          Giao dịch lúa
         </Link>
       ),
     },
@@ -277,7 +278,7 @@ const HomeAdmin = () => {
       icon: <PayCircleOutlined />,
       label: (
         <Link to={`${PATH.HTX}${"/rice-transaction-management"}`}>
-          Giao dịch lúa giống
+          Giao dịch lúa
         </Link>
       ),
     },
@@ -482,6 +483,12 @@ const HomeAdmin = () => {
                         <Route
                           path={"/story-of-user"}
                           element={<HTXStorymanagement></HTXStorymanagement>}
+                        ></Route>
+                        <Route
+                          path={"/story-of-user/detail/:id"}
+                          element={
+                            <HTXDetailStoryMangement></HTXDetailStoryMangement>
+                          }
                         ></Route>
                         <Route
                           path={PATH.MANAGE_HTX}
