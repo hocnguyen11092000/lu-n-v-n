@@ -134,6 +134,13 @@ const UserDetail = (props: Props) => {
         getResponseMessage(res);
 
         dispatch(storeUser({ ...user, user: { ...user.user, ...res.data } }));
+        // localStorage.setItem(
+        //   "user_luanvan",
+        //   JSON.stringify({
+        //     ...user,
+        //     user: { ...user.user, ...res.data },
+        //   })
+        // );
         userDetail.refetch();
       },
       onError: (err) => {
@@ -153,6 +160,7 @@ const UserDetail = (props: Props) => {
     hideBtnSubmit: false,
     goBackUrl: "/",
     showBack: true,
+    setData: false,
   };
 
   if (result && Object.keys(result).length > 0) {

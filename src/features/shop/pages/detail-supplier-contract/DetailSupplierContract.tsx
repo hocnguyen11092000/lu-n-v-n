@@ -492,7 +492,7 @@ const DetailSupplierContract = ({ baseUrl }: Props) => {
               : deatailContract?.data?.data?.nhacungcap_xacnhan
           }
         ></PageHeader>
-        {result && (
+        {result && Object.keys(result).length > 0 && (
           <FormComponent
             initialValues={result}
             onSubmit={handleFormSubmit}
@@ -500,6 +500,7 @@ const DetailSupplierContract = ({ baseUrl }: Props) => {
             buttonSubmit="Cập nhật"
             hideBtnSubmit
             data={contractDetailForm}
+            setData={false}
           ></FormComponent>
         )}
       </div>

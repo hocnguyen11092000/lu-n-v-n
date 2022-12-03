@@ -1,0 +1,31 @@
+@use "../../scss/index" as *;
+
+.search-result {
+  position: absolute;
+  top: 40px;
+  left: 50px;
+  width: 100%;
+  min-height: 200px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: $white-color;
+  z-index: 999999;
+  border-radius: $radius-1;
+  box-shadow: $box-shadow;
+  animation: toTop 1s forwards;
+  transition: 0.3s $transition;
+
+  &__content {
+    padding: 20px;
+  }
+}
+
+@keyframes toTop {
+  0% {
+    top: 100px;
+  }
+
+  100% {
+    top: 40px;
+  }
+}

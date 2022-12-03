@@ -1,3 +1,4 @@
+import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Row, Space, Spin } from "antd";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -21,6 +22,9 @@ type Props = {
   addField?: boolean;
   onAddField?: any;
   categoryOfActivity?: any;
+  onDeleteCategory?: any;
+  setData?: boolean;
+  disableForm?: boolean;
 };
 
 const FormComponent = ({
@@ -40,6 +44,9 @@ const FormComponent = ({
   addField = false,
   onAddField,
   categoryOfActivity = [],
+  onDeleteCategory,
+  setData = true,
+  disableForm = false,
 }: Props) => {
   const [formCommon] = Form.useForm();
 
@@ -50,8 +57,9 @@ const FormComponent = ({
   }, [type]);
 
   useEffect(() => {
-    if (initialValues) {
+    if (initialValues && setData) {
       formCommon.setFieldsValue(initialValues);
+      console.log(initialValues);
     }
   }, [initialValues]);
 
@@ -122,9 +130,12 @@ const FormComponent = ({
     console.log(a);
   };
 
+  console.log(categoryOfActivity);
+
   return (
     <div>
       <Form
+        disabled={disableForm}
         onFieldsChange={handleFieldsChange}
         form={formCommon}
         layout="vertical"
@@ -142,21 +153,23 @@ const FormComponent = ({
           <>
             <div className="category-of-activity">
               <h3>Vật tư sử dụng: </h3>
-              <div>
+              <div style={{ margin: "12px 0" }}>
                 {categoryOfActivity.map((item: any) => {
                   return (
                     <Row gutter={[16, 16]} style={{ marginBottom: "12px" }}>
-                      <Col lg={8} md={8} sm={24} xs={24}>
+                      <Col lg={10} md={10} sm={24} xs={24}>
                         <span>
                           <span className="m-r-4"> Tên vật tư: </span>
                           <b>
                             {" "}
-                            {JSON.parse(item?.id_giaodichmuaban_vattu)?.value ||
-                              ""}
+                            {item?.name_category_vattu
+                              ? item.name_category_vattu
+                              : JSON.parse(item?.id_giaodichmuaban_vattu)
+                                  ?.value || ""}
                           </b>
                         </span>
                       </Col>
-                      <Col lg={8} md={8} sm={24} xs={24}>
+                      <Col lg={4} md={4} sm={24} xs={24}>
                         <span>
                           <span className="m-r-4"> Số lượng:</span>
                           <b> {item?.soluong || ""}</b>
@@ -166,6 +179,19 @@ const FormComponent = ({
                         <span>
                           <span className="m-r-4"> Thời gia sử dụng:</span>
                           <b> {item?.timeuse || ""}</b>
+                        </span>
+                      </Col>
+                      <Col lg={2} md={2} sm={24} xs={24}>
+                        <span
+                          className="cursor-poiner"
+                          onClick={() =>
+                            onDeleteCategory &&
+                            onDeleteCategory(
+                              item?.id_giaodichmuaban_vattu || ""
+                            )
+                          }
+                        >
+                          <DeleteOutlined></DeleteOutlined>
                         </span>
                       </Col>
                     </Row>

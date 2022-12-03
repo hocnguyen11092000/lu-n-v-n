@@ -326,7 +326,7 @@ const HTXManagement = () => {
                       </span>
                     </p>
                     <p className="align-center">
-                      <span className="trader-label">Ngày sinh</span>
+                      <span className="trader-label">Ngày sinh: </span>
                       <span className="trader-detail">{user?.dob || ""}</span>
                     </p>
                     <br />

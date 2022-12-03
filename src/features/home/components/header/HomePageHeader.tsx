@@ -1,19 +1,70 @@
 import { Col, Row, Input, Avatar, Dropdown, Menu } from "antd";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import "./home-page-header.scss";
 import ListMenu from "../list-menu/ListMenu";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { handleLogout } from "../../../../utils/logout";
+import SearchResult from "../../../../components/search-result/SearchResult";
+import postApi from "../../../../api/post";
 type Props = {};
 
 const HomePageHeader = (props: Props) => {
   const user = useSelector((state: any) => state.user?.user);
+  const [searchValue, setSearchValue] = useState("");
+  const [dataSearch, setDataSearch] = useState<any>([]);
+  const [loadingSearch, setLoadingSearch] = useState(false);
+  const [show, setShow] = useState(false);
+  // home-search
+  useEffect(() => {
+    document.addEventListener("click", (e: any) => {
+      if (!(e?.target?.id == "home-search")) {
+        setShow(false);
+      } else {
+        setShow(true);
+      }
+    });
+  }, []);
+
+  const timer = useRef<any>();
+
+  useEffect(() => {
+    (() => {
+      setLoadingSearch(true);
+
+      if (timer.current) {
+        clearTimeout(timer.current);
+        setLoadingSearch(false);
+      }
+
+      if (!searchValue) {
+        setLoadingSearch(false);
+        return;
+      }
+
+      try {
+        setShow(true);
+        setLoadingSearch(true);
+
+        timer.current = setTimeout(async () => {
+          const res = await postApi.getAll({ search: searchValue });
+          setDataSearch(res?.data);
+          setLoadingSearch(false);
+        }, 300);
+      } catch (error) {
+        setLoadingSearch(false);
+      } finally {
+        //setLoadingSearch(false);
+      }
+    })();
+
+    return () => clearTimeout(timer.current);
+  }, [searchValue]);
 
   const navigate = useNavigate();
 
-  let data = user?.account.map((item: any) => {
+  let data = user?.account?.map((item: any) => {
     if (item) {
       return {
         ...item,
@@ -74,16 +125,37 @@ const HomePageHeader = (props: Props) => {
         }}
       >
         <Col lg={4} md={4} sm={4} xs={4}>
-          <div className="home-header__logo">Nông nghiệp xanh</div>
+          <div className="home-header__logo">
+            <Link to="/g" style={{ color: "#fff" }}>
+              <span>Nông nghiệp xanh</span>
+            </Link>
+          </div>
         </Col>
         <Col lg={15} md={12} sm={0} xs={0}>
-          <div className="home-header__search" style={{ textAlign: "right" }}>
+          <div
+            className="home-header__search"
+            style={{ textAlign: "right", position: "relative" }}
+          >
             <Input
+              id="home-search"
+              // onFocus={() => setShow(true)}
               className="border-none"
               placeholder="Tìm kiếm thông tin"
               style={{ width: "85%" }}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
-            <SearchOutlined />
+            <SearchOutlined
+              className="home-header__search-btn"
+              style={{ cursor: "pointer" }}
+            />
+            {show && (
+              <SearchResult
+                loading={loadingSearch}
+                show={show}
+                data={dataSearch}
+                searchWords={searchValue}
+              ></SearchResult>
+            )}
           </div>
         </Col>
         <Col lg={5} md={4} sm={4} xs={4}>
