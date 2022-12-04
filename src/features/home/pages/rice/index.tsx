@@ -1,15 +1,11 @@
 import {
   Autocomplete,
   Box,
+  Button,
   CircularProgress,
   Divider,
   FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -31,14 +27,14 @@ const ProductPage = () => {
     setSearchValue(e.target.value);
   };
 
-  useEffect(() => {
+  const handleSearch = () => {
     (async () => {
       setLoading(-1);
       setTimeout(async () => {
         const response: any = await tracingApi.getAll({
           limit: limit,
           page: page,
-          search: seachValue,
+          search: seachValue
         });
         if (response && response.data.length > 0) {
           setLoading(1);
@@ -56,15 +52,38 @@ const ProductPage = () => {
         setLoading(0);
       }
     })();
-  }, [page, limit, seachValue]);
+  }
+
+  useEffect(() => {
+    (async () => {
+      setLoading(-1);
+      setTimeout(async () => {
+        const response: any = await tracingApi.getAll({
+          limit: limit,
+          page: page,
+        });
+        if (response && response.data.length > 0) {
+          setLoading(1);
+          setData(response.data);
+          setPageSize(response.meta.totalPage);
+        } else {
+          setData([]);
+          setLoading(0);
+        }
+      }, 1000);
+      try {
+        setLoading(-1);
+      } catch (error) {
+        console.log(error);
+        setLoading(0);
+      }
+    })();
+  }, [page, limit]);
 
   return (
     <>
       <Box width="80%" m="30px auto">
-        <Box height="60px" display="flex">
-          <p style={{ marginRight: "15px", marginTop: "5px" }}>
-            Tìm kiếm hợp tác xã:
-          </p>
+        <Box height="60px" display="flex" alignItems='center'>
           <FormControl>
             <Input
               onChange={handleInputChange}
@@ -73,6 +92,7 @@ const ProductPage = () => {
               style={{ borderRadius: "5px" }}
             />
           </FormControl>
+          <Button variant="contained" color='success' sx={{height: '30px', ml: '8px'}}  onClick={handleSearch}>Tìm kiếm</Button>
         </Box>
         <Divider></Divider>
         <Grid container mt={3} spacing={3}>
