@@ -1,0 +1,18 @@
+@use "../../scss/index" as *;
+
+.home-footer {
+  margin: 12px 0;
+  text-align: center;
+  background-color: rgba(240, 240, 240);
+  font-size: 13px;
+
+  &__top-footer {
+    padding: 20px 0;
+  }
+
+  &__copy-right {
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.8);
+    // background-color: $white-color;
+  }
+}

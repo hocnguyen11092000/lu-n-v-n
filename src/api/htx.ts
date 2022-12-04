@@ -9,6 +9,11 @@ const htxApi = {
     return axiosClient.post(url, data);
   },
 
+  update(data: any) {
+    const url = "htx/update";
+    return axiosClient.post(url, data);
+  },
+
   searchUser(data: any) {
     const url = "xavien/search-by-phone-number";
     return axiosClient.post(url, data);

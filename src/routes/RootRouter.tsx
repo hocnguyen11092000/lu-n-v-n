@@ -19,12 +19,17 @@ import UserDetail from "../components/user-detail/UserDetail";
 import { notification } from "antd";
 import { NotificationPlacement } from "antd/lib/notification";
 import HomeShop from "../features/shop/components/home/HomeShop";
+import moment from "moment";
 
 type Props = {};
 
 const RootRouter = (props: Props) => {
   const user = useSelector((state: any) => state.user.user);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    moment.locale("fr");
+  }, []);
 
   useEffect(() => {
     var pusher = new Pusher("a4b9a95d179cda3450fe", {

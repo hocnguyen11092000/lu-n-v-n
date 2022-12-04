@@ -5,6 +5,7 @@ import postApi from "../../../../api/post";
 import HomePageHeader from "../../components/header/HomePageHeader";
 import ListNews from "../../components/news/list-news/ListNews";
 import TopNews from "../../components/news/top-news/TopNews";
+import * as _ from "lodash";
 import "./home-page.scss";
 
 type Props = {};
@@ -15,7 +16,7 @@ const HomePage = (props: Props) => {
   const [page, setPage] = useState(1);
 
   const fetchAllPost = ({ pageParam = 1 }) => {
-    return postApi.getAll({ page: pageParam, limit: 3 });
+    return postApi.getAll({ page: pageParam, limit: 5 });
   };
 
   const postQuery = useInfiniteQuery<any>({
@@ -43,6 +44,7 @@ const HomePage = (props: Props) => {
             <>
               <div style={{ display: "flex", alignItems: "flex-start" }}>
                 <Skeleton.Image
+                  className="radius-6"
                   active
                   style={{
                     width: "780px",
@@ -51,6 +53,7 @@ const HomePage = (props: Props) => {
                 />
                 <div>
                   <Skeleton.Input
+                    className="radius-6"
                     active={true}
                     size={"default"}
                     style={{
@@ -61,6 +64,7 @@ const HomePage = (props: Props) => {
                   />
 
                   <Skeleton.Input
+                    className="radius-6"
                     active={true}
                     size={"default"}
                     style={{
@@ -73,6 +77,7 @@ const HomePage = (props: Props) => {
               </div>
               <div>
                 <Skeleton.Input
+                  className="radius-6"
                   active={true}
                   size={"default"}
                   style={{
@@ -83,11 +88,19 @@ const HomePage = (props: Props) => {
                 <br />
               </div>
               <div>
-                <Skeleton active style={{ width: "80%" }} />
+                <Skeleton
+                  className="radius-6"
+                  active
+                  style={{ width: "80%" }}
+                />
                 <br />
               </div>
               <div>
-                <Skeleton active style={{ width: "80%" }} />
+                <Skeleton
+                  className="radius-6"
+                  active
+                  style={{ width: "80%" }}
+                />
                 <br />
               </div>
               {/* <div>
@@ -121,7 +134,9 @@ const HomePage = (props: Props) => {
                       )}
                       <ListNews
                         page={postQuery?.data?.pages?.length}
-                        post={index == 0 ? group?.data.slice(2) : group?.data}
+                        post={
+                          index == 0 ? _.slice(group?.data, 2) : group?.data
+                        }
                       ></ListNews>
                     </>
                   );
@@ -135,7 +150,7 @@ const HomePage = (props: Props) => {
             </>
           )}
           {postQuery.hasNextPage && (
-            <div style={{ textAlign: "center", margin: "20px 0" }}>
+            <div style={{ textAlign: "center", margin: "40px 0 20px 0" }}>
               <Button type="primary" onClick={handleLoadMorePost}>
                 {postQuery.isFetchingNextPage ? "Đang tải..." : "Tải thêm"}
               </Button>

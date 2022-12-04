@@ -163,6 +163,7 @@ const StoryOfSeason = (props: Props) => {
       setDetailStoryId(id);
       setIsModalOpen(true);
       const res = await storyApi.getDetail(id);
+      setCategoryOfActivity(res?.data?.vattusudung || []);
 
       let data = res?.data;
       if (res && res.data) {
