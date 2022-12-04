@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import HomeFooter from "../../../components/footer/HomeFooter";
 import HomePageHeader from "../components/header/HomePageHeader";
 import HomeDetailPost from "./detail-post/DetailPost";
 import HomePage from "./home-page/HomePage";
@@ -26,6 +27,7 @@ const index = () => {
           element={<TracingPricePage></TracingPricePage>}
         ></Route>
       </Routes>
+      <HomeFooter></HomeFooter>
     </>
   );
 };

@@ -1,7 +1,12 @@
+import { EyeOutlined } from "@ant-design/icons";
+import { Space } from "antd";
 import { useEffect, useRef } from "react";
 import Highlighter from "react-highlight-words";
 import { useNavigate } from "react-router-dom";
 import "./list-news.scss";
+import moment from "moment";
+import vi from "moment/locale/vi";
+import "moment/locale/es";
 
 type Props = {
   post?: any;
@@ -63,9 +68,22 @@ const ListNews = ({
                     textToHighlight={news?.title_post || ""}
                   />
                 </p>
-                <p className="news-item-content-time">
-                  {news?.createdAt || ""}
-                </p>
+                <div className="news-item-content-time main-color">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    <EyeOutlined />
+                    <span> {news?.view + "  lượt xem" || ""}</span>
+                  </div>
+                </div>
+                {/* <p className="news-item-content-time">
+                  {(news?.created_at && moment(news?.created_at).fromNow()) ||
+                    ""}
+                </p> */}
                 <p>{news?.short_description || ""}</p>
               </div>
             </div>

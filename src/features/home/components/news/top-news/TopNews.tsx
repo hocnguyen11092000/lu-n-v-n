@@ -8,10 +8,10 @@ type Props = {
 
 const TopNews = ({ post }: Props) => {
   const navigate = useNavigate();
-  console.log(post);
+  // console.log(post);
 
   return (
-    <div className="top-news">
+    <div className="top-news" style={{ marginBottom: "16px" }}>
       <div className="top-news-list">
         <Row gutter={24}>
           <Col lg={18} md={18} sm={24} xs={24}>

@@ -429,6 +429,7 @@ const DetailSeaSon = (props: Props) => {
   return (
     <div className="detail-season">
       <PageHeader
+        allowSave={true}
         loading={mutation_calendar.isLoading}
         form="season"
         disabled={disableBtnUpdateSeason}

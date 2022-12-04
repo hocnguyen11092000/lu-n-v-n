@@ -19,6 +19,14 @@
   justify-content: space-between;
   align-items: center;
   & .user-info {
+    &__name {
+      display: inline-block;
+      margin-right: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: $main-color;
+    }
+
     & img {
       width: 32px;
       height: 32px;

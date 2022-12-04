@@ -56,6 +56,8 @@ const FormComponent = ({
     }
   }, [type]);
 
+  console.log(categoryOfActivity);
+
   useEffect(() => {
     if (initialValues && setData) {
       formCommon.setFieldsValue(initialValues);

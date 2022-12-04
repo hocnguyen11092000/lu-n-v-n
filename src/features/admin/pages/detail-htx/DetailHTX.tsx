@@ -1,13 +1,28 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { DatePicker, Input, Spin } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import htxApi from "../../../../api/htx";
 import FormComponent from "../../../../components/form-component/FormComponent";
+import PageHeader from "../../../../components/page-header/PageHeader";
+import UploadImag from "../../../../components/upload-image/UploadImage";
 import { convertToMoment } from "../../../../utils/convertToMoment";
+import { getErrorMessage } from "../../../../utils/getErrorMessage";
+import { getResponseMessage } from "../../../../utils/getResponseMessage";
 
 type Props = {};
 
 const DetailHTX = (props: Props) => {
+  const [file, setFile] = useState(null);
+
+  const fetchDetailHTX = () => {
+    return htxApi.getDetail();
+  };
+
+  const handleChangeImage = (file: any) => {
+    setFile(file);
+  };
+
+  const detailHTX: any = useQuery(["htx/detail"], fetchDetailHTX);
   const detailHTXForm = [
     {
       name: "id_hoptacxa",
@@ -113,15 +128,20 @@ const DetailHTX = (props: Props) => {
         <Input.TextArea rows={4} placeholder="Mô tả"></Input.TextArea>
       ),
     },
+    {
+      name: "thumbnail",
+      label: "",
+      formChildren: (
+        <UploadImag
+          image={detailHTX?.data?.data?.thumbnail}
+          onChange={handleChangeImage}
+        ></UploadImag>
+      ),
+    },
   ];
-
-  const fetchDetailHTX = () => {
-    return htxApi.getDetail();
-  };
 
   let result: any = {};
 
-  const detailHTX: any = useQuery(["htx/detail"], fetchDetailHTX);
   if (detailHTX?.data) {
     result = detailHTX?.data?.data;
 
@@ -141,29 +161,36 @@ const DetailHTX = (props: Props) => {
   }
 
   const handleFormSubmit = (values: any) => {
-    console.log(values);
+    values.thumbnail = file || null;
 
-    // mutatationUpdateProfile.mutate(values, {
-    //   onSuccess: (res) => {
-    //     getResponseMessage(res);
-    //   },
-    //   onError: (err) => {
-    //     getErrorMessage(err);
-    //   },
-    // });
+    const formData: any = new FormData();
+    file && formData.append("thumbnail", file || null);
+    formData.append("phone_number", values.phone_number);
+    formData.append("name_hoptacxa", values.name_hoptacxa);
+    formData.append("email", values.email);
+    formData.append("address", values.address);
+    formData.append("description", values.description);
+
+    mutation_update_htx.mutate(formData, {
+      onSuccess: (res) => {
+        getResponseMessage(res);
+      },
+      onError: (err) => {
+        getErrorMessage(err);
+      },
+    });
   };
 
-  // const mutatationUpdateProfile = useMutation((data) =>
-  //   commontApi.updateProfile(name, data)
-  // );
+  const mutation_update_htx = useMutation((data: any) => htxApi.update(data));
 
   let formComponentProps: any = {
-    loading: false,
+    loading: mutation_update_htx.isLoading,
     onSubmit: handleFormSubmit,
-    name: "htx/detail",
+    name: "update-post",
     buttonSubmit: "Cập nhật",
     data: detailHTXForm,
-    hideBtnSubmit: false,
+    hideBtnSubmit: true,
+    setData: false,
   };
 
   if (Object.keys(result).length > 0) {
@@ -172,8 +199,27 @@ const DetailHTX = (props: Props) => {
       initialValues: result,
     };
   }
+
+  const headerBreadcrumb = [
+    {
+      name: "Hợp tác xã",
+      path: "/htx",
+    },
+    {
+      name: `Cập nhật `,
+      path: "/update",
+    },
+  ];
+
   return (
     <Spin spinning={detailHTX.isLoading} style={{ height: "100vh" }}>
+      <PageHeader
+        allowSave
+        edit={true}
+        headerBreadcrumb={headerBreadcrumb}
+        form="update-post"
+        loading={mutation_update_htx.isLoading}
+      ></PageHeader>
       <div className="profile">
         <h3>Chi tiết hợp tác xã</h3>
         {Object.keys(result).length > 0 && (

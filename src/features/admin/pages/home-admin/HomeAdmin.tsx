@@ -219,6 +219,13 @@ const HomeAdmin = () => {
         </Link>
       ),
     },
+    {
+      key: `${PATH.HTX}${"/post-management"}`,
+      icon: <SnippetsOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/post-management"}`}>Quản lý bài viết</Link>
+      ),
+    },
   ];
 
   const manageMenu = [
@@ -357,7 +364,7 @@ const HomeAdmin = () => {
                         color: "#333",
                       }}
                     >
-                      Hợp tác xã
+                      {!collapsed && "Hợp tác xã"}
                     </span>
                     <div
                       style={
@@ -412,10 +419,15 @@ const HomeAdmin = () => {
                     trigger={["click"]}
                     arrow
                   >
-                    <img
-                      src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
-                      alt=""
-                    />
+                    <span>
+                      <span className="user-info__name">
+                        {user?.user?.fullname || ""}
+                      </span>
+                      <img
+                        src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+                        alt=""
+                      />
+                    </span>
                   </Dropdown>
                   <div
                     onClick={() => dispatch(resetCount())}
@@ -657,6 +669,18 @@ const HomeAdmin = () => {
                           element={
                             <DetailRiceTransactionUser></DetailRiceTransactionUser>
                           }
+                        ></Route>
+                        <Route
+                          path={"/post-management"}
+                          element={<PostManagement></PostManagement>}
+                        ></Route>
+                        <Route
+                          path={"/post-management/create"}
+                          element={<CreatePost></CreatePost>}
+                        ></Route>
+                        <Route
+                          path={"/post-management/detail/:id"}
+                          element={<DetailPost></DetailPost>}
                         ></Route>
                         <Route path="*" element={<NotFound />} />
                       </>
