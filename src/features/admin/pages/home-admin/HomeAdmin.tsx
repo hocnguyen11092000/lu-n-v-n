@@ -523,6 +523,17 @@ const HomeAdmin = () => {
                           element={<Calendar></Calendar>}
                         ></Route>
                         <Route
+                          path={PATH.CONTRACT_MANAGEMENT}
+                          element={
+                            <ContractManagement
+                              allowCreate={false}
+                              allowDelete={true}
+                              allowUpdate={true}
+                              baseUrl="htx/contract-management"
+                            ></ContractManagement>
+                          }
+                        ></Route>
+                        <Route
                           path={"/shop-management"}
                           element={
                             <ShopManagement
@@ -616,10 +627,15 @@ const HomeAdmin = () => {
                           element={
                             <ContractManagement
                               allowCreate={false}
-                              allowDelete={false}
-                              allowUpdate={false}
+                              allowDelete={true}
                               baseUrl="htx/contract-management"
                             ></ContractManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={`${PATH.CONTRACT_MANAGEMENT}${PATH.CONTRACT_DETAIL}`}
+                          element={
+                            <DetailContract baseUrl="htx/contract-management"></DetailContract>
                           }
                         ></Route>
                         <Route
