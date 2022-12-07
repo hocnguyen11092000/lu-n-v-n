@@ -168,7 +168,7 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
           <span style={{ cursor: "pointer" }} className="">
             <Popconfirm
               placement="top"
-              title="Xóa danh mục?"
+              title="Xóa hợp đồng?"
               onConfirm={
                 () => {}
                 // handleConfirmDeleteCategory(record?.id_danhmucquydinh)

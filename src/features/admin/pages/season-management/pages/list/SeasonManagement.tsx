@@ -146,11 +146,13 @@ const SeaSonManagement = () => {
     values.date_end = formatMoment(values.date_end);
 
     mutation_calendar.mutate(values, {
-      onError: () => message.error("có lỗi"),
-      onSuccess: () => {
+      onError: (err) => {
+        getErrorMessage(err);
+      },
+      onSuccess: (res) => {
         refetch();
         setIsModalOpen(false);
-        message.success("Tạo lịch thành công");
+        getResponseMessage(res);
       },
     });
   };
