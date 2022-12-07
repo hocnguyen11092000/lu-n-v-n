@@ -11,6 +11,7 @@ import { getResponseMessage } from "../../../../utils/getResponseMessage";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
 import UploadImag from "../../../../components/upload-image/UploadImage";
 import supplierCategoryContractApi from "../../../../api/supplierCategoryContract";
+import { formatPrice } from "../../../../utils/formatPrice";
 
 type Props = {
   baseUrl?: string;
@@ -363,6 +364,7 @@ const DetailSupplierContract = ({ baseUrl }: Props) => {
       deatailContract?.data?.data.xavien_xacnhan == 0
         ? "chưa xác nhận"
         : "xác nhận";
+    result.price = formatPrice(deatailContract?.data?.data.rice || 0);
     result = { ...deatailContract?.data?.data, ...result };
   }
 
