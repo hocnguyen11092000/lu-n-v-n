@@ -44,6 +44,7 @@
     background-color: #f2f3f5;
     border-radius: 16px;
     max-width: 300px;
+    min-width: 180px;
 
     &-username {
       font-weight: 600;
@@ -65,4 +66,15 @@
   border-left: 1px solid #f0f2f5;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
+}
+
+.comment__reply-form {
+  border: none;
+  margin: 0 0 20px 60px;
+
+  & input {
+    border: none;
+    border-bottom: 1px solid #f0f2f5;
+    max-width: 300px;
+  }
 }

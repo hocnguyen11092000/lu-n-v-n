@@ -169,7 +169,11 @@ const HomeDetailPost = (props: Props) => {
           </>
         ) : (
           <div className="list-comment">
-            <Comment data={detailPost?.data?.data?.list_comment}></Comment>
+            <Comment
+              detailPost={detailPost}
+              idPost={id || ""}
+              data={detailPost?.data?.data?.list_comment}
+            ></Comment>
           </div>
         )}
       </div>

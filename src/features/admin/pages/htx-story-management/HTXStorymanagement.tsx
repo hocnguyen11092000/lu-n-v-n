@@ -68,10 +68,6 @@ const HTXStorymanagement = (props: Props) => {
       ),
     },
     {
-      title: "Loại hoạt động",
-      dataIndex: "type",
-    },
-    {
       title: "Địa chỉ",
       dataIndex: "address",
       width: "20%",
