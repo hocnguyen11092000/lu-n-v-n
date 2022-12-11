@@ -1,11 +1,11 @@
 @use "../../scss/index" as *;
 
 .preview-contract {
-  margin: 24px 200px !important;
+  margin: 12px;
   padding: 24px 50px;
   padding-bottom: 150px;
-  box-shadow: $box-shadow;
-  border-radius: $radius-1;
+  background-color: rgb(241, 253, 241);
+  border-radius: $radius-6;
   display: block;
 
   &-heading {
@@ -29,4 +29,10 @@
       margin-bottom: 8px !important;
     }
   }
+}
+
+.preview-contract-header {
+  margin: 12px;
+  text-align: right;
+  margin-bottom: 0;
 }
