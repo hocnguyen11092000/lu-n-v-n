@@ -145,7 +145,10 @@ const CommentItem = ({ detailPost, idPost, item, tier }: Props) => {
               placement="topLeft"
               title={"Hành động"}
               content={
-                <div style={{ cursor: "pointer", width: "130px" }}>
+                <div
+                  className="comment-action"
+                  style={{ cursor: "pointer", width: "130px" }}
+                >
                   <Tooltip placement="top" title={"Xóa bình luận"}>
                     <DeleteOutlined onClick={() => handleDeleComment(item)} />
                   </Tooltip>
