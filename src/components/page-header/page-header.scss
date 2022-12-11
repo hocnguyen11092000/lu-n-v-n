@@ -6,7 +6,7 @@
   align-items: center;
   position: fixed;
   top: 72px;
-  width: 79%;
+  width: calc(100% - 283px);
   margin: 0 20px 0 0;
   padding: 8px 20px;
   background-color: $white-color;
