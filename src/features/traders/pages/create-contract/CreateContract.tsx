@@ -7,6 +7,7 @@ import {
   Collapse,
   Form,
   Input,
+  InputNumber,
   Row,
   Select,
   Space,
@@ -40,6 +41,23 @@ const CreateContract = (props: Props) => {
   const searchUserStore = useSelector(
     (state: any) => state.contract.searchUser
   );
+
+  const dataContractRedux = useSelector(
+    (state: any) => state.contract.dataContract
+  );
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ...dataContractRedux,
+      ...dataContractRedux?.category,
+    });
+
+    setUser({ ...searchUserStore });
+    setCkData(dataContractRedux?.desc);
+    setSearchValue(dataContractRedux?.phone_number_hoptacxa || "");
+  }, [dataContractRedux]);
+
+  console.log(dataContractRedux);
 
   useEffect(() => {
     setUser(searchUserStore);
@@ -156,7 +174,7 @@ const CreateContract = (props: Props) => {
                       setDataContract((pre: any) => {
                         return {
                           ...pre,
-                          title: e.target.value || "",
+                          title_hopdongmuaban: e.target.value || "",
                         };
                       })
                     }
@@ -166,10 +184,11 @@ const CreateContract = (props: Props) => {
               <Col lg={12} md={12} sm={24} xs={24}>
                 <div
                   className="add-user-to-htx__search"
-                  style={{ position: "relative", top: "0" }}
+                  style={{ position: "relative", top: "-2px" }}
                 >
                   <Input
                     defaultValue={searchUserStore?.phone_number}
+                    value={seachValue || ""}
                     onChange={(e) => setSearchValue(e.target.value)}
                     placeholder="Tìm kiếm hợp tác xã"
                     size="middle"
@@ -304,7 +323,7 @@ const CreateContract = (props: Props) => {
                             );
                             return {
                               ...pre,
-                              season: name,
+                              id_lichmuavu: name,
                             };
                           })
                         }
@@ -355,7 +374,33 @@ const CreateContract = (props: Props) => {
                       Value="name_danhmucquydinh"
                       name="id_danhmucquydinh"
                       lable="Danh mục quy định"
+                      placeholder="Danh mục quy định"
                     ></AutoComplete>
+                  </Col>
+                  <Col lg={12} md={12} sm={24} xs={24}>
+                    <Form.Item
+                      name="price"
+                      label="Giá thu mua"
+                      rules={[
+                        {
+                          required: true,
+                        },
+                      ]}
+                    >
+                      <InputNumber
+                        onChange={(e) =>
+                          setDataContract((pre: any) => {
+                            return {
+                              ...pre,
+                              price: e || "",
+                            };
+                          })
+                        }
+                        className="radius-6"
+                        style={{ width: "100%" }}
+                        placeholder="Giá thu mua"
+                      />
+                    </Form.Item>
                   </Col>
                 </Row>
                 <Row gutter={24}>
@@ -427,10 +472,15 @@ const CreateContract = (props: Props) => {
                           ],
                         },
                       }}
-                      data=""
+                      data={ckData || ""}
                       onChange={(event: any, editor: any) => {
                         const data = editor.getData();
-
+                        setDataContract((pre: any) => {
+                          return {
+                            ...pre,
+                            desc: data || null,
+                          };
+                        });
                         setCkData(data);
                       }}
                     />

@@ -1,15 +1,30 @@
 import { Col, Row } from "antd";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./top-news.scss";
-type Props = {};
+type Props = {
+  post?: any;
+};
 
-const TopNews = (props: Props) => {
+const TopNews = ({ post }: Props) => {
+  const navigate = useNavigate();
+  // console.log(post);
+
   return (
-    <div className="top-news">
+    <div className="top-news" style={{ marginBottom: "16px" }}>
       <div className="top-news-list">
         <Row gutter={24}>
           <Col lg={18} md={18} sm={24} xs={24}>
-            <div className="top-news-list__item">
+            <div
+              style={{
+                padding: "12px",
+                boxShadow: "0px 7px 25px rgba(0 0 0 /8%)",
+              }}
+              className="top-news-list__item cursor-poiner radius-6"
+              onClick={() =>
+                navigate(`/g/post/${(post && post[0]?.id_post) || ""}`)
+              }
+            >
               <Row gutter={0}>
                 <Col lg={16} md={16} sm={24} xs={24}>
                   <img
@@ -18,7 +33,7 @@ const TopNews = (props: Props) => {
                       height: "300px",
                       objectFit: "cover",
                     }}
-                    src="https://t.ex-cdn.com/nongnghiep.vn/resize/600x360/files/bao_in/2022/10/08/18_57_5766_1-083124.jpeg"
+                    src={post && post[0]?.image}
                     alt=""
                   />
                 </Col>
@@ -30,59 +45,77 @@ const TopNews = (props: Props) => {
                   style={{
                     background: "rgb(2245,245,245)",
                     padding: "16px",
+                    height: "300px",
                     maxHeight: "300px",
                     overflow: "auto",
                   }}
                 >
-                  <h2>Mô hình trồng lúa kết hợp nuôi tôm</h2>
+                  <div style={{ maxHeight: "140px", overflow: "hidden" }}>
+                    <h2>{(post && post[0]?.title_post) || ""}</h2>
+                  </div>
                   <span className="top-news-list__item-category">
                     Nông nghiệp 4.0
                   </span>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolore, rerum neque velit architecto reiciendis tenetur
-                    optio corporis laborum consectetur nobis cum, voluptas, in
-                    nostrum similique. Perspiciatis inventore fugiat
-                    necessitatibus quas!
-                  </p>
+                  <p>{(post && post[0]?.short_description) || ""}</p>
                 </Col>
               </Row>
             </div>
           </Col>
-          <Col
-            lg={6}
-            md={6}
-            sm={24}
-            xs={24}
-            style={{
-              maxHeight: "300px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-          >
-            <div className="top-news-list__item">
-              <Row gutter={12}>
-                <Col lg={24} md={24} sm={24} xs={24}>
-                  <img
-                    style={{
-                      marginBottom: "8px",
-                      width: "100%",
-                      height: "120px",
-                      objectFit: "cover",
-                    }}
-                    src="https://t.ex-cdn.com/nongnghiep.vn/resize/600x360/files/bao_in/2022/10/08/18_57_5766_1-083124.jpeg"
-                    alt=""
-                  />
-                </Col>
-                <Col lg={24} md={24} sm={24} xs={24}>
-                  <h2>Những món ăn không nên bỏ lỡ</h2>
-                  <span className="top-news-list__item-category">Ẩm thực</span>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolore, rerum neque velit architecto reiciendis tenetur
-                  </p>
-                </Col>
-              </Row>
+          <Col lg={6} md={6} sm={24} xs={24}>
+            <div
+              className="top-news-list__item cursor-poiner radius-6"
+              style={{
+                padding: "12px",
+                boxShadow: "0px 7px 25px rgba(0 0 0 /8%)",
+                height: "323px",
+              }}
+              onClick={() =>
+                navigate(`/g/post/${(post && post[1]?.id_post) || ""}`)
+              }
+            >
+              <div
+                style={{
+                  height: "100%",
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                }}
+              >
+                <Row gutter={12}>
+                  <Col lg={24} md={24} sm={24} xs={24}>
+                    <img
+                      style={{
+                        marginBottom: "8px",
+                        width: "100%",
+                        height: "120px",
+                        objectFit: "cover",
+                      }}
+                      src={post && post[1]?.image}
+                      alt=""
+                    />
+                  </Col>
+                  <Col
+                    lg={24}
+                    md={24}
+                    sm={24}
+                    xs={24}
+                    style={{ overflow: "auto" }}
+                  >
+                    <div
+                      style={{
+                        maxHeight: "100px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <h3>{(post && post[1]?.title_post) || ""}</h3>
+                    </div>
+                    <span className="top-news-list__item-category">
+                      {" "}
+                      Nông nghiệp 4.0
+                    </span>
+                    <p>{(post && post[1]?.short_description) || ""}</p>
+                  </Col>
+                </Row>
+              </div>
             </div>
           </Col>
         </Row>

@@ -6,6 +6,8 @@ import {
   ContainerOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  PayCircleOutlined,
+  SnippetsOutlined,
 } from "@ant-design/icons";
 import { Badge, Dropdown, Layout, Menu, Space } from "antd";
 import React, { useEffect, useState } from "react";
@@ -24,11 +26,16 @@ import { PATH } from "../../../../enum";
 import { resetCount } from "../../../../redux/notificationSlice";
 import { handleLogout } from "../../../../utils/logout";
 import Dashboard from "../../../admin/pages/dashboard/Dashboard";
+import CreatePost from "../../../post/pages/create-post/CreatePost";
+import DetailPost from "../../../post/pages/detail-post/DetailPost";
+import DetailRiceTransactionUser from "../../../rice-transaction/pages/detail-rice-transaction-user/DetailRiceTransactionUser";
+import RiceTransactionManagement from "../../../rice-transaction/pages/RiceTransactionManagement";
 import CreateCategoryPertocodes from "../../pages/category-pesticides-management/CategoryPertocodesManagement";
 import CreateContract from "../../pages/create-contract/CreateContract";
 import DetailContract from "../../pages/detail-contract/DetailContract";
 import DetailCategory from "../../pages/detailCategory/DetailCategory";
 import ContractManagement from "../contract/ContractManagement";
+import PostManagement from "../../../post/pages/post-management/PostManagement";
 
 const { Header, Sider, Content } = Layout;
 
@@ -41,6 +48,18 @@ const HomeTraders = () => {
   const user = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const layout: any = document.querySelector(".ant-layout-content");
+
+    if (layout) {
+      const PageHeader = document.querySelector(".page-header");
+
+      if (!PageHeader) {
+        layout.classList.remove("m-t-63");
+      }
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     (() => {
@@ -74,6 +93,22 @@ const HomeTraders = () => {
         </Link>
       ),
     },
+    {
+      key: `${PATH.TRADER}${"/rice-transaction-management"}`,
+      icon: <PayCircleOutlined />,
+      label: (
+        <Link to={`${PATH.TRADER}${"/rice-transaction-management"}`}>
+          Giao dịch lúa giống
+        </Link>
+      ),
+    },
+    {
+      key: `${"/trader"}${"/post-management"}`,
+      icon: <SnippetsOutlined />,
+      label: (
+        <Link to={`${"/trader"}${"/post-management"}`}>Quản lý bài viết</Link>
+      ),
+    },
     // {
     //   key: `${PATH.TRADER}${PATH.SUPPLIER}`,
     //   icon: <FullscreenExitOutlined />,
@@ -95,6 +130,10 @@ const HomeTraders = () => {
           ),
         },
         {
+          key: "trader-home",
+          label: <div onClick={() => navigate("/")}>Về trang chủ</div>,
+        },
+        {
           key: "logout",
           label: <div onClick={() => handleLogout(navigate)}>Đăng xuất</div>,
         },
@@ -112,24 +151,37 @@ const HomeTraders = () => {
         className="side-bar"
       >
         <div className="logo">
-          <Link to={`${PATH.TRADER}${PATH.DASHBOARD}`}>
+          <Link to={`${"/shop"}${"/dashboard"}`}>
             <img
               src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
               alt=""
             />
           </Link>
           {
-            <div
-              style={
-                !collapsed
-                  ? {
-                      display: "block",
-                    }
-                  : { display: "none" }
-              }
-              className="logo-title opacity"
-            >
-              Thương Lái
+            <div>
+              <Link to={`${PATH.TRADER}${PATH.PROFILE}`}>
+                <span
+                  style={{
+                    marginLeft: "12px",
+                    fontSize: "11px",
+                    color: "#333",
+                  }}
+                >
+                  {!collapsed && "Thương lái"}
+                </span>
+                <div
+                  style={
+                    !collapsed
+                      ? {
+                          display: "block",
+                        }
+                      : { display: "none" }
+                  }
+                  className="logo-title opacity"
+                >
+                  {user?.user?.fullname || ""}
+                </div>
+              </Link>
             </div>
           }
         </div>
@@ -158,15 +210,24 @@ const HomeTraders = () => {
           <div className="user-info">
             <Space align="center">
               <Dropdown overlay={menu} arrow trigger={["click"]}>
-                <img
-                  src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
-                  alt=""
-                />
+                <span>
+                  <span className="user-info__name">
+                    {user?.user?.fullname || ""}
+                  </span>
+                  <img
+                    src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+                    alt=""
+                  />
+                </span>
               </Dropdown>
               <div
                 onClick={() => dispatch(resetCount())}
-                className="notification ml-16 center"
-                style={{ cursor: "pointer" }}
+                className="notification center"
+                style={{
+                  cursor: "pointer",
+                  marginRight: "20px",
+                  marginLeft: "8px",
+                }}
               >
                 <Dropdown
                   overlay={<Notification></Notification>}
@@ -175,13 +236,15 @@ const HomeTraders = () => {
                   arrow
                 >
                   <Badge count={notification?.count || 0} showZero={false}>
-                    <BellOutlined style={{ fontSize: "18px" }} />
+                    <span className="icon-notification">
+                      <BellOutlined style={{ fontSize: "18px" }} />
+                    </span>
                   </Badge>
                 </Dropdown>
               </div>
-              <div className="app ml-12 center">
+              {/* <div className="app ml-12 center">
                 <AppstoreOutlined style={{ fontSize: "18px" }} />
-              </div>
+              </div> */}
             </Space>
           </div>
         </Header>
@@ -226,8 +289,33 @@ const HomeTraders = () => {
               element={<Supplier></Supplier>}
             ></Route> */}
             <Route
+              path={"/rice-transaction-management"}
+              element={
+                <RiceTransactionManagement
+                  baseUrl="trader"
+                  role="trader"
+                ></RiceTransactionManagement>
+              }
+            ></Route>
+            <Route
+              path={"/rice-transaction-management/detail/:id"}
+              element={<DetailRiceTransactionUser></DetailRiceTransactionUser>}
+            ></Route>
+            <Route
               path={PATH.PROFILE}
               element={<Profile name="thuonglai"></Profile>}
+            ></Route>
+            <Route
+              path={"/post-management"}
+              element={<PostManagement baseUrl="trader"></PostManagement>}
+            ></Route>
+            <Route
+              path={"/post-management/create"}
+              element={<CreatePost></CreatePost>}
+            ></Route>
+            <Route
+              path={"/post-management/detail/:id"}
+              element={<DetailPost></DetailPost>}
             ></Route>
           </Routes>
         </Content>

@@ -134,6 +134,13 @@ const UserDetail = (props: Props) => {
         getResponseMessage(res);
 
         dispatch(storeUser({ ...user, user: { ...user.user, ...res.data } }));
+        // localStorage.setItem(
+        //   "user_luanvan",
+        //   JSON.stringify({
+        //     ...user,
+        //     user: { ...user.user, ...res.data },
+        //   })
+        // );
         userDetail.refetch();
       },
       onError: (err) => {
@@ -153,6 +160,7 @@ const UserDetail = (props: Props) => {
     hideBtnSubmit: false,
     goBackUrl: "/",
     showBack: true,
+    setData: false,
   };
 
   if (result && Object.keys(result).length > 0) {
@@ -172,11 +180,13 @@ const UserDetail = (props: Props) => {
             padding: "20px",
             boxShadow: "0 7px 25px rgba(0 0 0 /8%)",
             borderRadius: "8px",
+            background: "#fff",
           }}
         >
           <Row gutter={[30, 30]}>
             <Col sm={24} xs={24} lg={24} md={24}>
               <Skeleton.Input
+                className="radius-6"
                 size="small"
                 active
                 style={{
@@ -190,11 +200,13 @@ const UserDetail = (props: Props) => {
             <Col sm={24} xs={24} lg={12} md={12}>
               <Skeleton.Input
                 active
+                className="radius-6"
                 style={{ width: 550, borderRadius: "6px" }}
               />
             </Col>
             <Col sm={24} xs={24} lg={12} md={12}>
               <Skeleton.Input
+                className="radius-6"
                 active
                 style={{ width: 550, borderRadius: "6px" }}
               />
@@ -202,23 +214,27 @@ const UserDetail = (props: Props) => {
             <Col sm={24} xs={24} lg={12} md={12}>
               <Skeleton.Input
                 active
+                className="radius-6"
                 style={{ width: 550, borderRadius: "6px" }}
               />
             </Col>
             <Col sm={24} xs={24} lg={12} md={12}>
               <Skeleton.Input
+                className="radius-6"
                 active
                 style={{ width: 550, borderRadius: "6px" }}
               />
             </Col>
             <Col sm={24} xs={24} lg={12} md={12}>
               <Skeleton.Input
+                className="radius-6"
                 active
                 style={{ width: 550, borderRadius: "6px" }}
               />
             </Col>
             <Col sm={24} xs={24} lg={12} md={12}>
               <Skeleton.Input
+                className="radius-6"
                 active
                 style={{ width: 550, borderRadius: "6px" }}
               />
@@ -226,11 +242,13 @@ const UserDetail = (props: Props) => {
             <Col sm={24} xs={24} lg={12} md={12}>
               <Space>
                 <Skeleton.Button
+                  className="radius-6"
                   active={true}
                   shape="default"
                   style={{ width: "150px" }}
                 />
                 <Skeleton.Button
+                  className="radius-6"
                   active={true}
                   shape="default"
                   style={{ width: "150px" }}

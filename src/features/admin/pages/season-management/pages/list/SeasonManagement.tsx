@@ -77,6 +77,19 @@ const SeaSonManagement = () => {
       {
         title: "Trạng thái",
         dataIndex: "status",
+        render: (text: any, record: any) => (
+          <>
+            <span>
+              {record?.status == "start" ? (
+                <span className="success">Đang diễn ra</span>
+              ) : record?.status == "finish" ? (
+                <span className="confirm">Đã kết thúc</span>
+              ) : (
+                <span className="not-confirm">Sắp bắt đầu</span>
+              )}
+            </span>
+          </>
+        ),
       },
       {
         title: "Hành động",
@@ -146,11 +159,13 @@ const SeaSonManagement = () => {
     values.date_end = formatMoment(values.date_end);
 
     mutation_calendar.mutate(values, {
-      onError: () => message.error("có lỗi"),
-      onSuccess: () => {
+      onError: (err) => {
+        getErrorMessage(err);
+      },
+      onSuccess: (res) => {
         refetch();
         setIsModalOpen(false);
-        message.success("Tạo lịch thành công");
+        getResponseMessage(res);
       },
     });
   };
@@ -240,6 +255,7 @@ const SeaSonManagement = () => {
     setFilter((pre) => {
       return {
         ...pre,
+        page: 1,
         search: value?.search?.trim() || "",
       };
     });
@@ -265,7 +281,7 @@ const SeaSonManagement = () => {
               <Space>
                 <Input
                   defaultValue={filter.search}
-                  placeholder="Tìm kiếm hoạt động"
+                  placeholder="Tìm kiếm mùa vụ"
                 ></Input>
                 <Button form="search-activity" type="primary" htmlType="submit">
                   Tìm kiếm
@@ -283,7 +299,8 @@ const SeaSonManagement = () => {
         <div className="pagiantion">
           {data?.meta?.total > 0 && (
             <Pagination
-              defaultCurrent={filter.page as number}
+              // defaultCurrent={filter.page as number}
+              current={Number(filter.page)}
               total={data?.meta?.total}
               pageSize={filter.limit as number}
               onChange={handlePagination}

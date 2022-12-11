@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import HomeFooter from '../../../components/footer/HomeFooter'
 import HomePageHeader from '../components/header/HomePageHeader'
 import HomePage from './home-page/HomePage'
 import HTXPage from './htx'
@@ -18,8 +19,9 @@ const index = () => {
         <Route path='/htx/lohang/:id' element={<TracingPricePage></TracingPricePage>}></Route>
         <Route path='/lohang' element={<LohangPage></LohangPage>}></Route>
       </Routes>
+      <HomeFooter></HomeFooter>
     </>
-  )
-}
+  );
+};
 
-export default index
+export default index;

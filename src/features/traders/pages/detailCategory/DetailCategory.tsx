@@ -39,6 +39,7 @@ const DetailCategory = (props: Props) => {
   const [form2] = Form.useForm();
   const [form] = Form.useForm();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [activeLoading, setActiveLoading] = useState(false);
 
   const [filter, setFilter] = useState({
     page: searchParams.get("page") || 1,
@@ -58,6 +59,19 @@ const DetailCategory = (props: Props) => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const handleActiveCategory = async (id: string | number, e: any) => {
+    // setActiveLoading(true);
+    // try {
+    //   const res = await landApi.active(id);
+    //   setRefetch(new Date().toISOString());
+    //   getResponseMessage(res);
+    // } catch (error) {
+    //   getErrorMessage(error);
+    // } finally {
+    //   setActiveLoading(false);
+    // }
   };
 
   useEffect(() => {
@@ -85,7 +99,12 @@ const DetailCategory = (props: Props) => {
         dataIndex: "active",
         render: (text, record: any) => (
           <>
-            <Switch checked={record?.active || false}></Switch>
+            <Switch
+              onChange={(e) =>
+                handleActiveCategory(record?.id_category_vattu || "", e)
+              }
+              checked={record?.active || false}
+            ></Switch>
           </>
         ),
       },
@@ -226,6 +245,7 @@ const DetailCategory = (props: Props) => {
     setFilter((pre) => {
       return {
         ...pre,
+        page: 1,
         search: value?.search?.trim() || "",
       };
     });
@@ -335,7 +355,7 @@ const DetailCategory = (props: Props) => {
         open={isModalOpen}
         onCancel={handleCancel}
         bodyStyle={{ height: "auto" }}
-        width={500}
+        width={600}
       >
         <Spin spinning={loadingDetailSup}>
           <Form
@@ -386,7 +406,8 @@ const DetailCategory = (props: Props) => {
       <div className="pagiantion">
         {suppiler?.data?.meta?.total > 0 && (
           <Pagination
-            defaultCurrent={filter.page as number}
+            // defaultCurrent={filter.page as number}
+            current={Number(filter.page)}
             total={suppiler?.data?.meta?.total}
             pageSize={filter.limit as number}
             onChange={handlePagination}

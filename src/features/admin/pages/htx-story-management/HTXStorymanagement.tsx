@@ -1,4 +1,4 @@
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   Button,
@@ -37,10 +37,11 @@ const HTXStorymanagement = (props: Props) => {
     {
       title: "ID",
       dataIndex: "id_nhatkydongruong",
+      width: "5%",
     },
     {
-      title: "ID thửa đất",
-      dataIndex: "id_thuadat",
+      title: "Xã viên",
+      dataIndex: "fullname",
     },
     {
       title: "Tên hoạt động",
@@ -68,10 +69,6 @@ const HTXStorymanagement = (props: Props) => {
       ),
     },
     {
-      title: "Loại hoạt động",
-      dataIndex: "type",
-    },
-    {
       title: "Địa chỉ",
       dataIndex: "address",
       width: "20%",
@@ -84,29 +81,47 @@ const HTXStorymanagement = (props: Props) => {
       key: "x",
       render: (text, record: any) => (
         <>
-          <Select
-            onChange={(value: number | string) =>
-              handleConfirm(value, record?.id_nhatkydongruong || "")
-            }
-            size="small"
-            value={record?.hoptacxa_xacnhan + "" || ""}
-            placeholder="Trạng thái"
-            style={{ width: 150 }}
-            options={[
-              {
-                value: "0",
-                label: "Chưa xác nhận",
-              },
-              {
-                value: "1",
-                label: "Xác nhận",
-              },
-              {
-                value: "2",
-                label: "Hủy",
-              },
-            ]}
-          />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <span
+              className=""
+              onClick={() => {
+                navigate(
+                  "/htx/story-of-user/detail/" + record?.id_nhatkydongruong
+                );
+              }}
+              style={{
+                display: "inline-block",
+                marginRight: "16px",
+                marginTop: "10px",
+                cursor: "pointer",
+              }}
+            >
+              <EditOutlined />
+            </span>
+            <Select
+              onChange={(value: number | string) =>
+                handleConfirm(value, record?.id_nhatkydongruong || "")
+              }
+              size="small"
+              value={record?.hoptacxa_xacnhan + "" || ""}
+              placeholder="Trạng thái"
+              style={{ width: 150 }}
+              options={[
+                {
+                  value: "0",
+                  label: "Chưa xác nhận",
+                },
+                {
+                  value: "1",
+                  label: "Xác nhận",
+                },
+                {
+                  value: "2",
+                  label: "Hủy",
+                },
+              ]}
+            />
+          </div>
         </>
       ),
     },

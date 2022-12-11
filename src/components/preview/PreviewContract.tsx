@@ -1,9 +1,12 @@
-import { Button } from "antd";
+import { Button, Space } from "antd";
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { DATE_FORMAT } from "../../enum";
+import { setdataContract } from "../../redux/contractSlice";
 import { formatMoment } from "../../utils/formatMoment";
+import { formatPrice } from "../../utils/formatPrice";
 import PageHeader from "../page-header/PageHeader";
 import "./preview-contract.scss";
 type Props = {};
@@ -12,6 +15,7 @@ const PreviewContract = (props: Props) => {
   const location = useLocation();
   const data: any = location.state;
   const navigate = useNavigate();
+  const headerRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo({
@@ -20,14 +24,45 @@ const PreviewContract = (props: Props) => {
     });
   }, []);
 
+  const dataContractRedux = useSelector(
+    (state: any) => state.contract.dataContract
+  );
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setdataContract({ ...dataContractRedux, ...data } || null));
+  }, [dispatch]);
+
+  const handlePrintContract = () => {
+    const header: any = headerRef.current;
+    if (header) {
+      header.style.display = "none";
+    }
+    window.print();
+
+    setTimeout(() => {
+      if (header) {
+        header.style.display = "block";
+      }
+    }, 200);
+  };
+
   return (
     <>
-      <Button
-        onClick={() => navigate("/trader/contract-management/contract-create")}
-      >
-        Back
-      </Button>
-      <br />
+      <div className="preview-contract-header" ref={headerRef}>
+        <Space>
+          <Button
+            onClick={() =>
+              navigate("/trader/contract-management/contract-create")
+            }
+          >
+            Trở về
+          </Button>
+          <Button type="primary" onClick={handlePrintContract}>
+            In hợp đồng
+          </Button>
+        </Space>
+      </div>
       <div className="preview-contract">
         <div className="preview-contract-heading">
           <h2>Cộng hòa xã hội chủ nghĩa Việt nam</h2>
@@ -85,19 +120,22 @@ const PreviewContract = (props: Props) => {
             <div>
               <p className="text-uper bold">
                 <span className="mr-12"> Biên bản ( bên b ): </span>
-                <b className="text-uper"> {data?.user?.name_hoptacxa || ""}</b>
+                <b className="text-uper">
+                  {" "}
+                  {dataContractRedux?.name_hoptacxa || ""}
+                </b>
               </p>
               <p>
                 <span className="bold mr-12">Địa chỉ: </span>{" "}
-                <span>{data?.user?.address || ""}</span>
+                <span>{dataContractRedux?.address_hoptacxa || ""}</span>
               </p>
               <p>
                 <span className="bold mr-12">Số điện thoại: </span>{" "}
-                <span>{data?.user?.phone_number || ""}</span>
+                <span>{dataContractRedux?.phone_number_hoptacxa || ""}</span>
               </p>
               <p>
                 <span className="bold mr-12">Người đại diện: </span>{" "}
-                <span>{data?.user?.name_hoptacxa || ""}</span>
+                <span> {dataContractRedux?.name_hoptacxa || ""}</span>
               </p>
             </div>
             <br />
@@ -111,18 +149,38 @@ const PreviewContract = (props: Props) => {
               </p>
               <p>
                 <b>Thông tin giống lúa </b>
-                <p className="ml-12">- {data?.name_gionglua || ""}</p>
+                <p className="ml-12">
+                  - {dataContractRedux?.name_gionglua || ""}
+                </p>
               </p>
               <p>
                 <b>danh mục phân bón </b>
                 <p className="ml-12">
-                  - {data?.category?.name_danhmucquydinh || ""}
+                  - {dataContractRedux?.category?.name_danhmucquydinh || ""}
                 </p>
               </p>
               <p>
                 <b>Thông tin mùa vụ </b>
-                <p className="ml-12">- {data?.name_lichmuavu || ""}</p>
+                <p className="ml-12">
+                  - {dataContractRedux?.name_lichmuavu || ""}
+                </p>
               </p>
+              <p>
+                <b>Giá thu mua</b>
+                <p className="ml-12">
+                  - {formatPrice(dataContractRedux?.price || 0)}
+                </p>
+              </p>
+            </div>
+            <div className="preview-contract-body-rules">
+              <br />
+              <br />
+              <p className="bold text-uper">Các điều khoản kèm theo (nếu có)</p>
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: dataContractRedux?.desc,
+                }}
+              ></p>
             </div>
           </div>
           <br />

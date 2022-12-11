@@ -1,0 +1,35 @@
+@use "../../scss/index" as *;
+
+.comment-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  &__time {
+    font-size: 13px;
+  }
+
+  &__action {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0px);
+    transition: 0.5s $transition;
+    cursor: pointer;
+  }
+
+  &:hover &__action {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0px);
+    transition: 0.5s $transition;
+    cursor: pointer;
+  }
+}
+
+.comment-info__action.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0px);
+  transition: 0.5s $transition;
+  cursor: pointer;
+}

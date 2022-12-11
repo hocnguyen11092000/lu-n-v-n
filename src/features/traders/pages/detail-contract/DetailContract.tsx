@@ -206,6 +206,16 @@ const DetailContract = (props: Props) => {
       ),
     },
     {
+      name: "price",
+      label: "Giá thu mua",
+      rules: [
+        {
+          required: true,
+        },
+      ],
+      formChildren: <Input disabled placeholder="Giá thu mua"></Input>,
+    },
+    {
       editor: (
         <div>
           <p>Mô tả</p>
@@ -444,6 +454,10 @@ const DetailContract = (props: Props) => {
       name: "Chi tiết",
       path: "/detail",
     },
+    {
+      name: `${id}`,
+      path: "/:id",
+    },
   ];
 
   const handleConfirm = () => {
@@ -466,7 +480,12 @@ const DetailContract = (props: Props) => {
     <Spin spinning={deatailContract.isLoading}>
       <div className="detail-contract" style={{ minHeight: "100vh" }}>
         <PageHeader
-          isConfirm={!baseUrl?.includes("chunhiem")}
+          isConfirm={deatailContract?.data?.data?.status !== "confirm"}
+          toggleConfirm={
+            baseUrl?.includes("htx")
+              ? deatailContract?.data?.data?.hoptacxa_xacnhan
+              : deatailContract?.data?.data?.thuonglai_xacnhan
+          }
           confirmLoading={mutation_confirm_contract.isLoading}
           onConfirm={handleConfirm}
           edit={edit}
@@ -476,6 +495,7 @@ const DetailContract = (props: Props) => {
         ></PageHeader>
         {deatailContract?.data?.data && (
           <FormComponent
+            disableForm={deatailContract?.data?.data?.status == "confirm"}
             initialValues={result}
             onSubmit={handleFormSubmit}
             name="detail-contract"

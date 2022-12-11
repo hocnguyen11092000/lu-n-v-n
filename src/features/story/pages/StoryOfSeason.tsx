@@ -46,7 +46,9 @@ const StoryOfSeason = (props: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [detailStory, setDetailStory] = useState<any>();
   const [type, setType] = useState<any>("create");
-  const [categoryOfActivity, setCategoryOfActivity] = useState<any>([]);
+  const [categoryOfActivity, setCategoryOfActivity] = useState<any>(
+    detailStory?.vattusudung || []
+  );
   const [detailStoryId, setDetailStoryId] = useState<
     number | string | undefined
   >();
@@ -57,6 +59,11 @@ const StoryOfSeason = (props: Props) => {
     limit: searchParams.get("limit") || 5,
     search: searchParams.get("search") || "",
   });
+
+  useEffect(() => {
+    setCategoryOfActivity(detailStory?.vattusudung || []);
+  }, [detailStoryId]);
+
   const fetchListLand = () => {
     return landApi.getAll({});
   };
@@ -156,6 +163,7 @@ const StoryOfSeason = (props: Props) => {
       setDetailStoryId(id);
       setIsModalOpen(true);
       const res = await storyApi.getDetail(id);
+      setCategoryOfActivity(res?.data?.vattusudung || []);
 
       let data = res?.data;
       if (res && res.data) {
@@ -234,17 +242,29 @@ const StoryOfSeason = (props: Props) => {
       render: (_: any, record: any) => {
         return (
           <div>
-            <Checkbox
-              style={{ marginLeft: "16px" }}
-              disabled={
-                record?.type !== "inside" && !Boolean(record?.hoptacxa_xacnhan)
+            <Popconfirm
+              placement="topRight"
+              title={"Bạn có chắc chắn đổi trạng thái"}
+              onConfirm={() =>
+                handleChangeStatus(record?.id_nhatkydongruong || "", null)
               }
-              defaultChecked={record?.status || false}
-              checked={record?.status || false}
-              onChange={(e) =>
-                handleChangeStatus(record?.id_nhatkydongruong || "", e)
-              }
-            ></Checkbox>
+              okText="Yes"
+              cancelText="No"
+            >
+              <Checkbox
+                style={{ marginLeft: "16px" }}
+                disabled={
+                  record?.type !== "inside" &&
+                  !Boolean(record?.hoptacxa_xacnhan)
+                }
+                defaultChecked={record?.status || false}
+                checked={record?.status || false}
+                // onChange={(e) =>
+                //   handleChangeStatus(record?.id_nhatkydongruong || "", e)
+                // }
+              ></Checkbox>
+            </Popconfirm>
+
             <span
               className=""
               onClick={() => {
@@ -395,6 +415,16 @@ const StoryOfSeason = (props: Props) => {
     values.id_lichmuavu = id || "";
     values.date_start = formatMoment(values.date_start);
     values.date_end = formatMoment(values.date_end);
+    values.vattusudung =
+      categoryOfActivity.map((item: any) => {
+        return {
+          ...item,
+          id_giaodichmuaban_vattu:
+            item?.id_vattusudung ||
+            JSON.parse(item?.id_giaodichmuaban_vattu)?.key ||
+            "",
+        };
+      }) || [];
 
     if (detailStoryId) {
       mutation_update_activity.mutate(values, {
@@ -406,15 +436,6 @@ const StoryOfSeason = (props: Props) => {
         onError: (err) => getErrorMessage(err),
       });
     } else {
-      values.vattusudung =
-        categoryOfActivity.map((item: any) => {
-          return {
-            ...item,
-            id_giaodichmuaban_vattu:
-              JSON.parse(item?.id_giaodichmuaban_vattu)?.key || "",
-          };
-        }) || [];
-
       mutation_add_activity.mutate(values, {
         onSuccess: (res) => {
           getResponseMessage(res);
@@ -430,6 +451,7 @@ const StoryOfSeason = (props: Props) => {
     setFilter((pre) => {
       return {
         ...pre,
+        page: 1,
         search: value?.search?.trim() || "",
       };
     });
@@ -468,6 +490,12 @@ const StoryOfSeason = (props: Props) => {
     });
 
     setIsModalOpenCategory(false);
+  };
+
+  const handleDeleteCategory = (data: any) => {
+    setCategoryOfActivity((pre: any) => {
+      return pre?.filter((c: any) => c?.id_giaodichmuaban_vattu !== data);
+    });
   };
 
   return (
@@ -516,7 +544,8 @@ const StoryOfSeason = (props: Props) => {
       <div className="pagiantion">
         {data?.meta?.total > 0 && (
           <Pagination
-            defaultCurrent={filter.page as number}
+            // defaultCurrent={filter.page as number}
+            current={Number(filter.page)}
             total={data?.meta?.total}
             pageSize={filter.limit as number}
             onChange={handlePagination}
@@ -540,7 +569,7 @@ const StoryOfSeason = (props: Props) => {
           position: "relative",
         }}
       >
-        <Spin spinning={loadingDetailStory && !isCreate}>
+        <Spin spinning={loadingDetailStory || (isLoading && !isCreate)}>
           <FormComponent
             type={type}
             isCreate={isCreate}
@@ -558,6 +587,7 @@ const StoryOfSeason = (props: Props) => {
             onAddField={handleAddField}
             data={actdivityForm}
             categoryOfActivity={categoryOfActivity}
+            onDeleteCategory={handleDeleteCategory}
           ></FormComponent>
         </Spin>
       </Modal>

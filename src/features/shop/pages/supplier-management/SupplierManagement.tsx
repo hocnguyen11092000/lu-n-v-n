@@ -168,7 +168,7 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
           <span style={{ cursor: "pointer" }} className="">
             <Popconfirm
               placement="top"
-              title="Xóa danh mục?"
+              title="Xóa hợp đồng?"
               onConfirm={
                 () => {}
                 // handleConfirmDeleteCategory(record?.id_danhmucquydinh)
@@ -193,12 +193,15 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
 
   return (
     <div className="shop-management">
-      <Button>
-        <Link to="/shop/supplier-management/create-contract-supplier">
-          Tạo hợp đồng
-        </Link>
-      </Button>
-      <h3 style={{ margin: "16px 0" }}>Danh sách hợp đồng mua bán lúa giống</h3>
+      {role == "nhacungcap" && (
+        <Button>
+          <Link to="/shop/supplier-management/create-contract-supplier">
+            Tạo hợp đồng
+          </Link>
+        </Button>
+      )}
+
+      <h3 style={{ margin: "16px 0" }}>Danh sách giao dịch mua bán vật tư</h3>
       <Table
         scroll={{ x: 2000 }}
         loading={suplierContract.isLoading}
@@ -209,7 +212,8 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
       <div className="pagiantion">
         {suplierContract?.data?.meta?.total > 0 && (
           <Pagination
-            defaultCurrent={filter?.page as number}
+            // defaultCurrent={filter?.page as number}
+            current={Number(filter.page)}
             total={suplierContract?.data?.meta?.total}
             pageSize={filter?.limit as number}
             onChange={handlePagination}

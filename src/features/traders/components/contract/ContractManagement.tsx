@@ -47,6 +47,21 @@ const ContractManagement = (props: Props) => {
     {
       title: "Trạng thái",
       dataIndex: "status",
+      render: (text: any, record: any) => (
+        <>
+          <span>
+            {record?.status == "confirm" ? (
+              <span className="confirm">Đã xác nhận</span>
+            ) : record?.status == "waiting" ? (
+              <span className="not-confirm">Chờ xác nhận</span>
+            ) : record?.status == "thuonlai-update" ? (
+              <span className="not-confirm">Thương lái đã cập nhật</span>
+            ) : (
+              <span className="not-confirm">Hợp tác xã đã cập nhật</span>
+            )}
+          </span>
+        </>
+      ),
     },
     {
       title: "Nội dung",

@@ -71,6 +71,19 @@ const Story = () => {
       {
         title: "Trạng thái",
         dataIndex: "status",
+        render: (text: any, record: any) => (
+          <>
+            <span>
+              {record?.status == "start" ? (
+                <span className="success">Đang diễn ra</span>
+              ) : record?.status == "finish" ? (
+                <span className="confirm">Đã kết thúc</span>
+              ) : (
+                <span className="not-confirm">Sắp bắt đầu</span>
+              )}
+            </span>
+          </>
+        ),
       },
       {
         title: "Hành động",
@@ -137,6 +150,7 @@ const Story = () => {
     setFilter((pre) => {
       return {
         ...pre,
+        page: 1,
         search: value?.search?.trim() || "",
       };
     });
@@ -178,7 +192,8 @@ const Story = () => {
         <div className="pagiantion">
           {data?.meta?.total > 0 && (
             <Pagination
-              defaultCurrent={filter.page as number}
+              // defaultCurrent={filter.page as number}
+              current={Number(filter.page)}
               total={data?.meta?.total}
               pageSize={filter.limit as number}
               onChange={handlePagination}

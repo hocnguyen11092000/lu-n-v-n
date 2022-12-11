@@ -1,11 +1,23 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useQuery } from "@tanstack/react-query";
-import { Button, Pagination, Popconfirm, Table } from "antd";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  Button,
+  Input,
+  Modal,
+  Pagination,
+  Popconfirm,
+  Select,
+  Table,
+} from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import queryString from "query-string";
 import materialsApi from "../../../api/materials";
+import userRiceTransactionApi from "../../../api/userRiceTransaction";
+import { formatPrice } from "../../../utils/formatPrice";
+import { getResponseMessage } from "../../../utils/getResponseMessage";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 type Props = {
   baseUrl?: string;
@@ -14,6 +26,9 @@ type Props = {
 
 const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showReason, setShowReason] = useState(false);
+  const [reasonValue, setReasonValue] = useState("");
+  const [deleteId, setDeleteId] = useState<any>();
 
   const navigate = useNavigate();
   const [filter, setFilter] = useState({
@@ -31,20 +46,87 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
   // // }, [filter]);
   // console.log(role);
 
-  const fetchMaterials = (filter: any) =>
+  const fetchListRiceTransaction = (filter: any) =>
     role == "chunhiem"
-      ? materialsApi.getAllChairman(filter)
-      : materialsApi.getAll(filter);
+      ? userRiceTransactionApi.getAllChairman(filter)
+      : userRiceTransactionApi.getAll(filter);
 
-  const materials: any = useQuery(["materials", filter], () =>
-    fetchMaterials(filter)
+  const userRiceTransaction: any = useQuery(
+    ["user/rice/transaction", filter],
+    () => fetchListRiceTransaction(filter)
+  );
+
+  const handleConfirm = (value: any, id: any, type: any) => {
+    if (value !== null) {
+      //approve here
+    } else {
+      mutation_confirm_rice_transaction.mutate(id, {
+        onSuccess: (res) => {
+          getResponseMessage(res);
+          userRiceTransaction.refetch();
+        },
+        onError: (err) => {
+          getErrorMessage(err);
+        },
+      });
+    }
+  };
+
+  const mutation_confirm_rice_transaction = useMutation((id) =>
+    userRiceTransactionApi.confirm(id)
+  );
+
+  const handleApprove = (value: any, id: any) => {
+    if (value != 2) {
+      mutation_update_approve.mutate(
+        { id: id, hoptacxa_xacnhan: value },
+        {
+          onSuccess: (res) => {
+            getResponseMessage(res);
+            setShowReason(false);
+            userRiceTransaction.refetch();
+          },
+          onError: (err) => {
+            getErrorMessage(err);
+          },
+        }
+      );
+    } else {
+      setShowReason(true);
+      setDeleteId(id);
+    }
+  };
+
+  const handleSave = () => {
+    mutation_update_approve.mutate(
+      { id: deleteId, hoptacxa_xacnhan: 2, reason: reasonValue },
+      {
+        onSuccess: (res) => {
+          getResponseMessage(res);
+          userRiceTransaction.refetch();
+          setShowReason(false);
+        },
+        onError: (err) => {
+          getErrorMessage(err);
+        },
+      }
+    );
+  };
+
+  const mutation_update_approve = useMutation((data: any) =>
+    userRiceTransactionApi.approve(data, data?.id || "")
   );
 
   const tableColumns: any = [
     {
       title: "ID",
       width: "5%",
-      dataIndex: "id_giaodich_luagiong",
+      dataIndex: "id_giaodichmuaban_lua",
+    },
+    {
+      title: "Tên lô hàng",
+      width: "15%",
+      dataIndex: "name_lohang",
     },
     {
       title: "Mùa vụ",
@@ -52,20 +134,23 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
       dataIndex: "name_lichmuavu",
     },
     {
-      title: "Giống lúa",
-      dataIndex: "name_gionglua",
-    },
-    {
       title: "Xã viên",
       dataIndex: "name_xavien",
     },
     {
-      title: "Tên người bán",
-      dataIndex: "name_daily",
+      title: "Tên thương lái",
+      dataIndex: "name_thuonglai",
     },
     {
       title: "Số lượng",
       dataIndex: "soluong",
+    },
+    {
+      title: "Giá",
+      dataIndex: "price",
+      render: (_: any, record: any) => {
+        return <span>{formatPrice(record?.price || 0)}</span>;
+      },
     },
     {
       title: "Trạng thái",
@@ -102,13 +187,13 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
       },
     },
     {
-      title: "Ncc xác nhận",
+      title: "Thương lái xác nhận",
       width: "8%",
-      dataIndex: "nhacungcap_xacnhan",
+      dataIndex: "thuonglai_xacnhan",
       render: (text: any, record: any) => {
         return (
           <span>
-            {record?.nhacungcap_xacnhan == 0 ? (
+            {record?.thuonglai_xacnhan == 0 ? (
               <span className="not-confirm">chưa xác nhận</span>
             ) : (
               <span className="confirm">xác nhận</span>
@@ -136,6 +221,7 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
     {
       fixed: "right",
       title: "Hành động",
+      width: "12%",
       dataIndex: "",
       key: "x",
       render: (text: any, record: any) => (
@@ -144,8 +230,8 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
             className=""
             onClick={() =>
               navigate(
-                `/${baseUrl || "shop"}/shop-management/detail-contract/${
-                  record?.id_giaodich_luagiong || ""
+                `/${baseUrl || "htx"}/rice-transaction-management/detail/${
+                  record?.id_giaodichmuaban_lua || ""
                 }`
               )
             }
@@ -157,18 +243,48 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
           >
             <EditOutlined />
           </span>
-          <span style={{ cursor: "pointer" }} className="">
-            <Popconfirm
-              placement="top"
-              title="Xóa danh mục?"
-              onConfirm={
-                () => {}
-                // handleConfirmDeleteCategory(record?.id_danhmucquydinh)
+          {role == "chunhiem" && (
+            <Select
+              onChange={(value: number | string) =>
+                handleApprove(value, record?.id_giaodichmuaban_lua || "")
               }
-            >
-              <DeleteOutlined />
-            </Popconfirm>
-          </span>
+              size="small"
+              value={record?.thuonglai_xacnhan + "" || ""}
+              placeholder="Trạng thái"
+              style={{ width: 150 }}
+              options={[
+                {
+                  value: "0",
+                  label: "Chưa xác nhận",
+                },
+                {
+                  value: "1",
+                  label: "Xác nhận",
+                },
+                {
+                  value: "2",
+                  label: "Hủy",
+                },
+              ]}
+            />
+          )}
+
+          <Button
+            loading={mutation_confirm_rice_transaction.isLoading}
+            onClick={() =>
+              handleConfirm(null, record?.id_giaodichmuaban_lua, "trader")
+            }
+            type="primary"
+          >
+            {role != "chunhiem" &&
+              (role == "xavien"
+                ? record?.xavien_xacnhan
+                  ? "Hủy xác nhận"
+                  : "Xác nhận"
+                : record?.thuonglai_xacnhan
+                ? "Hủy xác nhận"
+                : "Xác nhận")}
+          </Button>
         </>
       ),
     },
@@ -185,22 +301,48 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
 
   return (
     <div className="shop-management">
-      <Button>
-        <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
-      </Button>
-      <h3 style={{ margin: "16px 0" }}>Danh sách hợp đồng mua bán lúa giống</h3>
+      <Modal
+        title="Lý do từ chối"
+        open={showReason}
+        onCancel={() => setShowReason(false)}
+      >
+        <Input
+          placeholder="Lý do từ chối"
+          onChange={(e) => setReasonValue(e.target.value)}
+          onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              handleSave();
+            }
+          }}
+        />
+        <br />
+        <Button
+          loading={mutation_update_approve.isLoading}
+          type="primary"
+          onClick={handleSave}
+        >
+          Lưu
+        </Button>
+      </Modal>
+      {role == "nhacungcap" && (
+        <Button>
+          <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
+        </Button>
+      )}
+      <h3 style={{ margin: "16px 0" }}>Danh sách giao dịch mua bán lúa</h3>
       <Table
         scroll={{ x: 2000 }}
-        loading={materials.isLoading}
+        loading={userRiceTransaction.isLoading}
         columns={tableColumns}
-        dataSource={materials?.data?.data || []}
+        dataSource={userRiceTransaction?.data?.data || []}
         pagination={false}
       />
       <div className="pagiantion">
-        {materials?.data?.meta?.total > 0 && (
+        {userRiceTransaction?.data?.meta?.total > 0 && (
           <Pagination
-            defaultCurrent={filter?.page as number}
-            total={materials?.data?.meta?.total}
+            // defaultCurrent={filter?.page as number}
+            current={Number(filter.page)}
+            total={userRiceTransaction?.data?.meta?.total}
             pageSize={filter?.limit as number}
             onChange={handlePagination}
           />

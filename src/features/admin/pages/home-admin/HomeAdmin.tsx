@@ -4,26 +4,19 @@ import {
   AppstoreOutlined,
   BellOutlined,
   CalendarOutlined,
+  CheckSquareOutlined,
   ContainerOutlined,
   FormOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PayCircleOutlined,
   PieChartOutlined,
+  SnippetsOutlined,
   TransactionOutlined,
   UserOutlined,
   YuqueOutlined,
 } from "@ant-design/icons";
-import {
-  Badge,
-  Button,
-  Drawer,
-  Dropdown,
-  Layout,
-  Menu,
-  Space,
-  Spin,
-} from "antd";
+import { Badge, Drawer, Dropdown, Layout, Menu, Space, Spin } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -34,13 +27,11 @@ import {
   useNavigate,
 } from "react-router-dom";
 import userApi from "../../../../api/userApi";
-import logo from "../../../../assets/images/admin-logo.jpg";
 import NotFound from "../../../../components/not-found/NotFound";
 import Notification from "../../../../components/notification/Notification";
 import Profile from "../../../../components/profile/Profile";
 import { COMMON, PATH } from "../../../../enum";
 import { hasHTX, isChairman, reset, setRole } from "../../../../redux/htxSlice";
-import { toggleLoading } from "../../../../redux/loadingSlice";
 import { resetCount } from "../../../../redux/notificationSlice";
 import { setTheme } from "../../../../utils/changeTheme";
 import { handleLogout } from "../../../../utils/logout";
@@ -49,8 +40,14 @@ import Map from "../../../land/components/map/Map";
 import DetailLand from "../../../land/pages/detail-land/DetailLand";
 import CreateLand from "../../../land/pages/land-create/CreateLand";
 import Landmanagement from "../../../land/pages/land-management/Landmanagement";
+import CreatePost from "../../../post/pages/create-post/CreatePost";
+import DetailPost from "../../../post/pages/detail-post/DetailPost";
+import PostManagement from "../../../post/pages/post-management/PostManagement";
+import CreateReview from "../../../review/create-review/CreateReview";
+import DetailReview from "../../../review/create-review/detail-review/DetailReview";
+import ReviewManagement from "../../../review/list-review/ReviewManagement";
+import DetailRiceTransactionUser from "../../../rice-transaction/pages/detail-rice-transaction-user/DetailRiceTransactionUser";
 import RiceTransactionManagement from "../../../rice-transaction/pages/RiceTransactionManagement";
-import CreateShop from "../../../shop/pages/create-shop-rice/CreateShop";
 import DetailShopContract from "../../../shop/pages/detail-shop-contract/DetailShopContract";
 import DetailSupplierContract from "../../../shop/pages/detail-supplier-contract/DetailSupplierContract";
 import ShopManagement from "../../../shop/pages/shop-management/ShopManagement";
@@ -64,6 +61,7 @@ import AddUserToHTX from "../add-user-htx/AddUserToHTX";
 import CreateHTX from "../create-htx/CreateHTX";
 import Dashboard from "../dashboard/Dashboard";
 import DetailHTX from "../detail-htx/DetailHTX";
+import HTXDetailStoryMangement from "../htx-detail-story-management/HTXDetailStoryMangement";
 import HTXManagement from "../htx-management/HTXManagement";
 import HTXStorymanagement from "../htx-story-management/HTXStorymanagement";
 import SeasonActivity from "../season-activity/SeasonActivity";
@@ -89,6 +87,19 @@ const HomeAdmin = () => {
   const navigate = useNavigate();
   const isFirst = useRef(false);
   const dispatch = useDispatch();
+  const location: any = useLocation();
+
+  useEffect(() => {
+    const layout: any = document.querySelector(".ant-layout-content");
+
+    if (layout) {
+      const PageHeader = document.querySelector(".page-header");
+
+      if (!PageHeader) {
+        layout.classList.remove("m-t-63");
+      }
+    }
+  }, [location.pathname]);
 
   const showDrawer = () => {
     setOpen(true);
@@ -97,7 +108,7 @@ const HomeAdmin = () => {
   const onClose = () => {
     setOpen(false);
   };
-  const location: any = useLocation();
+
   const changeRole = location.state?.role;
   const currentAccount = localStorage.getItem("current_account");
 
@@ -209,8 +220,22 @@ const HomeAdmin = () => {
       icon: <PayCircleOutlined />,
       label: (
         <Link to={`${PATH.HTX}${"/rice-transaction-management"}`}>
-          Giao dịch lúa giống
+          Giao dịch lúa
         </Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/post-management"}`,
+      icon: <SnippetsOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/post-management"}`}>Quản lý bài viết</Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/review-management"}`,
+      icon: <CheckSquareOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/review-management"}`}>Đánh giá cuối mùa</Link>
       ),
     },
   ];
@@ -265,6 +290,22 @@ const HomeAdmin = () => {
       icon: <FormOutlined />,
       label: (
         <Link to={`${PATH.HTX}${"/story-of-user"}`}>Quản lý sổ nhật ký</Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/rice-transaction-management"}`,
+      icon: <PayCircleOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/rice-transaction-management"}`}>
+          Giao dịch lúa
+        </Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/post-management"}`,
+      icon: <SnippetsOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/post-management"}`}>Quản lý bài viết</Link>
       ),
     },
   ];
@@ -335,7 +376,7 @@ const HomeAdmin = () => {
                         color: "#333",
                       }}
                     >
-                      Hợp tác xã
+                      {!collapsed && "Hợp tác xã"}
                     </span>
                     <div
                       style={
@@ -390,10 +431,15 @@ const HomeAdmin = () => {
                     trigger={["click"]}
                     arrow
                   >
-                    <img
-                      src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
-                      alt=""
-                    />
+                    <span>
+                      <span className="user-info__name">
+                        {user?.user?.fullname || ""}
+                      </span>
+                      <img
+                        src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+                        alt=""
+                      />
+                    </span>
                   </Dropdown>
                   <div
                     onClick={() => dispatch(resetCount())}
@@ -407,7 +453,9 @@ const HomeAdmin = () => {
                       arrow
                     >
                       <Badge count={notification?.count || 0} showZero={false}>
-                        <BellOutlined style={{ fontSize: "18px" }} />
+                        <span className="icon-notification">
+                          <BellOutlined style={{ fontSize: "18px" }} />
+                        </span>
                       </Badge>
                     </Dropdown>
                   </div>
@@ -463,6 +511,12 @@ const HomeAdmin = () => {
                           element={<HTXStorymanagement></HTXStorymanagement>}
                         ></Route>
                         <Route
+                          path={"/story-of-user/detail/:id"}
+                          element={
+                            <HTXDetailStoryMangement></HTXDetailStoryMangement>
+                          }
+                        ></Route>
+                        <Route
                           path={PATH.MANAGE_HTX}
                           element={<HTXManagement></HTXManagement>}
                         ></Route>
@@ -481,6 +535,17 @@ const HomeAdmin = () => {
                         <Route
                           path={PATH.CALENDAR}
                           element={<Calendar></Calendar>}
+                        ></Route>
+                        <Route
+                          path={PATH.CONTRACT_MANAGEMENT}
+                          element={
+                            <ContractManagement
+                              allowCreate={false}
+                              allowDelete={true}
+                              allowUpdate={true}
+                              baseUrl="htx/contract-management"
+                            ></ContractManagement>
+                          }
                         ></Route>
                         <Route
                           path={"/shop-management"}
@@ -514,6 +579,30 @@ const HomeAdmin = () => {
                           element={
                             <DetailSupplierContract baseUrl="chunhiem"></DetailSupplierContract>
                           }
+                        ></Route>
+                        <Route
+                          path={"/rice-transaction-management"}
+                          element={
+                            <RiceTransactionManagement role="chunhiem"></RiceTransactionManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/rice-transaction-management/detail/:id"}
+                          element={
+                            <DetailRiceTransactionUser></DetailRiceTransactionUser>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/post-management"}
+                          element={<PostManagement></PostManagement>}
+                        ></Route>
+                        <Route
+                          path={"/post-management/create"}
+                          element={<CreatePost></CreatePost>}
+                        ></Route>
+                        <Route
+                          path={"/post-management/detail/:id"}
+                          element={<DetailPost></DetailPost>}
                         ></Route>
                       </>
                     )}
@@ -553,9 +642,14 @@ const HomeAdmin = () => {
                             <ContractManagement
                               allowCreate={false}
                               allowDelete={false}
-                              allowUpdate={false}
                               baseUrl="htx/contract-management"
                             ></ContractManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={`${PATH.CONTRACT_MANAGEMENT}${PATH.CONTRACT_DETAIL}`}
+                          element={
+                            <DetailContract baseUrl="htx/contract-management"></DetailContract>
                           }
                         ></Route>
                         <Route
@@ -597,8 +691,40 @@ const HomeAdmin = () => {
                         <Route
                           path={"/rice-transaction-management"}
                           element={
-                            <RiceTransactionManagement></RiceTransactionManagement>
+                            <RiceTransactionManagement role="xavien"></RiceTransactionManagement>
                           }
+                        ></Route>
+                        <Route
+                          path={"/rice-transaction-management/detail/:id"}
+                          element={
+                            <DetailRiceTransactionUser></DetailRiceTransactionUser>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/post-management"}
+                          element={<PostManagement></PostManagement>}
+                        ></Route>
+                        <Route
+                          path={"/post-management/create"}
+                          element={<CreatePost></CreatePost>}
+                        ></Route>
+                        <Route
+                          path={"/post-management/detail/:id"}
+                          element={<DetailPost></DetailPost>}
+                        ></Route>
+                        <Route
+                          path={"/review-management"}
+                          element={
+                            <ReviewManagement baseUrl="htx"></ReviewManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/review-management/create"}
+                          element={<CreateReview></CreateReview>}
+                        ></Route>
+                        <Route
+                          path={"/review-management/detail/:id"}
+                          element={<DetailReview baseUrl="htx"></DetailReview>}
                         ></Route>
                         <Route path="*" element={<NotFound />} />
                       </>
