@@ -3,79 +3,72 @@ import {
   Box,
   Button,
   CircularProgress,
-  Divider,
   FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { IHTX } from "../../../../model/tracking-tracing";
+import { ILoHang } from "../../../../model/tracking-tracing";
 import Card from "../../components/custom-cart/card";
 import CustomPagination from "../../components/pagination/pagination";
 import tracingApi from "../../../../api/tracing";
-import { Input } from "antd";
+import { Divider, Input } from "antd";
 
-const ProductPage = () => {
+const LohangPage = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(1);
   const [limit, setLimit] = useState(10);
-  const [seachValue, setSearchValue] = useState("");
-  const [data, setData] = useState<IHTX[]>();
+  const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(-1);
+  const [data, setData] = useState<ILoHang[]>();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = async () => {
+    try {
+      setLoading(-1);
+      const response = await tracingApi.getLoHangWithoutHTX({
+        search: searchValue,
+      });
+      if (response && response.data.length > 0) {
+        setData(response.data);
+        setLoading(1);
+        setPageSize(response.meta.totalPage);
+      } else {
+        setLoading(0);
+        setData([]);
+        setPageSize(1);
+      }
+    } catch (error) {
+      setLoading(0);
+      console.log(error);
+    }
+  };
+
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
 
-  const handleSearch = () => {
-    (async () => {
-      setLoading(-1);
-      setTimeout(async () => {
-        const response: any = await tracingApi.getAll({
-          limit: limit,
-          page: page,
-          search: seachValue
-        });
-        if (response && response.data.length > 0) {
-          setLoading(1);
-          setData(response.data);
-          setPageSize(response.meta.totalPage);
-        } else {
-          setData([]);
-          setLoading(0);
-        }
-      }, 1000);
-      try {
-        setLoading(-1);
-      } catch (error) {
-        console.log(error);
-        setLoading(0);
-      }
-    })();
-  }
-
   useEffect(() => {
     (async () => {
-      setLoading(-1);
-      setTimeout(async () => {
-        const response: any = await tracingApi.getAll({
-          limit: limit,
-          page: page,
-        });
-        if (response && response.data.length > 0) {
-          setLoading(1);
-          setData(response.data);
-          setPageSize(response.meta.totalPage);
-        } else {
-          setData([]);
-          setLoading(0);
-        }
-      }, 1000);
       try {
         setLoading(-1);
+        const response: any = await tracingApi.getLoHangWithoutHTX();
+        if (response && response.data.length > 0) {
+          setData(response.data);
+          setLoading(1);
+          setPageSize(response.meta.totalPage);
+        } else {
+          setLoading(0);
+          setData([]);
+          setPageSize(1);
+        }
       } catch (error) {
-        console.log(error);
         setLoading(0);
+        console.log(error);
       }
     })();
   }, [page, limit]);
@@ -83,102 +76,77 @@ const ProductPage = () => {
   return (
     <>
       <Box width="80%" m="30px auto">
-        <Box height="60px" display="flex" alignItems='center'>
+        <Box height="60px" display="flex" alignItems="center">
           <FormControl>
             <Input
               onChange={handleInputChange}
-              placeholder="Hợp tác xã"
+              placeholder="Mã lô hàng"
               size="middle"
               style={{ borderRadius: "5px" }}
             />
           </FormControl>
-          <Button variant="contained" color='success' sx={{height: '30px', ml: '8px'}}  onClick={handleSearch}>Tìm kiếm</Button>
+          <Button
+            variant="contained"
+            color="success"
+            sx={{ height: "30px", ml: "8px" }}
+            onClick={handleSearch}
+          >
+            Tìm kiếm
+          </Button>
         </Box>
         <Divider></Divider>
-        <Grid container mt={3} spacing={3}>
+        <Grid container spacing={3}>
           {loading === -1 ? (
             <Grid textAlign="center" item xs={12}>
               <CircularProgress />
             </Grid>
           ) : loading === 0 ? (
             <Grid textAlign="center" item xs={12}>
-              Không tìm thấy hợp tác xã
+              Không tìm thấy lô hàng
             </Grid>
           ) : (
             data?.map((htx, idx) => {
               return (
-                <Grid item xs={4} key={htx.id_hoptacxa}>
+                <Grid item xs={4} key={htx.id_giaodichmuaban_lua}>
                   <Card
-                    href={`/g/htx/${htx.id_hoptacxa}?htx=${htx.name_hoptacxa}`}
-                    image={htx.thumbnail || "/images/bg-auth.webp"}
+                    href={`/g/htx/lohang/${htx.id_giaodichmuaban_lua}`}
+                    image={htx.img_lohang || "/images/bg-auth.webp"}
                   >
-                    <Box component="div">
-                      <Typography
-                        fontSize="20px"
-                        textOverflow="ellipsis"
-                        whiteSpace="nowrap"
-                        overflow="hidden"
-                        fontWeight="bold"
-                      >
-                        {htx.name_hoptacxa}
-                      </Typography>
-                      {htx.active === 1 ? (
-                        <span
-                          style={{
-                            backgroundColor: "green",
-                            display: "block",
-                            width: "100px",
-                            textAlign: "center",
-                            height: "17px",
-                            fontSize: "12px",
-                            lineHeight: "17px",
-                            color: "white",
-                            borderRadius: "5px",
-                          }}
-                        >
-                          Đang hoạt động
-                        </span>
-                      ) : (
-                        <span
-                          style={{
-                            backgroundColor: "red",
-                            display: "block",
-                            width: "120px",
-                            textAlign: "center",
-                            height: "17px",
-                            fontSize: "12px",
-                            lineHeight: "17px",
-                            color: "white",
-                            borderRadius: "5px",
-                          }}
-                        >
-                          Không hoạt động
-                        </span>
-                      )}
-                    </Box>
-                    <Typography
-                      fontSize="16px"
-                      display="flex"
-                      alignItems="center"
-                      mb="15px"
-                    ></Typography>
-                    <Typography fontSize="15px" mb="5px">
-                      <span style={{ fontWeight: "bold", fontSize: "15px" }}>
-                        Địa chỉ:
+                    <Typography fontSize="18px">
+                      <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                        Mã số lô hàng:
                       </span>{" "}
-                      {htx.address}
+                      {htx.id_giaodichmuaban_lua}
                     </Typography>
-                    <Typography fontSize="15px" mb="5px">
-                      <span style={{ fontWeight: "bold", fontSize: "15px" }}>
-                        Liên hệ:
+                    <Typography fontSize="18px">
+                      <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                        Tên lô hàng:
                       </span>{" "}
-                      {htx.phone_number}
+                      {htx.name_lohang}
                     </Typography>
-                    <Typography fontSize="15px" align="justify">
-                      <span style={{ fontWeight: "bold", fontSize: "15px" }}>
-                        Mô tả:
+                    <Typography fontSize="18px">
+                      <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                        Tên xã viên:
                       </span>{" "}
-                      {htx.description}
+                      {htx.name_xavien}
+                    </Typography>
+                    <Typography fontSize="18px">
+                      <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                        Tên thương lái:
+                      </span>{" "}
+                      {htx.name_thuonglai}
+                    </Typography>
+                    <Typography fontSize="18px">
+                      <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                        Sản lượng:
+                      </span>{" "}
+                      {htx.soluong} kilogam
+                    </Typography>
+                    <Typography fontSize="18px">
+                      <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+                        Ngày xuất:
+                      </span>{" "}
+                      {new Date(htx.updated_at).toLocaleDateString()}
                     </Typography>
                   </Card>
                 </Grid>
@@ -208,4 +176,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default LohangPage;

@@ -7,30 +7,37 @@ const tracingApi = {
   getAll(params: any) {
     const url = `/auto-complete/blockchain/search-htx`;
     return axiosClient.get(url, {
-      params
+      params,
     });
   },
-  
+
   getLichMuaVu(id_htx: string, params: any) {
     const url = `/auto-complete/blockchain/search-lmv/${id_htx}`;
     return axiosClient.get(url, {
-      params
+      params,
     });
   },
 
   getLohang(id: string, params?: any) {
     const url = `/auto-complete/blockchain/get-list-lohang/${id}`;
     return axiosClient.get(url, {
-      params
+      params,
     });
   },
 
   getChiTietLoHang(id: string, params?: any): any {
-    const url = `/api/blockchain/tracing/${id}`;
+    const url = `/blockchain/tracing/${id}`;
     return axiosClient.get(url, {
-      params
+      params,
     });
-  }
+  },
+
+  getLoHangWithoutHTX(params?: any): any {
+    const url = `/blockchain/search`;
+    return axiosClient.get(url, {
+      params,
+    });
+  },
 };
 
 export default tracingApi;

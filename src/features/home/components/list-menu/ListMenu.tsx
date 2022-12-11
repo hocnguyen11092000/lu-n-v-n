@@ -37,6 +37,10 @@ const ListMenu = (props: Props) => {
           label: <Link to="/g/htx">Hợp tác xã</Link>,
           key: "0",
         },
+        {
+          label: <Link to="/g/lohang">Lô hàng</Link>,
+          key: "1",
+        },
       ]}
     />
   );
