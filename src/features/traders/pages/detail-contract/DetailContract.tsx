@@ -480,6 +480,8 @@ const DetailContract = (props: Props) => {
     <Spin spinning={deatailContract.isLoading}>
       <div className="detail-contract" style={{ minHeight: "100vh" }}>
         <PageHeader
+          review={true}
+          reviewData={deatailContract?.data?.data}
           isConfirm={deatailContract?.data?.data?.status !== "confirm"}
           toggleConfirm={
             baseUrl?.includes("htx")

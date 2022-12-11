@@ -1,6 +1,7 @@
 import { Breadcrumb, Button, Select } from "antd";
 import React, { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { PATH } from "../../enum";
 import "./page-header.scss";
 type Props = {
   form: string;
@@ -18,6 +19,8 @@ type Props = {
   disableApprove?: boolean;
   disabledSelect?: boolean;
   allowSave?: boolean;
+  review?: boolean;
+  reviewData?: any;
 };
 
 const PageHeader = ({
@@ -36,6 +39,8 @@ const PageHeader = ({
   disableApprove,
   disabledSelect,
   allowSave,
+  review,
+  reviewData,
 }: Props) => {
   const navigate = useNavigate();
   const headerRef = useRef<any>();
@@ -129,6 +134,19 @@ const PageHeader = ({
             <Select.Option value={1}>Duyệt</Select.Option>
             <Select.Option value={2}>Hủy</Select.Option>
           </Select>
+        )}
+
+        {review && (
+          <Button
+            type="primary"
+            onClick={() =>
+              navigate(`${PATH.PREVIEW}`, {
+                state: { detail: reviewData },
+              })
+            }
+          >
+            Xem trước
+          </Button>
         )}
       </div>
     </div>
