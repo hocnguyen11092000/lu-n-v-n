@@ -133,7 +133,11 @@ const PreviewContract = (props: Props) => {
               <p className="bold text-uper">
                 Các điều khoản kèm theo (nếu có1)
               </p>
-              <p>{data?.desc || ""}</p>
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: data?.desc,
+                }}
+              ></p>
             </div>
           </div>
           <br />
