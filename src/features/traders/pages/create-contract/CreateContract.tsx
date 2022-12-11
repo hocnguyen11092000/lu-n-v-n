@@ -42,6 +42,23 @@ const CreateContract = (props: Props) => {
     (state: any) => state.contract.searchUser
   );
 
+  const dataContractRedux = useSelector(
+    (state: any) => state.contract.dataContract
+  );
+
+  useEffect(() => {
+    form.setFieldsValue({
+      ...dataContractRedux,
+      ...dataContractRedux?.category,
+    });
+
+    setUser({ ...searchUserStore });
+    setCkData(dataContractRedux?.desc);
+    setSearchValue(dataContractRedux?.phone_number_hoptacxa || "");
+  }, [dataContractRedux]);
+
+  console.log(dataContractRedux);
+
   useEffect(() => {
     setUser(searchUserStore);
   }, []);
@@ -157,7 +174,7 @@ const CreateContract = (props: Props) => {
                       setDataContract((pre: any) => {
                         return {
                           ...pre,
-                          title: e.target.value || "",
+                          title_hopdongmuaban: e.target.value || "",
                         };
                       })
                     }
@@ -171,6 +188,7 @@ const CreateContract = (props: Props) => {
                 >
                   <Input
                     defaultValue={searchUserStore?.phone_number}
+                    value={seachValue || ""}
                     onChange={(e) => setSearchValue(e.target.value)}
                     placeholder="Tìm kiếm hợp tác xã"
                     size="middle"
@@ -305,7 +323,7 @@ const CreateContract = (props: Props) => {
                             );
                             return {
                               ...pre,
-                              season: name,
+                              id_lichmuavu: name,
                             };
                           })
                         }
@@ -454,7 +472,7 @@ const CreateContract = (props: Props) => {
                           ],
                         },
                       }}
-                      data=""
+                      data={ckData || ""}
                       onChange={(event: any, editor: any) => {
                         const data = editor.getData();
                         setDataContract((pre: any) => {
