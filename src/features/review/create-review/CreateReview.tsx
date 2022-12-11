@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { DatePicker, Input, Spin } from "antd";
 import React, { useState } from "react";
+import reviewApi from "../../../api/review";
+import AutoComplete from "../../../components/auto-complete/AutoComplete";
 import FormComponent from "../../../components/form-component/FormComponent";
 import PageHeader from "../../../components/page-header/PageHeader";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
@@ -10,6 +12,19 @@ type Props = {};
 
 const CreateReview = (props: Props) => {
   const createReviewForm = [
+    {
+      autoComplete: (
+        <AutoComplete
+          // onSelect={handleSelectSeason}
+          placeholder="lịch mùa vụ"
+          Key="id_lichmuavu"
+          Value="name_lichmuavu"
+          type="lichmuavu"
+          name="id_lichmuavu"
+          lable="lịch mùa vụ"
+        ></AutoComplete>
+      ),
+    },
     {
       name: "giong",
       label: "Chi phí giống lúa",
@@ -161,16 +176,13 @@ const CreateReview = (props: Props) => {
       formChildren: <Input placeholder="Giá bán"></Input>,
     },
     {
+      name: "kiennghi",
+      label: "Kiến nghị",
       rules: [
         {
           required: true,
         },
       ],
-      formChildren: <Input hidden placeholder="Giá bán"></Input>,
-    },
-    {
-      name: "kiennghi",
-      label: "Kiến nghị",
       formChildren: (
         <Input.TextArea rows={4} placeholder="Kiến nghị"></Input.TextArea>
       ),
@@ -180,27 +192,32 @@ const CreateReview = (props: Props) => {
   let result: any = {};
 
   const handleFormSubmit = (values: any) => {
-    console.log(values);
-
-    // mutation_update_htx.mutate(formData, {
-    //   onSuccess: (res) => {
-    //     getResponseMessage(res);
-    //   },
-    //   onError: (err) => {
-    //     getErrorMessage(err);
-    //   },
-    // });
+    mutation_create_review.mutate(values, {
+      onSuccess: (res) => {
+        getResponseMessage(res);
+      },
+      onError: (err) => {
+        getErrorMessage(err);
+      },
+    });
   };
 
-  // const mutation_update_htx = useMutation((data: any) => htxApi.update(data));
+  const mutation_create_review = useMutation((data: any) =>
+    reviewApi.create(data)
+  );
+
+  const handleFinishFail = (f: any) => {
+    console.log(f);
+  };
 
   let formComponentProps: any = {
-    loading: false,
+    loading: mutation_create_review.isLoading,
     onSubmit: handleFormSubmit,
     name: "create-review",
     buttonSubmit: "Cập nhật",
     data: createReviewForm,
     hideBtnSubmit: true,
+    onFinishFail: handleFinishFail,
     setData: false,
   };
 
@@ -217,8 +234,8 @@ const CreateReview = (props: Props) => {
       path: "/htx",
     },
     {
-      name: `review`,
-      path: "/update",
+      name: `đánh giá cuối mùa`,
+      path: "/review",
     },
   ];
 
@@ -229,9 +246,10 @@ const CreateReview = (props: Props) => {
         edit={true}
         headerBreadcrumb={headerBreadcrumb}
         form="create-review"
-        loading={false}
+        loading={mutation_create_review.isLoading}
       ></PageHeader>
       <div className="profile">
+        <h3 style={{ marginBottom: "20px" }}>Tạo đánh giá cuối mùa</h3>
         <FormComponent {...formComponentProps}></FormComponent>
       </div>
     </Spin>

@@ -35,13 +35,13 @@ const PostMangement = ({ baseUrl, role }: Props) => {
     search: searchParams.get("search") || "",
   });
 
-  // useEffect(() => {
-  // //   (() => {
-  // //     navigate(
-  // //       `/${baseUrl || "shop"}/shop-management?${queryString.stringify(filter)}`
-  // //     );
-  // //   })();
-  // // }, [filter]);
+  useEffect(() => {
+    (() => {
+      navigate(
+        `/${baseUrl || "htx"}/post-management?${queryString.stringify(filter)}`
+      );
+    })();
+  }, [filter]);
   // console.log(role);
 
   const fetchListPost = (filter: any) => postApi.getMyPost(filter);
@@ -132,7 +132,7 @@ const PostMangement = ({ baseUrl, role }: Props) => {
   return (
     <div className="shop-management">
       <Button>
-        <Link to="/htx/post-management/create">Tạo bài viết</Link>
+        <Link to={`/${baseUrl}/post-management/create`}>Tạo bài viết</Link>
       </Button>
       <h3 style={{ margin: "16px 0" }}>Danh sách bài viết </h3>
       <Table
@@ -144,7 +144,8 @@ const PostMangement = ({ baseUrl, role }: Props) => {
       <div className="pagiantion">
         {postList?.data?.meta?.total > 0 && (
           <Pagination
-            defaultCurrent={filter?.page as number}
+            // defaultCurrent={filter?.page as number}
+            current={Number(filter.page)}
             total={postList?.data?.meta?.total}
             pageSize={filter?.limit as number}
             onChange={handlePagination}

@@ -5,6 +5,9 @@ import { useParams } from "react-router-dom";
 import reviewApi from "../../../../api/review";
 import FormComponent from "../../../../components/form-component/FormComponent";
 import PageHeader from "../../../../components/page-header/PageHeader";
+import { formatPrice } from "../../../../utils/formatPrice";
+import { getErrorMessage } from "../../../../utils/getErrorMessage";
+import { getResponseMessage } from "../../../../utils/getResponseMessage";
 
 type Props = {
   baseUrl?: any;
@@ -192,24 +195,45 @@ const DetailReview = ({ baseUrl }: Props) => {
   ];
 
   let result: any = {};
+  if (deatailReview?.data?.data) {
+    result = {
+      ...deatailReview?.data?.data,
+    };
+    result.giong = formatPrice(deatailReview?.data?.data.giong || 0);
+    result.phanbon = formatPrice(deatailReview?.data?.data.phanbon || 0);
+    result.xangdau = formatPrice(deatailReview?.data?.data.xangdau || 0);
+    result.vattukhac = formatPrice(deatailReview?.data?.data.vattukhac || 0);
+    result.lamdat = formatPrice(deatailReview?.data?.data.lamdat || 0);
+    result.lamco = formatPrice(deatailReview?.data?.data.lamco || 0);
+    result.bomtuoi = formatPrice(deatailReview?.data?.data.bomtuoi || 0);
+    result.thuhoach = formatPrice(deatailReview?.data?.data.thuhoach || 0);
+    result.phoisay = formatPrice(deatailReview?.data?.data.phoisay || 0);
+    result.rahat = formatPrice(deatailReview?.data?.data.rahat || 0);
+    result.vanchuyen = formatPrice(deatailReview?.data?.data.vanchuyen || 0);
+    result.thuyloiphi = formatPrice(deatailReview?.data?.data.thuyloiphi || 0);
+    result.tongsanluong = formatPrice(
+      deatailReview?.data?.data.tongsanluong || 0
+    );
+    result.giaban = formatPrice(deatailReview?.data?.data.giaban || 0);
+  }
 
   const handleFormSubmit = (values: any) => {
-    console.log(values);
-
-    // mutation_update_htx.mutate(formData, {
-    //   onSuccess: (res) => {
-    //     getResponseMessage(res);
-    //   },
-    //   onError: (err) => {
-    //     getErrorMessage(err);
-    //   },
-    // });
+    mutation_update_review.mutate(values, {
+      onSuccess: (res) => {
+        getResponseMessage(res);
+      },
+      onError: (err) => {
+        getErrorMessage(err);
+      },
+    });
   };
 
-  // const mutation_update_htx = useMutation((data: any) => htxApi.update(data));
+  const mutation_update_review = useMutation((data: any) =>
+    reviewApi.update(data, id)
+  );
 
   let formComponentProps: any = {
-    loading: false,
+    loading: mutation_update_review.isLoading,
     onSubmit: handleFormSubmit,
     name: "update-review",
     buttonSubmit: "Cập nhật",
@@ -224,7 +248,7 @@ const DetailReview = ({ baseUrl }: Props) => {
   ) {
     formComponentProps = {
       ...formComponentProps,
-      initialValues: deatailReview?.data?.data,
+      initialValues: result,
     };
   }
 
@@ -246,7 +270,7 @@ const DetailReview = ({ baseUrl }: Props) => {
         edit={true}
         headerBreadcrumb={headerBreadcrumb}
         form="update-review"
-        loading={false}
+        loading={mutation_update_review.isLoading}
       ></PageHeader>
       <div className="profile">
         {deatailReview?.data?.data && (

@@ -6,6 +6,12 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+html,
+body,
+* {
+  scroll-behavior: smooth !important;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -37,6 +43,14 @@ body {
   color: $white-color;
   background-color: #0ad9e5;
   border-radius: $radius-6;
+}
+
+.ant-layout-content.m-t-63 {
+  margin-top: 63px !important;
+}
+
+.font-bold {
+  font-weight: 600 !important;
 }
 
 .m-r-4 {
@@ -329,6 +343,8 @@ ul::-webkit-scrollbar-thumb {
 
 .ant-layout-content {
   border-radius: $radius-0 !important;
+  //margin-top: 63px !important;
+  border-radius: $radius-6 !important;
 }
 
 .ant-modal-footer {

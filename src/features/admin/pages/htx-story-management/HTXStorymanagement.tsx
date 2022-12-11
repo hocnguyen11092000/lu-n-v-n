@@ -37,10 +37,11 @@ const HTXStorymanagement = (props: Props) => {
     {
       title: "ID",
       dataIndex: "id_nhatkydongruong",
+      width: "5%",
     },
     {
-      title: "ID thửa đất",
-      dataIndex: "id_thuadat",
+      title: "Xã viên",
+      dataIndex: "fullname",
     },
     {
       title: "Tên hoạt động",

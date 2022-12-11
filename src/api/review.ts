@@ -11,6 +11,21 @@ const reviewApi = {
     const url = `danhgiacuoimua/get-detail/${id}`;
     return axiosClient.get(url);
   },
+
+  create(data: any) {
+    const url = "danhgiacuoimua/create";
+    return axiosClient.post(url, data);
+  },
+
+  update(data: any, id: any) {
+    const url = `danhgiacuoimua/update/${id}`;
+    return axiosClient.post(url, data);
+  },
+
+  delete(id: any) {
+    const url = `danhgiacuoimua/delete/${id}`;
+    return axiosClient.delete(url);
+  },
 };
 
 export default reviewApi;

@@ -24,24 +24,96 @@ const SearchResult = ({
           <div className="search-result__content">
             {loading && (
               <>
-                <Skeleton style={{ textAlign: "left" }} />
+                <div
+                  style={{
+                    textAlign: "left",
+                    display: "flex",
+                    width: "100%",
+                    gap: "20px",
+                  }}
+                >
+                  <Skeleton.Image
+                    active={true}
+                    style={{ width: "150px" }}
+                    className="radius-6"
+                  />
+                  <div>
+                    <Skeleton.Button
+                      active={true}
+                      style={{
+                        width: "250px",
+                        height: "20px",
+                        marginBottom: "12px",
+                      }}
+                      className="radius-6"
+                    />
+
+                    <Skeleton.Input
+                      active={true}
+                      style={{ width: "400px", height: "62px" }}
+                      className="radius-6"
+                    />
+                  </div>
+                </div>
                 <br />
-                <Skeleton style={{ textAlign: "left" }} />
+                <div
+                  style={{
+                    textAlign: "left",
+                    display: "flex",
+                    width: "100%",
+                    gap: "20px",
+                  }}
+                >
+                  <Skeleton.Image
+                    active={true}
+                    style={{ width: "150px" }}
+                    className="radius-6"
+                  />
+                  <div>
+                    <Skeleton.Button
+                      active={true}
+                      style={{
+                        width: "250px",
+                        height: "20px",
+                        marginBottom: "12px",
+                      }}
+                      className="radius-6"
+                    />
+
+                    <Skeleton.Input
+                      active={true}
+                      style={{ width: "400px", height: "62px" }}
+                      className="radius-6"
+                    />
+                  </div>
+                </div>
               </>
             )}
-            {!loading && (
+            {!loading && data && (
               <ListNews
                 search
-                headerText="Kết quả tìm kiếm: "
+                headerText={
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    Kết quả tìm kiếm:{" "}
+                    <span className="main-color search-count">
+                      Tìm thấy <b>({data?.length})</b> kết quả
+                    </span>
+                  </div>
+                }
                 header={true}
                 post={data}
                 searchWords={searchWords}
               ></ListNews>
             )}
 
-            {!loading && data?.length == 0 && (
+            {!loading && data && data?.length == 0 && (
               <div style={{ color: "#333", textAlign: "center" }}>
                 Không tìm thấy kết quả
+              </div>
+            )}
+            {!loading && !data && (
+              <div style={{ color: "#333", textAlign: "center" }}>
+                Vui lòng nhập từ khóa tìm kiếm
               </div>
             )}
           </div>

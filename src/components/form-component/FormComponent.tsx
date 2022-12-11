@@ -3,6 +3,7 @@ import { Button, Col, Form, Row, Space, Spin } from "antd";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { validateMessage } from "../../utils/validateMessage";
+import scrollIntoView from "smooth-scroll-into-view-if-needed";
 
 type Props = {
   data: any;
@@ -25,6 +26,7 @@ type Props = {
   onDeleteCategory?: any;
   setData?: boolean;
   disableForm?: boolean;
+  handleFinishFail?: any;
 };
 
 const FormComponent = ({
@@ -47,6 +49,7 @@ const FormComponent = ({
   onDeleteCategory,
   setData = true,
   disableForm = false,
+  handleFinishFail,
 }: Props) => {
   const [formCommon] = Form.useForm();
 
@@ -129,10 +132,18 @@ const FormComponent = ({
   };
 
   const handleSubmitFormFailed = (a: any) => {
-    console.log(a);
-  };
+    const _name = a?.errorFields[0].name[0] || "";
+    const id = `${name}_${_name}`;
+    const elm = document.getElementById(id) || "";
 
-  console.log(categoryOfActivity);
+    if (elm) {
+      setTimeout(() => {
+        scrollIntoView(elm, {
+          behavior: "smooth",
+        });
+      }, 200);
+    }
+  };
 
   return (
     <div>

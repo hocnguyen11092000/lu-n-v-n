@@ -87,6 +87,19 @@ const HomeAdmin = () => {
   const navigate = useNavigate();
   const isFirst = useRef(false);
   const dispatch = useDispatch();
+  const location: any = useLocation();
+
+  useEffect(() => {
+    const layout: any = document.querySelector(".ant-layout-content");
+
+    if (layout) {
+      const PageHeader = document.querySelector(".page-header");
+
+      if (!PageHeader) {
+        layout.classList.remove("m-t-63");
+      }
+    }
+  }, [location.pathname]);
 
   const showDrawer = () => {
     setOpen(true);
@@ -95,7 +108,7 @@ const HomeAdmin = () => {
   const onClose = () => {
     setOpen(false);
   };
-  const location: any = useLocation();
+
   const changeRole = location.state?.role;
   const currentAccount = localStorage.getItem("current_account");
 
@@ -440,7 +453,9 @@ const HomeAdmin = () => {
                       arrow
                     >
                       <Badge count={notification?.count || 0} showZero={false}>
-                        <BellOutlined style={{ fontSize: "18px" }} />
+                        <span className="icon-notification">
+                          <BellOutlined style={{ fontSize: "18px" }} />
+                        </span>
                       </Badge>
                     </Dropdown>
                   </div>
@@ -626,7 +641,7 @@ const HomeAdmin = () => {
                           element={
                             <ContractManagement
                               allowCreate={false}
-                              allowDelete={true}
+                              allowDelete={false}
                               baseUrl="htx/contract-management"
                             ></ContractManagement>
                           }
@@ -692,6 +707,10 @@ const HomeAdmin = () => {
                         <Route
                           path={"/post-management/create"}
                           element={<CreatePost></CreatePost>}
+                        ></Route>
+                        <Route
+                          path={"/post-management/detail/:id"}
+                          element={<DetailPost></DetailPost>}
                         ></Route>
                         <Route
                           path={"/review-management"}

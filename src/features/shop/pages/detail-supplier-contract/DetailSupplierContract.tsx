@@ -496,6 +496,7 @@ const DetailSupplierContract = ({ baseUrl }: Props) => {
         ></PageHeader>
         {result && Object.keys(result).length > 0 && (
           <FormComponent
+            disableForm={deatailContract?.data?.data?.status == 1}
             initialValues={result}
             onSubmit={handleFormSubmit}
             name="shop=detail-contract"

@@ -426,10 +426,26 @@ const DetailSeaSon = (props: Props) => {
     calendarApi.apply(id)
   );
 
+  const headerBreadcrumb = [
+    {
+      name: "Hợp tác xã",
+      path: "/htx",
+    },
+    {
+      name: `chi tiết mùa vụ`,
+      path: "/season-detail",
+    },
+    {
+      name: `${id}`,
+      path: "/season-detail",
+    },
+  ];
+
   return (
     <div className="detail-season">
       <PageHeader
-        allowSave={true}
+        headerBreadcrumb={headerBreadcrumb}
+        allowSave={seaSonDetail.data?.data?.status == "finish" ? false : true}
         loading={mutation_calendar.isLoading}
         form="season"
         disabled={disableBtnUpdateSeason}
@@ -568,11 +584,12 @@ const DetailSeaSon = (props: Props) => {
       <div className="pagiantion">
         {activity?.data?.meta?.total > 0 && (
           <Pagination
-            defaultCurrent={filter.page as number}
+            // defaultCurrent={filter.page as number}
+            current={Number(filter.page)}
             total={activity?.data?.meta?.total}
             pageSize={filter.limit as number}
             onChange={handlePagination}
-            current={currentPage}
+            // current={currentPage}
           />
         )}
       </div>

@@ -242,17 +242,29 @@ const StoryOfSeason = (props: Props) => {
       render: (_: any, record: any) => {
         return (
           <div>
-            <Checkbox
-              style={{ marginLeft: "16px" }}
-              disabled={
-                record?.type !== "inside" && !Boolean(record?.hoptacxa_xacnhan)
+            <Popconfirm
+              placement="topRight"
+              title={"Bạn có chắc chắn đổi trạng thái"}
+              onConfirm={() =>
+                handleChangeStatus(record?.id_nhatkydongruong || "", null)
               }
-              defaultChecked={record?.status || false}
-              checked={record?.status || false}
-              onChange={(e) =>
-                handleChangeStatus(record?.id_nhatkydongruong || "", e)
-              }
-            ></Checkbox>
+              okText="Yes"
+              cancelText="No"
+            >
+              <Checkbox
+                style={{ marginLeft: "16px" }}
+                disabled={
+                  record?.type !== "inside" &&
+                  !Boolean(record?.hoptacxa_xacnhan)
+                }
+                defaultChecked={record?.status || false}
+                checked={record?.status || false}
+                // onChange={(e) =>
+                //   handleChangeStatus(record?.id_nhatkydongruong || "", e)
+                // }
+              ></Checkbox>
+            </Popconfirm>
+
             <span
               className=""
               onClick={() => {
@@ -439,6 +451,7 @@ const StoryOfSeason = (props: Props) => {
     setFilter((pre) => {
       return {
         ...pre,
+        page: 1,
         search: value?.search?.trim() || "",
       };
     });
@@ -531,7 +544,8 @@ const StoryOfSeason = (props: Props) => {
       <div className="pagiantion">
         {data?.meta?.total > 0 && (
           <Pagination
-            defaultCurrent={filter.page as number}
+            // defaultCurrent={filter.page as number}
+            current={Number(filter.page)}
             total={data?.meta?.total}
             pageSize={filter.limit as number}
             onChange={handlePagination}

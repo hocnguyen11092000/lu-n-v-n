@@ -3,10 +3,14 @@ import { useMutation } from "@tanstack/react-query";
 import { Input, Popover, Spin, Tooltip } from "antd";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import commentApi from "../../api/comment";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { getResponseMessage } from "../../utils/getResponseMessage";
 import "./comment-item.scss";
+import "moment/locale/fr";
+import "moment/locale/es";
+import "moment/dist/locale/vi";
 
 type Props = {
   item: any;
@@ -20,6 +24,9 @@ const CommentItem = ({ detailPost, idPost, item, tier }: Props) => {
   const [showAction, setShowAction] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const inputRef = useRef<any>(null);
+  const currentUser = useSelector((state: any) => state.user.user);
+
+  moment.locale("vi");
 
   useEffect(() => {
     inputRef.current && inputRef.current?.focus();
@@ -134,6 +141,7 @@ const CommentItem = ({ detailPost, idPost, item, tier }: Props) => {
             ""
           ) : (
             <Popover
+              className="w-130"
               placement="topLeft"
               title={"Hành động"}
               content={
@@ -145,11 +153,15 @@ const CommentItem = ({ detailPost, idPost, item, tier }: Props) => {
               }
               trigger="click"
             >
-              <span
-                className={`comment-info__action ${showAction ? "active" : ""}`}
-              >
-                <DashOutlined />
-              </span>
+              {item?.id_user == currentUser?.id_user && (
+                <span
+                  className={`comment-info__action ${
+                    showAction ? "active" : ""
+                  }`}
+                >
+                  <DashOutlined />
+                </span>
+              )}
             </Popover>
           )}
         </Spin>
@@ -170,7 +182,7 @@ const CommentItem = ({ detailPost, idPost, item, tier }: Props) => {
         </div>
       )}
       {mutation_add_comment.isLoading && (
-        <span className="main-color" style={{ margin: "8px 0 20px 60px " }}>
+        <span className="main-color" style={{ margin: "8px 0 20px 63px " }}>
           {mutation_add_comment.isLoading && "Bình luận đang được tải lên..."}
         </span>
       )}

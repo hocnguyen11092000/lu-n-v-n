@@ -13,7 +13,7 @@ type Props = {};
 const HomePageHeader = (props: Props) => {
   const user = useSelector((state: any) => state.user?.user);
   const [searchValue, setSearchValue] = useState("");
-  const [dataSearch, setDataSearch] = useState<any>([]);
+  const [dataSearch, setDataSearch] = useState<any>(null);
   const [loadingSearch, setLoadingSearch] = useState(false);
   const [show, setShow] = useState(false);
   // home-search
@@ -187,6 +187,7 @@ const HomePageHeader = (props: Props) => {
                       color: "inherit",
                       maxWidth: "150px",
                       overflow: "hidden",
+                      fontSize: "13px",
                       textOverflow: "ellipsis",
                     }}
                     onClick={(e) => e.preventDefault()}
