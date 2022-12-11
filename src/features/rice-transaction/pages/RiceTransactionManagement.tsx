@@ -149,7 +149,7 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
       title: "Giá",
       dataIndex: "price",
       render: (_: any, record: any) => {
-        return <span>{formatPrice(record?.rice || 0)}</span>;
+        return <span>{formatPrice(record?.price || 0)}</span>;
       },
     },
     {

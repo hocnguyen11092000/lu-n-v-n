@@ -71,6 +71,19 @@ const Story = () => {
       {
         title: "Trạng thái",
         dataIndex: "status",
+        render: (text: any, record: any) => (
+          <>
+            <span>
+              {record?.status == "start" ? (
+                <span className="success">Đang diễn ra</span>
+              ) : record?.status == "finish" ? (
+                <span className="confirm">Đã kết thúc</span>
+              ) : (
+                <span className="not-confirm">Sắp bắt đầu</span>
+              )}
+            </span>
+          </>
+        ),
       },
       {
         title: "Hành động",
