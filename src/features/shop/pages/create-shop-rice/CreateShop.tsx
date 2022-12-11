@@ -36,6 +36,7 @@ const CreateShop = (props: Props) => {
   const [seachValue, setSearchValue] = useState<string>("");
   const [file, setFile] = useState();
   const [dataContract, setDataContract] = useState<any>({});
+  const [searchUserError, setSearchuserError] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ const CreateShop = (props: Props) => {
 
   useEffect(() => {
     setUser(searchUserStore);
+    setSearchValue(searchUserStore?.xavien_phone_number || "");
   }, []);
 
   const detailShop = useSelector((state: any) => state.user.user);
@@ -102,6 +104,7 @@ const CreateShop = (props: Props) => {
           setUser(data.data);
           dispatch(searchUser(data.data));
 
+          setSearchuserError("");
           setDataContract((pre: any) => {
             return {
               ...pre,
@@ -109,7 +112,12 @@ const CreateShop = (props: Props) => {
             };
           });
         },
-        onError: () => {
+        onError: (err: any) => {
+          // console.log(err);
+          const error: any = err?.response?.data.errorList[0];
+          if (error) {
+            setSearchuserError(error);
+          }
           setUser(null);
         },
       }
@@ -176,7 +184,8 @@ const CreateShop = (props: Props) => {
                   style={{ position: "relative", top: "0" }}
                 >
                   <Input
-                    defaultValue={searchUserStore?.phone_number}
+                    defaultValue={searchUserStore?.xavien_phone_number}
+                    value={searchUserStore?.xavien_phone_number}
                     onChange={(e) => setSearchValue(e.target.value)}
                     placeholder="Tìm kiếm hợp tác xã"
                     size="middle"
@@ -236,7 +245,8 @@ const CreateShop = (props: Props) => {
               </Col>
               <Col lg={12} md={12} sm={24} xs={24}>
                 {user === undefined && "Tìm kiếm xã viên bạn muốn tạo hợp đồng"}
-                {user === null && "Không tìm thấy xã viên"}
+                {!user && searchUserError && "Không tìm thấy xã viên"}
+
                 {user && (
                   <Collapse defaultActiveKey={["B"]} bordered={false}>
                     <Collapse.Panel header="Bên B" key="B">
