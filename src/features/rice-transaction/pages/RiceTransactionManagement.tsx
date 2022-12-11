@@ -334,7 +334,9 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
       <h3 style={{ margin: "16px 0" }}>Danh sách giao dịch mua bán lúa</h3>
       <Table
         scroll={{ x: 2100 }}
-        loading={userRiceTransaction.isLoading}
+        loading={
+          userRiceTransaction.isLoading || mutation_update_approve.isLoading
+        }
         columns={tableColumns}
         dataSource={userRiceTransaction?.data?.data || []}
         pagination={false}

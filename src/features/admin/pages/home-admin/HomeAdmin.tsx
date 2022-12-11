@@ -589,7 +589,10 @@ const HomeAdmin = () => {
                         <Route
                           path={"/rice-transaction-management/detail/:id"}
                           element={
-                            <DetailRiceTransactionUser></DetailRiceTransactionUser>
+                            <DetailRiceTransactionUser
+                              baseUrl="chunhiem"
+                              role="chunhiem"
+                            ></DetailRiceTransactionUser>
                           }
                         ></Route>
                         <Route
@@ -697,7 +700,7 @@ const HomeAdmin = () => {
                         <Route
                           path={"/rice-transaction-management/detail/:id"}
                           element={
-                            <DetailRiceTransactionUser></DetailRiceTransactionUser>
+                            <DetailRiceTransactionUser baseUrl="htx"></DetailRiceTransactionUser>
                           }
                         ></Route>
                         <Route

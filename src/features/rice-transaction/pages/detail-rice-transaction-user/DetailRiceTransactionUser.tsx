@@ -15,9 +15,10 @@ import { formatPrice } from "../../../../utils/formatPrice";
 
 type Props = {
   baseUrl?: string;
+  role?: any;
 };
 
-const DetailRiceTransactionUser = ({ baseUrl }: Props) => {
+const DetailRiceTransactionUser = ({ baseUrl, role }: Props) => {
   const [ckData, setCkData] = useState();
   const [showReason, setShowReason] = useState(false);
   const [reasonValue, setReasonValue] = useState("");
@@ -345,18 +346,78 @@ const DetailRiceTransactionUser = ({ baseUrl }: Props) => {
     },
   ];
 
+  const handleApprove = () => {
+    mutation_update_approve.mutate(
+      { id: id, hoptacxa_xacnhan: 2, reason: reasonValue },
+      {
+        onSuccess: (res) => {
+          getResponseMessage(res);
+          deatailContract.refetch();
+          setShowReason(false);
+        },
+        onError: (err) => {
+          getErrorMessage(err);
+        },
+      }
+    );
+  };
+
+  const mutation_update_approve = useMutation((data: any) =>
+    userRiceTransactionApi.approve(data, data?.id || "")
+  );
+
+  const handleConfirm = () => {
+    mutation_confirm_rice_transaction.mutate(id, {
+      onSuccess: (res) => {
+        getResponseMessage(res);
+        deatailContract.refetch();
+      },
+      onError: (err) => {
+        getErrorMessage(err);
+      },
+    });
+  };
+
+  const mutation_confirm_rice_transaction = useMutation((id: any) =>
+    userRiceTransactionApi.confirm(id)
+  );
+
   return (
-    <Spin spinning={deatailContract.isLoading}>
+    <Spin
+      spinning={
+        deatailContract.isLoading ||
+        mutation_update_approve.isLoading ||
+        mutation_confirm_rice_transaction.isLoading
+      }
+    >
       <div className="detail-contract" style={{ minHeight: "100vh" }}>
         <PageHeader
-          allowSave={true}
+          allowSave={role == "chunhiem" ? false : true}
           edit={true}
           headerBreadcrumb={headerBreadcrumb}
           form="shop=detail-contract"
           loading={mutation_update_rice_contract.isLoading}
+          isConfirm={!baseUrl?.includes("chunhiem")}
+          onConfirm={handleConfirm}
+          onApprove={handleApprove}
+          confirmLoading={false}
+          isAllowApprove={baseUrl?.includes("chunhiem")}
+          disableApprove={deatailContract?.data?.data?.hoptacxa_xacnhan != 0}
+          allowApprove={deatailContract?.data?.data?.hoptacxa_xacnhan}
+          disabledSelect={
+            baseUrl?.includes("chunhiem") &&
+            (!deatailContract?.data?.data?.xavien_xacnhan ||
+              !deatailContract?.data?.data?.thuonglai_xacnhan)
+          }
+          toggleConfirm={
+            baseUrl?.includes("htx")
+              ? deatailContract?.data?.data?.xavien_xacnhan
+              : deatailContract?.data?.data?.thuonglai_xacnhan
+          }
         ></PageHeader>
         {result && Object.keys(result).length > 0 && (
           <FormComponent
+            disableForm={role == "chunhiem" ? true : false}
             initialValues={result}
             onSubmit={handleFormSubmit}
             name="shop=detail-contract"
