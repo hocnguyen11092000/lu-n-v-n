@@ -10,6 +10,7 @@ import FormComponent from "../../../../components/form-component/FormComponent";
 import PageHeader from "../../../../components/page-header/PageHeader";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
 import { getResponseMessage } from "../../../../utils/getResponseMessage";
+import { formatPrice } from "../../../../utils/formatPrice";
 
 type Props = {
   baseUrl?: string;
@@ -84,6 +85,7 @@ const DetailContract = (props: Props) => {
         deatailContract?.data?.data?.thuonglai_xacnhan == 0
           ? "Chưa xác nhận"
           : "Xác nhận",
+      price: formatPrice(deatailContract?.data?.data?.price || 0),
     };
   }
 
