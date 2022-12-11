@@ -119,6 +119,10 @@ const HomeTraders = () => {
           ),
         },
         {
+          key: "trader-home",
+          label: <div onClick={() => navigate("/")}>Trang chủ</div>,
+        },
+        {
           key: "logout",
           label: <div onClick={() => handleLogout(navigate)}>Đăng xuất</div>,
         },
@@ -144,7 +148,7 @@ const HomeTraders = () => {
           </Link>
           {
             <div>
-              <Link to={`${PATH.HTX}${"/manage-htx/detail"}`}>
+              <Link to={`${PATH.TRADER}${PATH.PROFILE}`}>
                 <span
                   style={{
                     marginLeft: "12px",

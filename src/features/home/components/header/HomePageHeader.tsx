@@ -168,8 +168,8 @@ const HomePageHeader = (props: Props) => {
                 >
                   <img
                     style={{
-                      width: "32px",
-                      height: "32px",
+                      width: "30px",
+                      height: "30px",
                       objectFit: "cover",
                       borderRadius: "50%",
                       marginRight: "8px",
