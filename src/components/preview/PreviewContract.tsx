@@ -12,6 +12,7 @@ const PreviewContract = (props: Props) => {
   const location = useLocation();
   const data: any = location.state;
   const navigate = useNavigate();
+  console.log(data);
 
   useEffect(() => {
     window.scrollTo({
@@ -123,6 +124,20 @@ const PreviewContract = (props: Props) => {
                 <b>Thông tin mùa vụ </b>
                 <p className="ml-12">- {data?.name_lichmuavu || ""}</p>
               </p>
+              <p>
+                <b>Giá thu mua</b>
+                <p className="ml-12">- {data?.price || ""}</p>
+              </p>
+            </div>
+            <div className="preview-contract-body-rules">
+              <p className="bold text-uper">
+                Các điều khoản kèm theo (nếu có1)
+              </p>
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: data?.desc,
+                }}
+              ></p>
             </div>
           </div>
           <br />

@@ -196,6 +196,7 @@ const HTXManagement = () => {
     setFilter((pre) => {
       return {
         ...pre,
+        page: 1,
         search: value?.search?.trim() || "",
       };
     });
@@ -380,10 +381,11 @@ const HTXManagement = () => {
         <div className="pagiantion">
           {data?.meta?.total > 0 && (
             <Pagination
-              defaultCurrent={filter.page as number}
+              // defaultCurrent={filter.page as number}
               total={data?.meta?.total}
               pageSize={filter.limit as number}
               onChange={handlePagination}
+              current={Number(filter.page)}
             />
           )}
         </div>

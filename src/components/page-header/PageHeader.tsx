@@ -1,6 +1,6 @@
 import { Breadcrumb, Button, Select } from "antd";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./page-header.scss";
 type Props = {
   form: string;
@@ -38,9 +38,39 @@ const PageHeader = ({
   allowSave,
 }: Props) => {
   const navigate = useNavigate();
+  const headerRef = useRef<any>();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (headerRef.current) {
+      const layout: any = document.querySelector(".ant-layout-content");
+
+      if (layout) {
+        console.log("run");
+        console.log(layout.classList);
+
+        layout.classList.add("m-t-63");
+      }
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        headerRef.current?.classList.add("active");
+      } else {
+        headerRef.current?.classList.remove("active");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
-    <div className="page-header">
+    <div className="page-header" ref={headerRef}>
       <div className="breadcrumb">
         {headerBreadcrumb && headerBreadcrumb.length > 0 && (
           <Breadcrumb>

@@ -4,6 +4,7 @@ import {
   AppstoreOutlined,
   BellOutlined,
   CalendarOutlined,
+  CheckSquareOutlined,
   ContainerOutlined,
   FormOutlined,
   MenuFoldOutlined,
@@ -15,16 +16,7 @@ import {
   UserOutlined,
   YuqueOutlined,
 } from "@ant-design/icons";
-import {
-  Badge,
-  Button,
-  Drawer,
-  Dropdown,
-  Layout,
-  Menu,
-  Space,
-  Spin,
-} from "antd";
+import { Badge, Drawer, Dropdown, Layout, Menu, Space, Spin } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -35,13 +27,11 @@ import {
   useNavigate,
 } from "react-router-dom";
 import userApi from "../../../../api/userApi";
-import logo from "../../../../assets/images/admin-logo.jpg";
 import NotFound from "../../../../components/not-found/NotFound";
 import Notification from "../../../../components/notification/Notification";
 import Profile from "../../../../components/profile/Profile";
 import { COMMON, PATH } from "../../../../enum";
 import { hasHTX, isChairman, reset, setRole } from "../../../../redux/htxSlice";
-import { toggleLoading } from "../../../../redux/loadingSlice";
 import { resetCount } from "../../../../redux/notificationSlice";
 import { setTheme } from "../../../../utils/changeTheme";
 import { handleLogout } from "../../../../utils/logout";
@@ -53,9 +43,11 @@ import Landmanagement from "../../../land/pages/land-management/Landmanagement";
 import CreatePost from "../../../post/pages/create-post/CreatePost";
 import DetailPost from "../../../post/pages/detail-post/DetailPost";
 import PostManagement from "../../../post/pages/post-management/PostManagement";
+import CreateReview from "../../../review/create-review/CreateReview";
+import DetailReview from "../../../review/create-review/detail-review/DetailReview";
+import ReviewManagement from "../../../review/list-review/ReviewManagement";
 import DetailRiceTransactionUser from "../../../rice-transaction/pages/detail-rice-transaction-user/DetailRiceTransactionUser";
 import RiceTransactionManagement from "../../../rice-transaction/pages/RiceTransactionManagement";
-import CreateShop from "../../../shop/pages/create-shop-rice/CreateShop";
 import DetailShopContract from "../../../shop/pages/detail-shop-contract/DetailShopContract";
 import DetailSupplierContract from "../../../shop/pages/detail-supplier-contract/DetailSupplierContract";
 import ShopManagement from "../../../shop/pages/shop-management/ShopManagement";
@@ -95,6 +87,19 @@ const HomeAdmin = () => {
   const navigate = useNavigate();
   const isFirst = useRef(false);
   const dispatch = useDispatch();
+  const location: any = useLocation();
+
+  useEffect(() => {
+    const layout: any = document.querySelector(".ant-layout-content");
+
+    if (layout) {
+      const PageHeader = document.querySelector(".page-header");
+
+      if (!PageHeader) {
+        layout.classList.remove("m-t-63");
+      }
+    }
+  }, [location.pathname]);
 
   const showDrawer = () => {
     setOpen(true);
@@ -103,7 +108,7 @@ const HomeAdmin = () => {
   const onClose = () => {
     setOpen(false);
   };
-  const location: any = useLocation();
+
   const changeRole = location.state?.role;
   const currentAccount = localStorage.getItem("current_account");
 
@@ -224,6 +229,13 @@ const HomeAdmin = () => {
       icon: <SnippetsOutlined />,
       label: (
         <Link to={`${PATH.HTX}${"/post-management"}`}>Quản lý bài viết</Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/review-management"}`,
+      icon: <CheckSquareOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/review-management"}`}>Đánh giá cuối mùa</Link>
       ),
     },
   ];
@@ -441,7 +453,9 @@ const HomeAdmin = () => {
                       arrow
                     >
                       <Badge count={notification?.count || 0} showZero={false}>
-                        <BellOutlined style={{ fontSize: "18px" }} />
+                        <span className="icon-notification">
+                          <BellOutlined style={{ fontSize: "18px" }} />
+                        </span>
                       </Badge>
                     </Dropdown>
                   </div>
@@ -627,7 +641,7 @@ const HomeAdmin = () => {
                           element={
                             <ContractManagement
                               allowCreate={false}
-                              allowDelete={true}
+                              allowDelete={false}
                               baseUrl="htx/contract-management"
                             ></ContractManagement>
                           }
@@ -697,6 +711,20 @@ const HomeAdmin = () => {
                         <Route
                           path={"/post-management/detail/:id"}
                           element={<DetailPost></DetailPost>}
+                        ></Route>
+                        <Route
+                          path={"/review-management"}
+                          element={
+                            <ReviewManagement baseUrl="htx"></ReviewManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/review-management/create"}
+                          element={<CreateReview></CreateReview>}
+                        ></Route>
+                        <Route
+                          path={"/review-management/detail/:id"}
+                          element={<DetailReview baseUrl="htx"></DetailReview>}
                         ></Route>
                         <Route path="*" element={<NotFound />} />
                       </>

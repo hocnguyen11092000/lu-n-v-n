@@ -184,10 +184,15 @@ const ShopManagement = ({ baseUrl, role }: Props) => {
 
   return (
     <div className="shop-management">
-      <Button>
-        <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
-      </Button>
-      <h3 style={{ margin: "16px 0" }}>Danh sách hợp đồng mua bán lúa giống</h3>
+      {role == "nhacungcap" && (
+        <Button>
+          <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
+        </Button>
+      )}
+
+      <h3 style={{ margin: "16px 0" }}>
+        Danh sách giao dịch mua bán lúa giống
+      </h3>
       <Table
         scroll={{ x: 2000 }}
         loading={materials.isLoading}
@@ -198,7 +203,8 @@ const ShopManagement = ({ baseUrl, role }: Props) => {
       <div className="pagiantion">
         {materials?.data?.meta?.total > 0 && (
           <Pagination
-            defaultCurrent={filter?.page as number}
+            // defaultCurrent={filter?.page as number}
+            current={Number(filter.page)}
             total={materials?.data?.meta?.total}
             pageSize={filter?.limit as number}
             onChange={handlePagination}

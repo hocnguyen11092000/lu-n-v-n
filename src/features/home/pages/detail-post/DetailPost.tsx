@@ -83,16 +83,25 @@ const HomeDetailPost = (props: Props) => {
               <Skeleton.Image
                 className="radius-6"
                 active
-                style={{ width: "80vw" }}
+                style={{ width: "80vw", height: "250px" }}
               />
             </div>
           </div>
         ) : (
-          <p
-            dangerouslySetInnerHTML={{
-              __html: detailPost?.data?.data?.post?.content,
-            }}
-          ></p>
+          <>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: detailPost?.data?.data?.post?.content,
+              }}
+            ></p>
+            <p style={{ fontWeight: "600", textAlign: "right" }}>
+              <span className="main-color font-bold ">tác giả:</span>{" "}
+              <span style={{ marginLeft: "4px" }}>
+                {" "}
+                {detailPost?.data?.data?.post?.fullname || ""}
+              </span>
+            </p>
+          </>
         )}
 
         <div className="add-comment">
@@ -169,7 +178,11 @@ const HomeDetailPost = (props: Props) => {
           </>
         ) : (
           <div className="list-comment">
-            <Comment data={detailPost?.data?.data?.list_comment}></Comment>
+            <Comment
+              detailPost={detailPost}
+              idPost={id || ""}
+              data={detailPost?.data?.data?.list_comment}
+            ></Comment>
           </div>
         )}
       </div>

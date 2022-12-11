@@ -46,6 +46,18 @@ const HomeTraders = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const layout: any = document.querySelector(".ant-layout-content");
+
+    if (layout) {
+      const PageHeader = document.querySelector(".page-header");
+
+      if (!PageHeader) {
+        layout.classList.remove("m-t-63");
+      }
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
     (() => {
       setCurrentPath("/trader/" + location.pathname.split("/")[2]);
     })();
@@ -124,24 +136,37 @@ const HomeTraders = () => {
         className="side-bar"
       >
         <div className="logo">
-          <Link to={`${PATH.TRADER}${PATH.DASHBOARD}`}>
+          <Link to={`${"/shop"}${"/dashboard"}`}>
             <img
               src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
               alt=""
             />
           </Link>
           {
-            <div
-              style={
-                !collapsed
-                  ? {
-                      display: "block",
-                    }
-                  : { display: "none" }
-              }
-              className="logo-title opacity"
-            >
-              Thương Lái
+            <div>
+              <Link to={`${PATH.HTX}${"/manage-htx/detail"}`}>
+                <span
+                  style={{
+                    marginLeft: "12px",
+                    fontSize: "11px",
+                    color: "#333",
+                  }}
+                >
+                  {!collapsed && "Thương lái"}
+                </span>
+                <div
+                  style={
+                    !collapsed
+                      ? {
+                          display: "block",
+                        }
+                      : { display: "none" }
+                  }
+                  className="logo-title opacity"
+                >
+                  {user?.user?.fullname || ""}
+                </div>
+              </Link>
             </div>
           }
         </div>
@@ -170,10 +195,15 @@ const HomeTraders = () => {
           <div className="user-info">
             <Space align="center">
               <Dropdown overlay={menu} arrow trigger={["click"]}>
-                <img
-                  src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
-                  alt=""
-                />
+                <span>
+                  <span className="user-info__name">
+                    {user?.user?.fullname || ""}
+                  </span>
+                  <img
+                    src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+                    alt=""
+                  />
+                </span>
               </Dropdown>
               <div
                 onClick={() => dispatch(resetCount())}
@@ -187,7 +217,9 @@ const HomeTraders = () => {
                   arrow
                 >
                   <Badge count={notification?.count || 0} showZero={false}>
-                    <BellOutlined style={{ fontSize: "18px" }} />
+                    <span className="icon-notification">
+                      <BellOutlined style={{ fontSize: "18px" }} />
+                    </span>
                   </Badge>
                 </Dropdown>
               </div>

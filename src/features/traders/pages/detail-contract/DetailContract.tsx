@@ -206,6 +206,16 @@ const DetailContract = (props: Props) => {
       ),
     },
     {
+      name: "price",
+      label: "Giá thu mua",
+      rules: [
+        {
+          required: true,
+        },
+      ],
+      formChildren: <Input disabled placeholder="Giá thu mua"></Input>,
+    },
+    {
       editor: (
         <div>
           <p>Mô tả</p>
@@ -481,6 +491,7 @@ const DetailContract = (props: Props) => {
         ></PageHeader>
         {deatailContract?.data?.data && (
           <FormComponent
+            disableForm={deatailContract?.data?.data?.status == "confirm"}
             initialValues={result}
             onSubmit={handleFormSubmit}
             name="detail-contract"

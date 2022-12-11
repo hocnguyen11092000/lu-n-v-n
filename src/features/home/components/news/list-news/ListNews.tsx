@@ -5,13 +5,12 @@ import Highlighter from "react-highlight-words";
 import { useNavigate } from "react-router-dom";
 import "./list-news.scss";
 import moment from "moment";
-import vi from "moment/locale/vi";
-import "moment/locale/es";
+import "moment/dist/locale/vi";
 
 type Props = {
   post?: any;
   header?: boolean;
-  headerText?: string;
+  headerText?: any;
   searchWords?: string;
   onLoadMore?: any;
   page?: any;
@@ -29,6 +28,8 @@ const ListNews = ({
 }: Props) => {
   const navigate = useNavigate();
   const first = useRef(false);
+
+  moment.locale("vi");
 
   useEffect(() => {
     first.current = true;
@@ -77,13 +78,16 @@ const ListNews = ({
                     }}
                   >
                     <EyeOutlined />
-                    <span> {news?.view + "  lượt xem" || ""}</span>
+                    <span style={{ marginTop: "2px" }}>
+                      {" "}
+                      {news?.view + "  lượt xem" || ""}
+                    </span>
                   </div>
                 </div>
-                {/* <p className="news-item-content-time">
+                <p className="news-item-content-time">
                   {(news?.created_at && moment(news?.created_at).fromNow()) ||
                     ""}
-                </p> */}
+                </p>
                 <p>{news?.short_description || ""}</p>
               </div>
             </div>

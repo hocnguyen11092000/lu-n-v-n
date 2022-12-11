@@ -52,7 +52,7 @@ const ContractManagement = (props: Props) => {
           <span>
             {record?.status == "confirm" ? (
               <span className="confirm">Đã xác nhận</span>
-            ) : record?.status == "watting" ? (
+            ) : record?.status == "waiting" ? (
               <span className="not-confirm">Chờ xác nhận</span>
             ) : record?.status == "thuonlai-update" ? (
               <span className="not-confirm">Thương lái đã cập nhật</span>

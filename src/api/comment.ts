@@ -6,6 +6,11 @@ const commentApi = {
     const url = "comment/create";
     return axiosClient.post(url, data);
   },
+
+  delete(id: any) {
+    const url = `comment/delete/${id}`;
+    return axiosClient.delete(url);
+  },
 };
 
 export default commentApi;

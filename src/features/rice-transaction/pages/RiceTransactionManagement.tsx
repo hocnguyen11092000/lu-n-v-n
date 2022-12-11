@@ -324,10 +324,12 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
           Lưu
         </Button>
       </Modal>
-      <Button>
-        <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
-      </Button>
-      <h3 style={{ margin: "16px 0" }}>Danh sách hợp đồng mua bán lúa</h3>
+      {role == "nhacungcap" && (
+        <Button>
+          <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
+        </Button>
+      )}
+      <h3 style={{ margin: "16px 0" }}>Danh sách giao dịch mua bán lúa</h3>
       <Table
         scroll={{ x: 2000 }}
         loading={userRiceTransaction.isLoading}
@@ -338,7 +340,8 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
       <div className="pagiantion">
         {userRiceTransaction?.data?.meta?.total > 0 && (
           <Pagination
-            defaultCurrent={filter?.page as number}
+            // defaultCurrent={filter?.page as number}
+            current={Number(filter.page)}
             total={userRiceTransaction?.data?.meta?.total}
             pageSize={filter?.limit as number}
             onChange={handlePagination}
