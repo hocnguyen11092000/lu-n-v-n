@@ -156,15 +156,7 @@ const CreateShop = (props: Props) => {
               style={{ alignItems: "center" }}
             >
               <Col lg={12} md={12} sm={24} xs={24}>
-                <Form.Item
-                  name="title_hopdongmuaban"
-                  label=""
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
+                <Form.Item name="title_hopdongmuaban" label="">
                   {/* <Input
                     placeholder="Tên hơp đồng"
                     onChange={(e) =>
