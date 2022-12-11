@@ -173,7 +173,7 @@ const CreateContractSupplier = (props: Props) => {
                     defaultValue={searchUserStore?.xavien_phone_number}
                     value={searchUserStore?.xavien_phone_number}
                     onChange={(e) => setSearchValue(e.target.value)}
-                    placeholder="Tìm kiếm hợp tác xã"
+                    placeholder="Tìm kiếm xã viên"
                     size="middle"
                     style={{ borderRadius: "5px" }}
                     onKeyPress={(event) => {
