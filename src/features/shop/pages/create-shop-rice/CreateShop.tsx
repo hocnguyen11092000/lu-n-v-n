@@ -187,7 +187,7 @@ const CreateShop = (props: Props) => {
                     defaultValue={searchUserStore?.xavien_phone_number}
                     value={searchUserStore?.xavien_phone_number}
                     onChange={(e) => setSearchValue(e.target.value)}
-                    placeholder="Tìm kiếm hợp tác xã"
+                    placeholder="Tìm kiếm xã viên"
                     size="middle"
                     style={{ borderRadius: "5px" }}
                     onKeyPress={(event) => {
@@ -307,6 +307,7 @@ const CreateShop = (props: Props) => {
                       Value="name_gionglua"
                       name="id_gionglua"
                       lable="Giống lúa"
+                      placeholder="Giống lúa"
                     ></AutoComplete>
                   </Col>
                   <Col lg={12} md={12} sm={24} xs={24}>

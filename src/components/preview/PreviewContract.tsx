@@ -145,7 +145,8 @@ const PreviewContract = (props: Props) => {
             </p>
             <div className="preview-contract-body-rules">
               <p className="bold text-uper">
-                Điều 1. Thông tin giống lúa, danh mục phân bón, mùa vụ
+                Điều 1. Thông tin giống lúa, danh mục phân bón, mùa vụ, giá thu
+                mua
               </p>
               <p>
                 <b>Thông tin giống lúa </b>

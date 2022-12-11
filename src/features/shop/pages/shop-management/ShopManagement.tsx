@@ -186,7 +186,7 @@ const ShopManagement = ({ baseUrl, role }: Props) => {
     <div className="shop-management">
       {role == "nhacungcap" && (
         <Button>
-          <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
+          <Link to="/shop/shop-management/create-shop">Tạo giao dịch</Link>
         </Button>
       )}
 

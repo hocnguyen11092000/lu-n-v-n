@@ -196,7 +196,7 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
       {role == "nhacungcap" && (
         <Button>
           <Link to="/shop/supplier-management/create-contract-supplier">
-            Tạo hợp đồng
+            Tạo giao dịch
           </Link>
         </Button>
       )}
