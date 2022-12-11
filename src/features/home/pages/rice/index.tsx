@@ -13,15 +13,11 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { IHTX, ILoHang } from "../../../../model/tracking-tracing";
+import { ILoHang } from "../../../../model/tracking-tracing";
 import Card from "../../components/custom-cart/card";
 import CustomPagination from "../../components/pagination/pagination";
-import FlagCircleIcon from "@mui/icons-material/FlagCircle";
 import tracingApi from "../../../../api/tracing";
-import SearchIcon from "@mui/icons-material/Search";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Divider, Input } from "antd";
-import { useLocation, useParams, useSearchParams } from "react-router-dom";
 
 const LohangPage = () => {
   const [page, setPage] = useState(1);
@@ -29,37 +25,31 @@ const LohangPage = () => {
   const [limit, setLimit] = useState(10);
   const [searchValue, setSearchValue] = useState("");
   const [loading, setLoading] = useState(-1);
-  const [options, setOptions] = useState([
-    {
-      value: "",
-      label: "",
-    },
-  ]);
   const [data, setData] = useState<ILoHang[]>();
 
-  const params = useParams();
-  const [query] = useSearchParams();
-
-  const handleChange = (e: React.SyntheticEvent<Element, Event>, data: any) => {
-    setSearchValue(data.value);
+  const handleSearch = async () => {
+    try {
+      setLoading(-1);
+      const response = await tracingApi.getLoHangWithoutHTX({
+        search: searchValue,
+      });
+      if (response && response.data.length > 0) {
+        setData(response.data);
+        setLoading(1);
+        setPageSize(response.meta.totalPage);
+      } else {
+        setLoading(0);
+        setData([]);
+        setPageSize(1);
+      }
+    } catch (error) {
+      setLoading(0);
+      console.log(error);
+    }
   };
 
-  const handleInputChange = async (
-    e: React.SyntheticEvent<Element, Event>,
-    value: any
-  ) => {
-    const lichmuavu = await tracingApi.getLichMuaVu(params.id || "", {
-      search: value,
-    });
-    if (lichmuavu && lichmuavu.data.length > 0) {
-      const dataMapping = lichmuavu.data.map((d: any) => {
-        return {
-          value: d.id_lichmuavu,
-          label: d.name_lichmuavu,
-        };
-      });
-      setOptions(dataMapping);
-    }
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
   };
 
   useEffect(() => {
@@ -81,7 +71,7 @@ const LohangPage = () => {
         console.log(error);
       }
     })();
-  }, [page, limit, searchValue]);
+  }, [page, limit]);
 
   return (
     <>
@@ -89,7 +79,7 @@ const LohangPage = () => {
         <Box height="60px" display="flex" alignItems="center">
           <FormControl>
             <Input
-              // onChange={handleInputChange}
+              onChange={handleInputChange}
               placeholder="Mã lô hàng"
               size="middle"
               style={{ borderRadius: "5px" }}
@@ -99,7 +89,7 @@ const LohangPage = () => {
             variant="contained"
             color="success"
             sx={{ height: "30px", ml: "8px" }}
-            // onClick={handleSearch}
+            onClick={handleSearch}
           >
             Tìm kiếm
           </Button>
