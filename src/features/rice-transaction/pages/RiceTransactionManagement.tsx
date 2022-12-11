@@ -130,16 +130,18 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
     },
     {
       title: "Mùa vụ",
-      width: "15%",
+      width: "10%",
       dataIndex: "name_lichmuavu",
     },
     {
       title: "Xã viên",
       dataIndex: "name_xavien",
+      width: "8%",
     },
     {
       title: "Tên thương lái",
       dataIndex: "name_thuonglai",
+      width: "8%",
     },
     {
       title: "Số lượng",
@@ -154,7 +156,7 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
     },
     {
       title: "Trạng thái",
-      width: "10%",
+      width: "9%",
       dataIndex: "status",
       render: (text: any, record: any) => {
         return (
@@ -188,7 +190,7 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
     },
     {
       title: "Thương lái xác nhận",
-      width: "8%",
+      width: "7%",
       dataIndex: "thuonglai_xacnhan",
       render: (text: any, record: any) => {
         return (
@@ -205,7 +207,7 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
     {
       title: "Xã viên xác nhận",
       dataIndex: "xavien_xacnhan",
-      width: "8%",
+      width: "7%",
       render: (text: any, record: any) => {
         return (
           <span>
@@ -249,7 +251,7 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
                 handleApprove(value, record?.id_giaodichmuaban_lua || "")
               }
               size="small"
-              value={record?.thuonglai_xacnhan + "" || ""}
+              value={record?.hoptacxa_xacnhan + "" || ""}
               placeholder="Trạng thái"
               style={{ width: 150 }}
               options={[
@@ -331,7 +333,7 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
       )}
       <h3 style={{ margin: "16px 0" }}>Danh sách giao dịch mua bán lúa</h3>
       <Table
-        scroll={{ x: 2000 }}
+        scroll={{ x: 2100 }}
         loading={userRiceTransaction.isLoading}
         columns={tableColumns}
         dataSource={userRiceTransaction?.data?.data || []}

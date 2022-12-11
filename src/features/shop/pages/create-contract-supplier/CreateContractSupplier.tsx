@@ -430,16 +430,6 @@ const CreateContractSupplier = (props: Props) => {
                       >
                         Tạo hợp đồng
                       </Button>
-                      <Button
-                        type="primary"
-                        onClick={() =>
-                          navigate(`${PATH.PREVIEW}`, {
-                            state: { ...dataContract, ...user },
-                          })
-                        }
-                      >
-                        Xem trước
-                      </Button>
                     </Space>
                   </div>
                 </Row>
