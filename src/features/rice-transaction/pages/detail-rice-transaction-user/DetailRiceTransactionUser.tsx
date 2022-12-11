@@ -1,6 +1,6 @@
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Button, Input, Modal, Spin } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import FormComponent from "../../../../components/form-component/FormComponent";
 import shopContractApi from "../../../../api/shopContract";
@@ -22,6 +22,13 @@ const DetailRiceTransactionUser = ({ baseUrl }: Props) => {
   const [showReason, setShowReason] = useState(false);
   const [reasonValue, setReasonValue] = useState("");
   const [file, setFile] = useState(null);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   const { id } = useParams();
 
@@ -331,6 +338,10 @@ const DetailRiceTransactionUser = ({ baseUrl }: Props) => {
     {
       name: "Chi tiết",
       path: "/detail",
+    },
+    {
+      name: `${id}`,
+      path: "/:id",
     },
   ];
 

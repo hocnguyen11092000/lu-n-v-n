@@ -40,6 +40,8 @@
 .logo {
   display: flex;
   align-items: center;
+  margin-left: 20px;
+  justify-content: flex-start;
 
   &-title {
     text-transform: uppercase;

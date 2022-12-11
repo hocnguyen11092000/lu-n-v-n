@@ -7,6 +7,7 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PayCircleOutlined,
+  SnippetsOutlined,
 } from "@ant-design/icons";
 import { Badge, Dropdown, Layout, Menu, Space } from "antd";
 import React, { useEffect, useState } from "react";
@@ -25,6 +26,8 @@ import { PATH } from "../../../../enum";
 import { resetCount } from "../../../../redux/notificationSlice";
 import { handleLogout } from "../../../../utils/logout";
 import Dashboard from "../../../admin/pages/dashboard/Dashboard";
+import CreatePost from "../../../post/pages/create-post/CreatePost";
+import DetailPost from "../../../post/pages/detail-post/DetailPost";
 import DetailRiceTransactionUser from "../../../rice-transaction/pages/detail-rice-transaction-user/DetailRiceTransactionUser";
 import RiceTransactionManagement from "../../../rice-transaction/pages/RiceTransactionManagement";
 import CreateCategoryPertocodes from "../../pages/category-pesticides-management/CategoryPertocodesManagement";
@@ -32,6 +35,7 @@ import CreateContract from "../../pages/create-contract/CreateContract";
 import DetailContract from "../../pages/detail-contract/DetailContract";
 import DetailCategory from "../../pages/detailCategory/DetailCategory";
 import ContractManagement from "../contract/ContractManagement";
+import PostManagement from "../../../post/pages/post-management/PostManagement";
 
 const { Header, Sider, Content } = Layout;
 
@@ -98,6 +102,13 @@ const HomeTraders = () => {
         </Link>
       ),
     },
+    {
+      key: `${"/trader"}${"/post-management"}`,
+      icon: <SnippetsOutlined />,
+      label: (
+        <Link to={`${"/trader"}${"/post-management"}`}>Quản lý bài viết</Link>
+      ),
+    },
     // {
     //   key: `${PATH.TRADER}${PATH.SUPPLIER}`,
     //   icon: <FullscreenExitOutlined />,
@@ -120,7 +131,7 @@ const HomeTraders = () => {
         },
         {
           key: "trader-home",
-          label: <div onClick={() => navigate("/")}>Trang chủ</div>,
+          label: <div onClick={() => navigate("/")}>Về trang chủ</div>,
         },
         {
           key: "logout",
@@ -211,8 +222,12 @@ const HomeTraders = () => {
               </Dropdown>
               <div
                 onClick={() => dispatch(resetCount())}
-                className="notification ml-16 center"
-                style={{ cursor: "pointer" }}
+                className="notification center"
+                style={{
+                  cursor: "pointer",
+                  marginRight: "20px",
+                  marginLeft: "8px",
+                }}
               >
                 <Dropdown
                   overlay={<Notification></Notification>}
@@ -227,9 +242,9 @@ const HomeTraders = () => {
                   </Badge>
                 </Dropdown>
               </div>
-              <div className="app ml-12 center">
+              {/* <div className="app ml-12 center">
                 <AppstoreOutlined style={{ fontSize: "18px" }} />
-              </div>
+              </div> */}
             </Space>
           </div>
         </Header>
@@ -289,6 +304,18 @@ const HomeTraders = () => {
             <Route
               path={PATH.PROFILE}
               element={<Profile name="thuonglai"></Profile>}
+            ></Route>
+            <Route
+              path={"/post-management"}
+              element={<PostManagement baseUrl="trader"></PostManagement>}
+            ></Route>
+            <Route
+              path={"/post-management/create"}
+              element={<CreatePost></CreatePost>}
+            ></Route>
+            <Route
+              path={"/post-management/detail/:id"}
+              element={<DetailPost></DetailPost>}
             ></Route>
           </Routes>
         </Content>

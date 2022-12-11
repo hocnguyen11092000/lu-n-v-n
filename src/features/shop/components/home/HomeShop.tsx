@@ -107,6 +107,10 @@ const HomeShop = () => {
           ),
         },
         {
+          key: "shop-home",
+          label: <div onClick={() => navigate("/")}>Về trang chủ</div>,
+        },
+        {
           key: "logout",
           label: <div onClick={() => handleLogout(navigate)}>Đăng xuất</div>,
         },
@@ -195,8 +199,12 @@ const HomeShop = () => {
               </Dropdown>
               <div
                 onClick={() => dispatch(resetCount())}
-                className="notification ml-16 center"
-                style={{ cursor: "pointer" }}
+                className="notification center"
+                style={{
+                  cursor: "pointer",
+                  marginRight: "20px",
+                  marginLeft: "8px",
+                }}
               >
                 <Dropdown
                   overlay={<Notification></Notification>}
@@ -210,9 +218,6 @@ const HomeShop = () => {
                     </span>
                   </Badge>
                 </Dropdown>
-              </div>
-              <div className="app ml-12 center">
-                <AppstoreOutlined style={{ fontSize: "18px" }} />
               </div>
             </Space>
           </div>

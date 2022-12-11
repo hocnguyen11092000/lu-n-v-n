@@ -381,6 +381,10 @@ const DetailSupplierContract = ({ baseUrl }: Props) => {
       name: "Chi tiết",
       path: "/detail",
     },
+    {
+      name: `${id}`,
+      path: "/:id",
+    },
   ];
 
   const handleConfirm = () => {
