@@ -61,6 +61,8 @@ const PageHeader = ({
 
   useEffect(() => {
     const handleScroll = () => {
+      console.log(window.scrollY);
+
       if (window.scrollY > 50) {
         headerRef.current?.classList.add("active");
       } else {
@@ -73,6 +75,8 @@ const PageHeader = ({
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // console.log(disableApprove, disabledSelect);
 
   return (
     <div className="page-header" ref={headerRef}>
@@ -94,7 +98,9 @@ const PageHeader = ({
         {edit !== false && (
           <Button
             disabled={
-              allowSave ? false : disabled || disableApprove || !isConfirm
+              allowSave != undefined
+                ? !allowSave
+                : disabled || disableApprove || !isConfirm
             }
             loading={loading}
             form={form}

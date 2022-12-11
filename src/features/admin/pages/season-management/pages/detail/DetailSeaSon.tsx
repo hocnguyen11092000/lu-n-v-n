@@ -593,6 +593,8 @@ const DetailSeaSon = (props: Props) => {
           />
         )}
       </div>
+      <br />
+      <br />
       <Modal
         title="Tạo hoạt động mùa vụ"
         onOk={handleCancel}

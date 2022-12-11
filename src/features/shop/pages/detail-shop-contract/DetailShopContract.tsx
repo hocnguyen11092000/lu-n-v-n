@@ -470,13 +470,13 @@ const DetailShopContract = ({ baseUrl }: Props) => {
       </Modal>
       <div className="detail-contract" style={{ minHeight: "100vh" }}>
         <PageHeader
-          onApprove={handleApprove}
           edit={true}
           headerBreadcrumb={headerBreadcrumb}
           form="shop=detail-contract"
           loading={mutation_update_shop_contract.isLoading}
           isConfirm={!baseUrl?.includes("chunhiem")}
           onConfirm={handleConfirm}
+          onApprove={handleApprove}
           confirmLoading={confirm_contract.isLoading}
           isAllowApprove={baseUrl?.includes("chunhiem")}
           disableApprove={deatailContract?.data?.data?.hoptacxa_xacnhan != 0}

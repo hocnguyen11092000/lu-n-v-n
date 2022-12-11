@@ -98,7 +98,7 @@ const HomeTraders = () => {
       icon: <PayCircleOutlined />,
       label: (
         <Link to={`${PATH.TRADER}${"/rice-transaction-management"}`}>
-          Giao dịch lúa giống
+          Giao dịch lúa
         </Link>
       ),
     },
