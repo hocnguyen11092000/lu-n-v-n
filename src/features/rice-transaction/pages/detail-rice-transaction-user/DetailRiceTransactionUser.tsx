@@ -322,7 +322,7 @@ const DetailRiceTransactionUser = ({ baseUrl }: Props) => {
       deatailContract?.data?.data.xavien_xacnhan == 0
         ? "chưa xác nhận"
         : "xác nhận";
-    result.price = formatPrice(deatailContract?.data?.data.rice || 0);
+    result.price = formatPrice(deatailContract?.data?.data.price || 0);
     result = { ...deatailContract?.data?.data, ...result };
   }
 
