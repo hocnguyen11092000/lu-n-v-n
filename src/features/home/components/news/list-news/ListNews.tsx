@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "./list-news.scss";
 import moment from "moment";
 import "moment/dist/locale/vi";
+import { removeAccents } from "../../../../../utils/removeAccents";
 
 type Props = {
   post?: any;
@@ -65,8 +66,8 @@ const ListNews = ({
                   <Highlighter
                     highlightClassName="hight-light-text"
                     searchWords={searchWords?.split(" ")}
-                    autoEscape={true}
                     textToHighlight={news?.title_post || ""}
+                    autoEscape={true}
                   />
                 </p>
                 <div className="news-item-content-time main-color">

@@ -184,13 +184,15 @@ ul::-webkit-scrollbar-thumb {
 // }
 
 .hight-light-text {
-  background-color: $main-color;
+  // background-color: $main-color;
   display: inline-block;
-  margin: 4px;
-  border-radius: $radius-6;
-  color: #fff;
-  font-weight: 500;
-  padding: 4px 6px;
+  border-radius: 2px;
+  padding: 0 2px;
+  font-size: 15px;
+}
+
+mark {
+  background-color: #dce51178;
 }
 
 .cursor-poiner {

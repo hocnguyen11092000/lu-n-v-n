@@ -492,6 +492,9 @@ const DetailShopContract = ({ baseUrl }: Props) => {
               : deatailContract?.data?.data?.nhacungcap_xacnhan
           }
         ></PageHeader>
+        {deatailContract?.data?.data?.hoptacxa_xacnhan == 2 && (
+          <span>{deatailContract?.data?.data?.reason || ""} </span>
+        )}
         {result && Object.keys(result).length > 0 && (
           <FormComponent
             initialValues={result}
