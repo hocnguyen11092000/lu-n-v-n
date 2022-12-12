@@ -493,7 +493,12 @@ const DetailShopContract = ({ baseUrl }: Props) => {
           }
         ></PageHeader>
         {deatailContract?.data?.data?.hoptacxa_xacnhan == 2 && (
-          <span>{deatailContract?.data?.data?.reason || ""} </span>
+          <span className="refuse-reason">
+            *lý do từ chối:{" "}
+            <span className="font-bold">
+              {deatailContract?.data?.data?.reason || ""}{" "}
+            </span>
+          </span>
         )}
         {result && Object.keys(result).length > 0 && (
           <FormComponent

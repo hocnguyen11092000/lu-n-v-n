@@ -31,6 +31,19 @@ const LandManagement = (props: Props) => {
       dataIndex: "address",
     },
     {
+      title: "Diện tích",
+      dataIndex: "dientich",
+      render: (text: any, record: any) => (
+        <>
+          <span>
+            {record?.dientich
+              ? record?.dientich + " mét vuông "
+              : "Không có dữ liệu"}
+          </span>
+        </>
+      ),
+    },
+    {
       title: "Hình ảnh",
       dataIndex: "thumbnail",
       render: (text: any, record: any) => (
@@ -49,7 +62,7 @@ const LandManagement = (props: Props) => {
     {
       title: "Vị trí",
       dataIndex: "location",
-      width: "25%",
+      width: "15%",
       render: (text: any, record: any) => (
         <>
           {record?.location ? (

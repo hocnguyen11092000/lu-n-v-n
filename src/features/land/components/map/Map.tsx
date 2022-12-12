@@ -178,6 +178,7 @@ function Map() {
           {
             ...detailland,
             location: drawShape,
+            dientich: area || null,
           },
           {
             onSuccess: (res) => {
