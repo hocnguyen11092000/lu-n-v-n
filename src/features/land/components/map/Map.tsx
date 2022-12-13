@@ -15,6 +15,9 @@ import landApi from "../../../../api/land";
 import { getResponseMessage } from "../../../../utils/getResponseMessage";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
 import * as turf from "@turf/turf";
+import { useSelector } from "react-redux";
+import { formatMoment } from "../../../../utils/formatMoment";
+import moment from "moment";
 
 const mapContainerStyle = {
   height: "500px",
@@ -66,8 +69,19 @@ function Map() {
   const ref: any = useRef();
   const postion: any = location.state?.position?.address || "";
   const editPosition = location.state?.preview;
+  const user = useSelector((state: any) => state.user?.user);
 
   const isEdit = !!editPosition;
+
+  // useEffect(() => {
+  //   const hander = (event: any) => {
+  //     event.preventDefault();
+  //   };
+  //   document.addEventListener("contextmenu", (event) => hander(event));
+
+  //   return () =>
+  //     document.removeEventListener("contextmenu", (event) => hander(event));
+  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -256,6 +270,18 @@ function Map() {
             {location.state?.position.address || ""}
           </span>
         </p>
+        <p>
+          Xã viên:{" "}
+          <span style={{ fontSize: "16px", marginLeft: "4px" }}>
+            {user?.fullname || ""}
+          </span>
+        </p>
+        <p>
+          Ngày tạo:{" "}
+          <span style={{ fontSize: "16px", marginLeft: "4px" }}>
+            {formatMoment(moment(new Date()))}
+          </span>
+        </p>
       </Drawer>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h2>Cập nhật vị trí thửa đất</h2>
@@ -318,6 +344,10 @@ function Map() {
             // Event used when dragging the whole Polygon
             onDragEnd={onEdit}
             onLoad={onLoad2}
+            onRightClick={(e: any) => {
+              // e.preventDefault();
+              setOpen(true);
+            }}
             onUnmount={onUnmount}
             key={1}
             options={{
