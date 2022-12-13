@@ -50,7 +50,7 @@ const SearchResult = ({
 
                     <Skeleton.Input
                       active={true}
-                      style={{ width: "500px", height: "62px" }}
+                      style={{ width: "400px", height: "62px" }}
                       className="radius-6"
                     />
                   </div>
@@ -82,7 +82,7 @@ const SearchResult = ({
 
                     <Skeleton.Input
                       active={true}
-                      style={{ width: "500px", height: "62px" }}
+                      style={{ width: "400px", height: "62px" }}
                       className="radius-6"
                     />
                   </div>

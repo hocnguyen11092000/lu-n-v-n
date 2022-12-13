@@ -75,7 +75,14 @@ const PostMangement = ({ baseUrl, role }: Props) => {
       title: "hình ảnh",
       dataIndex: "image",
       render: (text: any, record: any) => {
-        return <img src={record?.image || ""} width={"60px"} alt="" />;
+        return (
+          <img
+            src={record?.image || ""}
+            width={"60px"}
+            alt=""
+            className="radius-6"
+          />
+        );
       },
     },
     {
