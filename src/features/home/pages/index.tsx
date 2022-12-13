@@ -12,23 +12,26 @@ const index = () => {
   return (
     <>
       <HomePageHeader></HomePageHeader>
-      <Routes>
-        <Route path="/" element={<HomePage></HomePage>}></Route>
-        <Route path="/htx" element={<HTXPage></HTXPage>}></Route>
-        <Route
-          path="/htx/:id"
-          element={<HTXDeatailPage></HTXDeatailPage>}
-        ></Route>
-        <Route
-          path="/htx/lohang/:id"
-          element={<TracingPricePage></TracingPricePage>}
-        ></Route>
-        <Route path="/lohang" element={<LohangPage></LohangPage>}></Route>
-        <Route
-          path="/post/:id"
-          element={<HomeDetailPost></HomeDetailPost>}
-        ></Route>
-      </Routes>
+      <div className="home-content" style={{ minHeight: "50vh" }}>
+        <Routes>
+          <Route path="/" element={<HomePage></HomePage>}></Route>
+          <Route path="/htx" element={<HTXPage></HTXPage>}></Route>
+          <Route
+            path="/htx/:id"
+            element={<HTXDeatailPage></HTXDeatailPage>}
+          ></Route>
+          <Route
+            path="/htx/lohang/:id"
+            element={<TracingPricePage></TracingPricePage>}
+          ></Route>
+          <Route path="/lohang" element={<LohangPage></LohangPage>}></Route>
+          <Route
+            path="/post/:id"
+            element={<HomeDetailPost></HomeDetailPost>}
+          ></Route>
+        </Routes>
+      </div>
+
       <HomeFooter></HomeFooter>
     </>
   );

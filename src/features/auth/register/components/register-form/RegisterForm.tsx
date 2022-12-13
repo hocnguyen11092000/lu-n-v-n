@@ -156,7 +156,7 @@ const RegisterForm = ({ userRole, onSubmit, loading }: Props) => {
                   },
                 ]}
               >
-                <Select mode="multiple" placeholder="Loại tài khoản">
+                <Select placeholder="Loại tài khoản">
                   {userRole &&
                     userRole.map((item) => {
                       return (

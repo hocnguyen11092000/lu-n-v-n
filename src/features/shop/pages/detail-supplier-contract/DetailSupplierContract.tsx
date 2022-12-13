@@ -498,6 +498,14 @@ const DetailSupplierContract = ({ baseUrl }: Props) => {
               : deatailContract?.data?.data?.nhacungcap_xacnhan
           }
         ></PageHeader>
+        {deatailContract?.data?.data?.hoptacxa_xacnhan == 2 && (
+          <span className="refuse-reason">
+            *lý do từ chối:{" "}
+            <span className="font-bold">
+              {deatailContract?.data?.data?.reason || ""}{" "}
+            </span>
+          </span>
+        )}
         {result && Object.keys(result).length > 0 && (
           <FormComponent
             disableForm={deatailContract?.data?.data?.status == 1}

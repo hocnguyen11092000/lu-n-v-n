@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { handleLogout } from "../../../../utils/logout";
 import SearchResult from "../../../../components/search-result/SearchResult";
 import postApi from "../../../../api/post";
+import { removeAccents } from "../../../../utils/removeAccents";
 type Props = {};
 
 const HomePageHeader = (props: Props) => {
@@ -48,7 +49,9 @@ const HomePageHeader = (props: Props) => {
         setLoadingSearch(true);
 
         timer.current = setTimeout(async () => {
-          const res = await postApi.getAll({ search: searchValue });
+          const res = await postApi.getAll({
+            search: searchValue,
+          });
           setDataSearch(res?.data);
           setLoadingSearch(false);
         }, 300);

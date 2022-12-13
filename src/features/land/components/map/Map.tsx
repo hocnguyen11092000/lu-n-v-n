@@ -50,6 +50,7 @@ const handleMouseOut = (e: any) => {
 };
 
 function Map() {
+  const [finalPolygon, setFinalPolygon] = useState();
   const [center, setCenter] = useState<any>({
     lat: 10.045162,
     lng: 105.746857,
@@ -91,6 +92,7 @@ function Map() {
   }, [postion]);
 
   const onPolygonComplete = (polygon: any) => {
+    polygon.setMap(null);
     const coords = polygon
       .getPath()
       .getArray()
@@ -100,6 +102,8 @@ function Map() {
           lng: coord.lng(),
         };
       });
+
+    setFinalPolygon(coords);
 
     const transformData = coords.map((item: any) => {
       return [item?.lat, item?.lng];
@@ -155,6 +159,7 @@ function Map() {
     (polygon: any) => {
       polygonRef.current = polygon;
       const path = polygon.getPath();
+
       listenersRef.current.push(
         path.addListener("set_at", onEdit),
         path.addListener("insert_at", onEdit),
@@ -178,6 +183,7 @@ function Map() {
           {
             ...detailland,
             location: drawShape,
+            dientich: area || null,
           },
           {
             onSuccess: (res) => {
@@ -303,10 +309,37 @@ function Map() {
               }}
             />
           )}
+          <Polygon
+            ref={ref}
+            editable
+            draggable
+            path={finalPolygon || []}
+            onMouseUp={onEdit}
+            // Event used when dragging the whole Polygon
+            onDragEnd={onEdit}
+            onLoad={onLoad2}
+            onUnmount={onUnmount}
+            key={1}
+            options={{
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillOpacity: 0.35,
+            }}
+          />
           <DrawingManager
             options={{
               drawingControl: true,
-              polygonOptions: { editable: true },
+              // polygonOptions: { editable: true },
+              polygonOptions: {
+                strokeOpacity: 1.0,
+                strokeWeight: 3,
+                fillOpacity: 0.3,
+                draggable: true,
+                editable: true,
+                paths: path,
+                clickable: false,
+                geodesic: true,
+              },
             }}
             onLoad={onLoad}
             onPolygonComplete={onPolygonComplete}

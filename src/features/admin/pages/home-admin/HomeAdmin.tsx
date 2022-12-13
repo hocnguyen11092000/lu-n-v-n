@@ -164,7 +164,7 @@ const HomeAdmin = () => {
   const createMenu = [
     {
       key: `${PATH.HTX}${PATH.DASHBOARD}`,
-      icon: <UserOutlined />,
+      icon: <AppstoreAddOutlined />,
       label: <Link to={`${PATH.HTX}${PATH.DASHBOARD}`}>Bảng điều khiển</Link>,
     },
     {
@@ -177,7 +177,7 @@ const HomeAdmin = () => {
   const userMenu = [
     {
       key: `${PATH.HTX}${PATH.DASHBOARD}`,
-      icon: <UserOutlined />,
+      icon: <AppstoreAddOutlined />,
       label: <Link to={`${PATH.HTX}${PATH.DASHBOARD}`}>Bảng điều khiển</Link>,
     },
     {
@@ -348,6 +348,8 @@ const HomeAdmin = () => {
     setTheme("#c69");
   };
 
+  console.log(roles?.role === "chunhiem" && !roles?.activ);
+
   return (
     <Spin spinning={loading} style={{ minHeight: "100vh" }} size={"large"}>
       {roles || isNewUser ? (
@@ -388,7 +390,7 @@ const HomeAdmin = () => {
                       }
                       className="logo-title opacity"
                     >
-                      {roleHtx?.role?.name_hoptacxa || ""}
+                      {roleHtx?.role?.name_hoptacxa || "Bạn chưa có hợp tác xã"}
                     </div>
                   </Link>
                 </div>
@@ -500,7 +502,9 @@ const HomeAdmin = () => {
                       ></Route>
                     )}
 
-                    {roles?.role === "chunhiem" && (
+                    {roles?.role === "chunhiem" && !roles?.active ? (
+                      <Route path="*" element={<NotFound />} />
+                    ) : (
                       <>
                         <Route
                           path={PATH.ADD_USER_TO_HTX}
@@ -571,7 +575,6 @@ const HomeAdmin = () => {
                             ></SupplierManagement>
                           }
                         ></Route>
-
                         <Route
                           path={
                             "/supplier-management/detail-supplier-contract/:id"
@@ -607,12 +610,14 @@ const HomeAdmin = () => {
                           path={"/post-management/detail/:id"}
                           element={<DetailPost></DetailPost>}
                         ></Route>
+                        <Route path="*" element={<NotFound />} />
                       </>
                     )}
 
                     {(roles?.role === "xavien" ||
-                      roles?.role === "chunhiem") && (
+                      (roles?.role === "chunhiem" && roles?.active)) && (
                       <>
+                        {console.log("run")}
                         <Route
                           path="/manage-story"
                           element={<Story></Story>}
@@ -737,15 +742,15 @@ const HomeAdmin = () => {
                       path={PATH.PROFILE}
                       element={<Profile name="xavien"></Profile>}
                     ></Route>
-                    <Route
+                    {/* <Route
                       path="/manage-land/create"
                       element={<CreateLand></CreateLand>}
                     ></Route>
                     <Route
                       path="/manage-land/map"
                       element={<Map></Map>}
-                    ></Route>
-                    <Route
+                    ></Route> */}
+                    {/* <Route
                       path={PATH.CONTRACT_MANAGEMENT}
                       element={
                         <ContractManagement
@@ -760,7 +765,7 @@ const HomeAdmin = () => {
                       element={
                         <DetailContract baseUrl="htx/contract-management"></DetailContract>
                       }
-                    ></Route>
+                    ></Route> */}
                     <Route path="*" element={<NotFound />} />
                   </>
                 )}
