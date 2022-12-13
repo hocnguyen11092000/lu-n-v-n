@@ -584,6 +584,7 @@ const DetailSeaSon = (props: Props) => {
       <div className="pagiantion">
         {activity?.data?.meta?.total > 0 && (
           <Pagination
+            size="small"
             // defaultCurrent={filter.page as number}
             current={Number(filter.page)}
             total={activity?.data?.meta?.total}

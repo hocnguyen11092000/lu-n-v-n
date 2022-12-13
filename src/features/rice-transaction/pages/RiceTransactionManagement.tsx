@@ -344,6 +344,7 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
       <div className="pagiantion">
         {userRiceTransaction?.data?.meta?.total > 0 && (
           <Pagination
+          size="small"
             // defaultCurrent={filter?.page as number}
             current={Number(filter.page)}
             total={userRiceTransaction?.data?.meta?.total}

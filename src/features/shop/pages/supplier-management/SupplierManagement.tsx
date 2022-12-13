@@ -212,6 +212,7 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
       <div className="pagiantion">
         {suplierContract?.data?.meta?.total > 0 && (
           <Pagination
+          size="small"
             // defaultCurrent={filter?.page as number}
             current={Number(filter.page)}
             total={suplierContract?.data?.meta?.total}

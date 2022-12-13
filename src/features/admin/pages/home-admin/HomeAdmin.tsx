@@ -734,6 +734,10 @@ const HomeAdmin = () => {
                           path={"/review-management/detail/:id"}
                           element={<DetailReview baseUrl="htx"></DetailReview>}
                         ></Route>
+                        <Route
+                          path="/manage-land/map"
+                          element={<Map></Map>}
+                        ></Route>
                         <Route path="*" element={<NotFound />} />
                       </>
                     )}

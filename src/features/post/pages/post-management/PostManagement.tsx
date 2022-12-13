@@ -151,6 +151,7 @@ const PostMangement = ({ baseUrl, role }: Props) => {
       <div className="pagiantion">
         {postList?.data?.meta?.total > 0 && (
           <Pagination
+            size="small"
             // defaultCurrent={filter?.page as number}
             current={Number(filter.page)}
             total={postList?.data?.meta?.total}
