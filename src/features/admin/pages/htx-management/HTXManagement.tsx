@@ -381,6 +381,7 @@ const HTXManagement = () => {
         <div className="pagiantion">
           {data?.meta?.total > 0 && (
             <Pagination
+              size="small"
               // defaultCurrent={filter.page as number}
               total={data?.meta?.total}
               pageSize={filter.limit as number}

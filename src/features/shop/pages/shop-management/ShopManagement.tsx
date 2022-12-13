@@ -203,6 +203,7 @@ const ShopManagement = ({ baseUrl, role }: Props) => {
       <div className="pagiantion">
         {materials?.data?.meta?.total > 0 && (
           <Pagination
+          size="small"
             // defaultCurrent={filter?.page as number}
             current={Number(filter.page)}
             total={materials?.data?.meta?.total}
