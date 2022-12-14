@@ -160,7 +160,27 @@ function Map() {
         .map((latLng: any) => {
           return { lat: latLng.lat(), lng: latLng.lng() };
         });
+
+      const transformData = nextPath.map((item: any) => {
+        return [item?.lat, item?.lng];
+      });
       setPath(nextPath);
+
+      const area = turf.area({
+        type: "Feature",
+        geometry: {
+          type: "Polygon",
+          coordinates: [transformData],
+        },
+      } as any);
+      console.log(nextPath);
+
+      const rounded_area = Math.round((area * 100) / 100);
+
+      if (rounded_area) {
+        setArea(rounded_area);
+        setOpen(true);
+      }
     }
   }, [setPath]);
 
@@ -196,7 +216,7 @@ function Map() {
         mutation_update_land.mutate(
           {
             ...detailland,
-            location: drawShape,
+            location: path && path?.length > 0 ? path : drawShape,
             dientich: area || null,
           },
           {
@@ -213,6 +233,7 @@ function Map() {
           {
             ...detailland,
             location: path,
+            dientich: area || detailland?.dientich,
           },
           {
             onSuccess: (res) => {
@@ -316,6 +337,10 @@ function Map() {
           {!isEdit && <Marker onLoad={onLoadMaker} position={center} />}
           {isEdit && (
             <Polygon
+              onRightClick={(e: any) => {
+                // e.preventDefault();
+                setOpen(true);
+              }}
               ref={ref}
               editable
               draggable
@@ -335,27 +360,30 @@ function Map() {
               }}
             />
           )}
-          <Polygon
-            ref={ref}
-            editable
-            draggable
-            path={finalPolygon || []}
-            onMouseUp={onEdit}
-            // Event used when dragging the whole Polygon
-            onDragEnd={onEdit}
-            onLoad={onLoad2}
-            onRightClick={(e: any) => {
-              // e.preventDefault();
-              setOpen(true);
-            }}
-            onUnmount={onUnmount}
-            key={1}
-            options={{
-              strokeOpacity: 0.8,
-              strokeWeight: 2,
-              fillOpacity: 0.35,
-            }}
-          />
+          {!isEdit && (
+            <Polygon
+              ref={ref}
+              editable
+              draggable
+              path={finalPolygon || []}
+              onMouseUp={onEdit}
+              // Event used when dragging the whole Polygon
+              onDragEnd={onEdit}
+              onLoad={onLoad2}
+              onRightClick={(e: any) => {
+                // e.preventDefault();
+                setOpen(true);
+              }}
+              onUnmount={onUnmount}
+              key={1}
+              options={{
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillOpacity: 0.35,
+              }}
+            />
+          )}
+
           <DrawingManager
             options={{
               drawingControl: true,
