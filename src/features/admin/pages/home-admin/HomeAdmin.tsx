@@ -506,118 +506,124 @@ const HomeAdmin = () => {
                       <Route path="*" element={<NotFound />} />
                     ) : (
                       <>
-                        <Route
-                          path={PATH.ADD_USER_TO_HTX}
-                          element={<AddUserToHTX></AddUserToHTX>}
-                        ></Route>
-                        <Route
-                          path={"/story-of-user"}
-                          element={<HTXStorymanagement></HTXStorymanagement>}
-                        ></Route>
-                        <Route
-                          path={"/story-of-user/detail/:id"}
-                          element={
-                            <HTXDetailStoryMangement></HTXDetailStoryMangement>
-                          }
-                        ></Route>
-                        <Route
-                          path={PATH.MANAGE_HTX}
-                          element={<HTXManagement></HTXManagement>}
-                        ></Route>
-                        <Route
-                          path={PATH.MANAGE_SEASON}
-                          element={<SeasonManagement></SeasonManagement>}
-                        ></Route>
-                        <Route
-                          path={PATH.MANAGE_SEASON_DETAIL}
-                          element={<DetailSeaSon></DetailSeaSon>}
-                        ></Route>
-                        <Route
-                          path={PATH.MANAGE_ACTIVITY}
-                          element={<SeasonActivity></SeasonActivity>}
-                        ></Route>
-                        <Route
-                          path={PATH.CALENDAR}
-                          element={<Calendar></Calendar>}
-                        ></Route>
-                        <Route
-                          path={PATH.CONTRACT_MANAGEMENT}
-                          element={
-                            <ContractManagement
-                              allowCreate={false}
-                              allowDelete={true}
-                              allowUpdate={true}
-                              baseUrl="htx/contract-management"
-                            ></ContractManagement>
-                          }
-                        ></Route>
-                        <Route
-                          path={"/shop-management"}
-                          element={
-                            <ShopManagement
-                              baseUrl="htx"
-                              role="chunhiem"
-                            ></ShopManagement>
-                          }
-                        ></Route>
-                        <Route
-                          path={"/shop-management/detail-contract/:id"}
-                          element={
-                            <DetailShopContract baseUrl="chunhiem"></DetailShopContract>
-                          }
-                        ></Route>
-                        <Route
-                          path={"/supplier-management"}
-                          element={
-                            <SupplierManagement
-                              role="chunhiem"
-                              baseUrl="htx"
-                            ></SupplierManagement>
-                          }
-                        ></Route>
-                        <Route
-                          path={
-                            "/supplier-management/detail-supplier-contract/:id"
-                          }
-                          element={
-                            <DetailSupplierContract baseUrl="chunhiem"></DetailSupplierContract>
-                          }
-                        ></Route>
-                        <Route
-                          path={"/rice-transaction-management"}
-                          element={
-                            <RiceTransactionManagement role="chunhiem"></RiceTransactionManagement>
-                          }
-                        ></Route>
-                        <Route
-                          path={"/rice-transaction-management/detail/:id"}
-                          element={
-                            <DetailRiceTransactionUser
-                              baseUrl="chunhiem"
-                              role="chunhiem"
-                            ></DetailRiceTransactionUser>
-                          }
-                        ></Route>
-                        <Route
-                          path={"/post-management"}
-                          element={<PostManagement></PostManagement>}
-                        ></Route>
-                        <Route
-                          path={"/post-management/create"}
-                          element={<CreatePost></CreatePost>}
-                        ></Route>
-                        <Route
-                          path={"/post-management/detail/:id"}
-                          element={<DetailPost></DetailPost>}
-                        ></Route>
-                        <Route path="*" element={<NotFound />} />
+                        {roles?.role === "chunhiem" && (
+                          <>
+                            <Route
+                              path={PATH.ADD_USER_TO_HTX}
+                              element={<AddUserToHTX></AddUserToHTX>}
+                            ></Route>
+                            <Route
+                              path={"/story-of-user"}
+                              element={
+                                <HTXStorymanagement></HTXStorymanagement>
+                              }
+                            ></Route>
+                            <Route
+                              path={"/story-of-user/detail/:id"}
+                              element={
+                                <HTXDetailStoryMangement></HTXDetailStoryMangement>
+                              }
+                            ></Route>
+                            <Route
+                              path={PATH.MANAGE_HTX}
+                              element={<HTXManagement></HTXManagement>}
+                            ></Route>
+                            <Route
+                              path={PATH.MANAGE_SEASON}
+                              element={<SeasonManagement></SeasonManagement>}
+                            ></Route>
+                            <Route
+                              path={PATH.MANAGE_SEASON_DETAIL}
+                              element={<DetailSeaSon></DetailSeaSon>}
+                            ></Route>
+                            <Route
+                              path={PATH.MANAGE_ACTIVITY}
+                              element={<SeasonActivity></SeasonActivity>}
+                            ></Route>
+                            <Route
+                              path={PATH.CALENDAR}
+                              element={<Calendar></Calendar>}
+                            ></Route>
+                            <Route
+                              path={PATH.CONTRACT_MANAGEMENT}
+                              element={
+                                <ContractManagement
+                                  allowCreate={false}
+                                  allowDelete={true}
+                                  allowUpdate={true}
+                                  baseUrl="htx/contract-management"
+                                ></ContractManagement>
+                              }
+                            ></Route>
+                            <Route
+                              path={"/shop-management"}
+                              element={
+                                <ShopManagement
+                                  baseUrl="htx"
+                                  role="chunhiem"
+                                ></ShopManagement>
+                              }
+                            ></Route>
+                            <Route
+                              path={"/shop-management/detail-contract/:id"}
+                              element={
+                                <DetailShopContract baseUrl="chunhiem"></DetailShopContract>
+                              }
+                            ></Route>
+                            <Route
+                              path={"/supplier-management"}
+                              element={
+                                <SupplierManagement
+                                  role="chunhiem"
+                                  baseUrl="htx"
+                                ></SupplierManagement>
+                              }
+                            ></Route>
+                            <Route
+                              path={
+                                "/supplier-management/detail-supplier-contract/:id"
+                              }
+                              element={
+                                <DetailSupplierContract baseUrl="chunhiem"></DetailSupplierContract>
+                              }
+                            ></Route>
+                            <Route
+                              path={"/rice-transaction-management"}
+                              element={
+                                <RiceTransactionManagement role="chunhiem"></RiceTransactionManagement>
+                              }
+                            ></Route>
+                            <Route
+                              path={"/rice-transaction-management/detail/:id"}
+                              element={
+                                <DetailRiceTransactionUser
+                                  baseUrl="chunhiem"
+                                  role="chunhiem"
+                                ></DetailRiceTransactionUser>
+                              }
+                            ></Route>
+                            <Route
+                              path={"/post-management"}
+                              element={<PostManagement></PostManagement>}
+                            ></Route>
+                            <Route
+                              path={"/post-management/create"}
+                              element={<CreatePost></CreatePost>}
+                            ></Route>
+                            <Route
+                              path={"/post-management/detail/:id"}
+                              element={<DetailPost></DetailPost>}
+                            ></Route>
+                            <Route path="*" element={<NotFound />} />
+                          </>
+                        )}
+                        {/* {console.log("run")} */}
                       </>
                     )}
 
                     {(roles?.role === "xavien" ||
                       (roles?.role === "chunhiem" && roles?.active)) && (
                       <>
-                        {console.log("run")}
                         <Route
                           path="/manage-story"
                           element={<Story></Story>}
