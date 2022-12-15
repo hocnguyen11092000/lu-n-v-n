@@ -272,6 +272,7 @@ const HTXDetailStoryManagement = (props: Props) => {
           getResponseMessage(res);
           // storyOfUser.refetch();
           setShowReason(false);
+          detailStoryOfUser.refetch();
         },
         onError: (err) => {
           getErrorMessage(err);
