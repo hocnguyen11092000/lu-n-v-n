@@ -1,10 +1,18 @@
 import { BellOutlined, LoadingOutlined } from "@ant-design/icons";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  Mutation,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 import { Badge, Menu, Skeleton, Spin } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import notificationApi from "../../api/notification";
 import { setIsReadAll } from "../../redux/notificationSlice";
+import { getErrorMessage } from "../../utils/getErrorMessage";
+import { getResponseMessage } from "../../utils/getResponseMessage";
 import "./notification.scss";
 
 type Props = {};
@@ -27,6 +35,20 @@ const Notification = (props: Props) => {
       }
     },
   });
+
+  const mutation_makeRead = useMutation((id: any) =>
+    notificationApi.readed(id)
+  );
+
+  const hanleMakeRead = (id: any) => {
+    mutation_makeRead.mutate(id, {
+      onSuccess: (data) => {
+        // getResponseMessage(data);
+        notificationQuery.refetch();
+      },
+      onError: (err) => getErrorMessage(err),
+    });
+  };
 
   let result: any = [];
 
@@ -51,7 +73,19 @@ const Notification = (props: Props) => {
               </span>
               <span style={{ display: "flex" }}>
                 {" "}
-                <span className="content-noti"> {noti?.message || ""}</span>
+                <Link
+                  to={noti?.link || ""}
+                  style={{ color: "#333" }}
+                  className={!noti?.status ? "main-color" : ""}
+                >
+                  <span
+                    onClick={() => hanleMakeRead(noti?.id || "")}
+                    className="content-noti"
+                  >
+                    {" "}
+                    {noti?.message || ""}
+                  </span>
+                </Link>
                 <div> {!noti?.status && <Badge status="success" />}</div>
               </span>
             </div>
