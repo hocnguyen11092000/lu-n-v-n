@@ -81,6 +81,14 @@ const DetailContract = (props: Props) => {
         deatailContract?.data?.data?.hoptacxa_xacnhan == 0
           ? "Chưa xác nhận"
           : "Xác nhận",
+      status:
+        deatailContract?.data?.data?.status == "confirm"
+          ? "Đã xác nhận"
+          : deatailContract?.data?.data?.status == "waiting"
+          ? "Chưa xác nhận"
+          : deatailContract?.data?.data?.status == "thuonlai-update"
+          ? "Thương lái đã cập nhật"
+          : "Hợp tác xã đã cập nhật",
       thuonglai_xacnhan:
         deatailContract?.data?.data?.thuonglai_xacnhan == 0
           ? "Chưa xác nhận"

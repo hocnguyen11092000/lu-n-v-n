@@ -61,7 +61,7 @@ const ListMenu = (props: Props) => {
             </a>
           </Dropdown>
         </span>
-        <span className="header-list-menu__drop-down-item">
+        {/* <span className="header-list-menu__drop-down-item">
           <Dropdown overlay={menu}>
             <a onClick={(e) => e.preventDefault()} style={{ color: "#fff" }}>
               <Space size="small">
@@ -70,7 +70,7 @@ const ListMenu = (props: Props) => {
               </Space>
             </a>
           </Dropdown>
-        </span>
+        </span> */}
         <span className="header-list-menu__drop-down-item">
           <Dropdown overlay={menu_LoHang}>
             <a onClick={(e) => e.preventDefault()} style={{ color: "#fff" }}>
