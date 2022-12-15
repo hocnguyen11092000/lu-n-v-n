@@ -313,28 +313,33 @@ const HTXDetailStoryManagement = (props: Props) => {
         </Modal>
         <h3>Chi tiết nhật ký</h3>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Select
-            loading={detailStoryOfUser.isLoading}
-            onChange={(value: number | string) => handleConfirm(value)}
-            size="small"
-            value={detailStoryOfUser?.data?.data?.hoptacxa_xacnhan + "" || ""}
-            placeholder="Trạng thái"
-            style={{ width: 150 }}
-            options={[
-              {
-                value: "0",
-                label: "Chưa xác nhận",
-              },
-              {
-                value: "1",
-                label: "Xác nhận",
-              },
-              {
-                value: "2",
-                label: "Hủy",
-              },
-            ]}
-          />
+          <Spin spinning={detailStoryOfUser.isLoading}>
+            {detailStoryOfUser?.data?.data && (
+              <Select
+                onChange={(value: number | string) => handleConfirm(value)}
+                size="small"
+                value={
+                  detailStoryOfUser?.data?.data?.hoptacxa_xacnhan + "" || ""
+                }
+                placeholder="Trạng thái"
+                style={{ width: 150 }}
+                options={[
+                  {
+                    value: "0",
+                    label: "Chưa xác nhận",
+                  },
+                  {
+                    value: "1",
+                    label: "Xác nhận",
+                  },
+                  {
+                    value: "2",
+                    label: "Hủy",
+                  },
+                ]}
+              />
+            )}
+          </Spin>
         </div>
         <br />
         {result?.vattusudung && result?.vattusudung.length > 0 && (
