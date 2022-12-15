@@ -1,15 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
-import { Col, DatePicker, Input, Row, Spin } from "antd";
-import React from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Button, Col, DatePicker, Input, Modal, Row, Select, Spin } from "antd";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import htxApi from "../../../../api/htx";
 import storyApi from "../../../../api/storyApi";
 import FormComponent from "../../../../components/form-component/FormComponent";
 import { convertToMoment } from "../../../../utils/convertToMoment";
+import { getErrorMessage } from "../../../../utils/getErrorMessage";
+import { getResponseMessage } from "../../../../utils/getResponseMessage";
 
 type Props = {};
 
 const HTXDetailStoryManagement = (props: Props) => {
   const { id } = useParams();
+  const [showReason, setShowReason] = useState(false);
+  const [reasonValue, setReasonValue] = useState("");
 
   const detailStoryManagement = [
     {
@@ -236,19 +241,110 @@ const HTXDetailStoryManagement = (props: Props) => {
       initialValues: result,
     };
   }
+  const handleConfirm = (value: any) => {
+    if (value != 2) {
+      mutation_update_confirm.mutate(
+        { id: id, hoptacxa_xacnhan: value },
+        {
+          onSuccess: (res) => {
+            getResponseMessage(res);
+            // storyOfUser.refetch();
+          },
+          onError: (err) => {
+            getErrorMessage(err);
+          },
+        }
+      );
+    } else {
+      setShowReason(true);
+    }
+  };
+
+  const mutation_update_confirm = useMutation((data: any) =>
+    htxApi.htxConfirm(id || "", data)
+  );
+
+  const handleSave = () => {
+    mutation_update_confirm.mutate(
+      { id: id, hoptacxa_xacnhan: 2, reason: reasonValue },
+      {
+        onSuccess: (res) => {
+          getResponseMessage(res);
+          // storyOfUser.refetch();
+          setShowReason(false);
+        },
+        onError: (err) => {
+          getErrorMessage(err);
+        },
+      }
+    );
+  };
+
   return (
-    <Spin spinning={detailStoryOfUser.isLoading} style={{ height: "100vh" }}>
+    <Spin
+      spinning={
+        detailStoryOfUser.isLoading || mutation_update_confirm.isLoading
+      }
+      style={{ height: "100vh" }}
+    >
       <div className="profile">
+        <Modal
+          title="Lý do từ chối"
+          open={showReason}
+          onCancel={() => setShowReason(false)}
+        >
+          <Input
+            placeholder="Lý do từ chối"
+            onChange={(e) => setReasonValue(e.target.value)}
+            onKeyPress={(event) => {
+              if (event.key === "Enter") {
+                handleSave();
+              }
+            }}
+          />
+          <br />
+          <Button
+            loading={mutation_update_confirm.isLoading}
+            type="primary"
+            onClick={handleSave}
+          >
+            Lưu
+          </Button>
+        </Modal>
         <h3>Chi tiết nhật ký</h3>
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <Select
+            loading={detailStoryOfUser.isLoading}
+            onChange={(value: number | string) => handleConfirm(value)}
+            size="small"
+            value={detailStoryOfUser?.data?.data?.hoptacxa_xacnhan + "" || ""}
+            placeholder="Trạng thái"
+            style={{ width: 150 }}
+            options={[
+              {
+                value: "0",
+                label: "Chưa xác nhận",
+              },
+              {
+                value: "1",
+                label: "Xác nhận",
+              },
+              {
+                value: "2",
+                label: "Hủy",
+              },
+            ]}
+          />
+        </div>
         <br />
         {result?.vattusudung && result?.vattusudung.length > 0 && (
           <>
             <div className="category-of-activity">
               <h3>Vật tư sử dụng: </h3>
-              <div style={{ margin: "12px 0" }}>
+              <div style={{ margin: "4px 0" }}>
                 {result?.vattusudung.map((item: any) => {
                   return (
-                    <Row gutter={[16, 16]} style={{ marginBottom: "12px" }}>
+                    <Row gutter={[16, 16]} style={{ marginBottom: "4px" }}>
                       <Col lg={10} md={10} sm={24} xs={24}>
                         <span>
                           <span className="m-r-4"> Tên vật tư: </span>

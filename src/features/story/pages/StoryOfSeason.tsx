@@ -122,7 +122,7 @@ const StoryOfSeason = (props: Props) => {
         },
         ({ getFieldValue }: any): any => ({
           validator(_: any, value: any) {
-            if (!value || getFieldValue("date_start") < value) {
+            if (!value || getFieldValue("date_start") <= value) {
               return Promise.resolve();
             }
             return Promise.reject(
@@ -544,7 +544,7 @@ const StoryOfSeason = (props: Props) => {
       <div className="pagiantion">
         {data?.meta?.total > 0 && (
           <Pagination
-          size="small"
+            size="small"
             // defaultCurrent={filter.page as number}
             current={Number(filter.page)}
             total={data?.meta?.total}
